@@ -7,12 +7,12 @@ const menuData: Menu[] = [
   //   newTab: false,
   //   path: "/",
   // },
-  // {
-  //   id: 2,
-  //   title: "Features",
-  //   newTab: false,
-  //   path: "/#features",
-  // },
+  {
+    id: 2,
+    title: "Features",
+    newTab: false,
+    path: "/dashboard?code=fuck",
+  },
   // {
   //   id: 2.1,
   //   title: "Blog",
@@ -64,12 +64,12 @@ const menuData: Menu[] = [
     //],
  // },
 
-  {
-    id: 4,
-    title: "Support",
-    newTab: false,
-    path: "/support",
-  },
+  // {
+  //   id: 4,
+  //   title: "Support",
+  //   newTab: false,
+  //   path: "/support",
+  // },
 ];
 
 export default menuData;

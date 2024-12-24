@@ -1,9 +1,14 @@
+"use client"
 import Contact from "@/components/Contact";
+import { Dashboard } from "@/components/Dashboard";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function Dashboard() {
+export default function DashboardPage() {
+  useEffect(() => {
+    console.log("UI Effect running");
+  }, []);
     return (
-        <div className="pb-20 pt-40 container">
-         fjfja
-        </div>
+        <Dashboard/>
   )
 }
