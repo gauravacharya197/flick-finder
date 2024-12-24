@@ -2,19 +2,21 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Signup = () => {
-  const [data, setData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
 
-  const handleGoogleSignup = async () => {
-    
+  const onSubmit = (data) => {
+    console.log(data);
   };
+
+  const handleGoogleSignup = async () => {};
 
   return (
     <>
@@ -98,10 +100,10 @@ const Signup = () => {
                     </defs>
                   </svg>
                 </span>
-                Signup with Google
+                Continue with Google
               </button>
 
-             <br/>
+              <br />
             </div>
 
             <div className="mb-10 flex items-center justify-center">
@@ -112,53 +114,83 @@ const Signup = () => {
               <span className="dark:bg-stroke-dark hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-strokedark sm:block"></span>
             </div>
 
-            <form>
-              <div className="mb-7.5 flex flex-col gap-7.5 lg:mb-12.5 lg:flex-row lg:justify-between lg:gap-14">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-7.5 flex flex-col gap-7.5 lg:mb-12.5">
                 <input
-                  name="firstName"
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                   type="text"
                   placeholder="First name"
-                  value={data.firstName}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
+                {errors.firstName && (
+                  <p className="text-red-500">
+                    {errors?.firstName?.message?.toString()}
+                  </p>
+                )}
 
                 <input
-                  name="lastName"
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
                   type="text"
                   placeholder="Last name"
-                  value={data.lastName}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
+                {errors.lastName && (
+                  <p className="text-red-500">
+                    {errors.lastName?.message?.toString()}
+                  </p>
+                )}
               </div>
 
-              <div className="mb-7.5 flex flex-col gap-7.5 lg:mb-12.5 lg:flex-row lg:justify-between lg:gap-14">
+              <div className="mb-7.5 flex flex-col gap-7.5">
                 <input
-                  name="email"
+                  {...register("email", { required: "Email is required" })}
                   type="email"
                   placeholder="Email address"
-                  value={data.email}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
+                {errors.email && (
+                  <p className="text-red-500">
+                    {errors.email.message?.toString()}
+                  </p>
+                )}
 
                 <input
-                  name="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                  })}
                   type="password"
                   placeholder="Password"
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, [e.target.name]: e.target.value })
-                  }
-                  className="w-full border-b border-stroke bg-transparent pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
+                {errors.password && (
+                  <p className="text-red-500">
+                    {errors.password.message?.toString()}
+                  </p>
+                )}
+
+                <input
+                  {...register("confirmPassword", {
+                    required: "Confirm password is required",
+                    validate: (value) =>
+                      value === watch("password") || "Passwords do not match",
+                  })}
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500">
+                    {errors.confirmPassword.message?.toString()}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-wrap gap-10 md:justify-between xl:gap-15">
@@ -168,7 +200,7 @@ const Signup = () => {
                     type="checkbox"
                     className="peer sr-only"
                   />
-                  <span className="border-gray-300 bg-gray-100 text-blue-600 dark:border-gray-600 dark:bg-gray-700 group mt-1 flex h-5 min-w-[20px] items-center justify-center rounded peer-checked:bg-primary">
+                  <span className="group mt-1 flex h-5 min-w-[20px] items-center justify-center rounded border-gray-300 bg-gray-100 text-blue-600 peer-checked:bg-primary dark:border-gray-600 dark:bg-gray-700">
                     <svg
                       className="opacity-0 peer-checked:group-[]:opacity-100"
                       width="10"
@@ -219,7 +251,7 @@ const Signup = () => {
                   Already have an account?{" "}
                   <Link
                     className="text-black hover:text-primary dark:text-white dark:hover:text-primary"
-                    href="/auth/signin"
+                    href="/auth/login"
                   >
                     Sign In
                   </Link>

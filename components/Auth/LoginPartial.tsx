@@ -4,8 +4,12 @@ import { Menu, Dropdown, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
 export const LoginPartial = () => {
+  let user;
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const user = localStorage.getItem("user");
+  if (typeof window !== "undefined") {
+    user = localStorage.getItem("user") || ""
+  }
 
   useEffect(() => {
     if (user) {

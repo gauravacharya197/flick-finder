@@ -19,6 +19,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  console.log('from the top');
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`dark:bg-black ${inter.className}`}>

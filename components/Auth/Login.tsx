@@ -128,7 +128,7 @@ const Login = () => {
                       </defs>
                     </svg>
                   </span>
-                  Signup with Google
+                  Continue with Google
                 </button>
               </div>
             </div>
@@ -203,6 +203,7 @@ const Login = () => {
                 </div>
 
                 <button
+                  type="button"
                   aria-label="login with email and password"
                   className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho"
                 >
