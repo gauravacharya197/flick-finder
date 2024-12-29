@@ -1,8 +1,12 @@
 "use client";
+import { Register } from "@/services/AccountService";
+import { googleHandler } from "@/utils/authUtils";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   const {
@@ -11,12 +15,27 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm();
-
+  const router = useRouter();
   const onSubmit = (data) => {
     console.log(data);
+    Register(data)
+      .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        router.push("/");
+        toast.success("Registration successful",
+          { position: "bottom-center" },
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        
+        toast.error(
+          err?.response?.data?.message ||
+            "An error occurred. Please try again.",
+          { position: "bottom-center" },
+        );
+      });
   };
-
-  const handleGoogleSignup = async () => {};
 
   return (
     <>
@@ -64,7 +83,9 @@ const Signup = () => {
             <div className="flex items-center gap-8">
               <button
                 aria-label="signup with google"
-                onClick={handleGoogleSignup}
+                onClick={() =>
+                  googleHandler("http://localhost:3000/auth/login")
+                }
                 className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-6 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none"
               >
                 <span className="mr-3">

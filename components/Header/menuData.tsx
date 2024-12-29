@@ -1,4 +1,5 @@
 import { Menu } from "@/types/menu";
+import { AiOutlineHeart } from "react-icons/ai";
 
 const menuData: Menu[] = [
   // {
@@ -9,16 +10,22 @@ const menuData: Menu[] = [
   // },
   {
     id: 2,
-    title: "Features",
+    title: "Popular",
     newTab: false,
-    path: "/dashboard?code=fuck",
+    path: "/popular",
   },
-  // {
-  //   id: 2.1,
-  //   title: "Blog",
-  //   newTab: false,
-  //   path: "/blog",
-  // },
+  {
+    id: 2.1,
+    title: "New",
+    newTab: false,
+    path: "/new",
+  },
+  {
+    id: 2.1,
+    title: "💓",
+    newTab: false,
+    path: "/favorites",
+  },
  
   // {
   //   id: 3,

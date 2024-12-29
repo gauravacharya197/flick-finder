@@ -3,31 +3,40 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { GetUser } from "@/services/AccountService";
+import { GetUser, UserLogin } from "@/services/AccountService";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { googleHandler } from "@/utils/authUtils";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
+
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [codeProcessed, setCodeProcessed] = useState(false);
   const code = searchParams.get("code");
   const effectRan = useRef(false); // Ref to track if useEffect ran
-
+  const {
+    register,
+    handleSubmit,
+  
+    formState: { errors },
+  } = useForm();
   useEffect(() => {
     if (effectRan.current === true || process.env.NODE_ENV === "production") {
       if (code) {
         console.log("Sending request with code:", code);
-        GetUser(code as string).then((res) => {
-          if (res) {
-            localStorage.setItem("user", JSON.stringify(res.data));
-            router.push("/");
-          }
-        });
+        GetUser(code as string)
+          .then((res:any) => {
+            if (res) {
+              localStorage.setItem("user", JSON.stringify(res.data));
+              router.push("/");
+            }
+          })
+          .catch((err) => {
+            toast.error(err?.response?.data?.message || "An error occurred. Please try again.", { position: 'bottom-center' });
+            console.log(err);
+          });
       }
     }
     return () => {
@@ -35,15 +44,25 @@ const Login = () => {
     };
   }, [code]);
 
-  const googleHandler = () => {
-    const clientId =
-      "375545762738-9mo859gr6vpaa42v49kgivgbp3ioiov8.apps.googleusercontent.com";
-    const redirectUri = "http://localhost:3000/auth/login"; // Replace with your redirect URI
-    const scope = "email profile";
-
-    // Redirect to Google's OAuth 2.0 authorization endpoint
-    const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-    window.location.href = googleAuthUrl;
+ const onSubmit = (data) => {
+    console.log(data);
+    UserLogin(data)
+      .then((res) => {
+        localStorage.setItem("user", JSON.stringify(res.data));
+        router.push("/");
+        toast.success("Login successful",
+          { position: "bottom-center" },
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        
+        toast.error(
+          err?.response?.data?.message ||
+            "An error occurred. Please try again.",
+          { position: "bottom-center" },
+        );
+      });
   };
 
   return (
@@ -91,7 +110,7 @@ const Login = () => {
             <div className="flex flex-col">
               <div className="flex items-center gap-4 sm:gap-8">
                 <button
-                  onClick={googleHandler}
+                  onClick={() => googleHandler("http://localhost:3000/auth/login")}
                   aria-label="sign with google"
                   className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-4 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none sm:px-6"
                 >
@@ -141,27 +160,38 @@ const Login = () => {
               <span className="dark:bg-stroke-dark hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-strokedark sm:block"></span>
             </div>
 
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-7.5 flex flex-col gap-7.5 lg:mb-12.5 lg:flex-row lg:justify-between lg:gap-14">
                 <input
-                  type="text"
                   placeholder="Email"
-                  name="email"
-                  value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  {...register("email", { required: "Email is required" })}
+                  type="email"
                   className="w-full border-b border-stroke !bg-white pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:!bg-black dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                 />
+                {errors.email && (
+                  <p className="text-red-500">
+                    {errors.email.message?.toString()}
+                  </p>
+                )}
 
                 <input
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                  })}
                   type="password"
                   placeholder="Password"
-                  name="password"
-                  value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  
                   className="w-full border-b border-stroke !bg-white pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:!bg-black dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
                 />
+                 {errors.password && (
+                  <p className="text-red-500">
+                    {errors.password.message?.toString()}
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-wrap items-center gap-4 sm:gap-10 md:justify-between xl:gap-15">
@@ -203,7 +233,6 @@ const Login = () => {
                 </div>
 
                 <button
-                  type="button"
                   aria-label="login with email and password"
                   className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho"
                 >
