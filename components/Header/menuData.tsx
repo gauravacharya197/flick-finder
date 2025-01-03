@@ -10,9 +10,9 @@ const menuData: Menu[] = [
   // },
   {
     id: 2,
-    title: "Popular",
+    title: "Trending",
     newTab: false,
-    path: "/popular",
+    path: "/trending",
   },
   {
     id: 2.1,
@@ -21,10 +21,16 @@ const menuData: Menu[] = [
     path: "/new",
   },
   {
-    id: 2.1,
-    title: "💓",
+    id: 3,
+    title: "Favorites",
     newTab: false,
     path: "/favorites",
+  },
+  {
+    id: 4,
+    title: "IMDB Top 100",
+    newTab: false,
+    path: "/imdb",
   },
  
   // {

@@ -11,33 +11,37 @@ import store from "../../redux/store";
 const inter = Inter({ subsets: ["latin"] });
 
 import ToasterContext from "../context/ToastContext";
-import { Provider } from "react-redux";
-
+import { Provider, useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { getFilters } from "@/services/MovieService";
+import { setFilters } from "@/redux/movies/filterSlice";
+import toast from "react-hot-toast";
+import { MyApp } from "./MyApp";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  console.log("loaded");
 
-  console.log('from the top');
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`dark:bg-black ${inter.className}`}>
-      <Provider store={store}>
-        <ThemeProvider
-          enableSystem={false}
-          attribute="class"
-          defaultTheme="light"
-        >
-          {/* <Lines /> */}
-          <Header />
-          <ToasterContext />
-          {children}
-          <Footer />
-          <ScrollToTop />
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider
+            enableSystem={false}
+            attribute="class"
+            defaultTheme="light"
+          >
+            {/* <Lines /> */}
+            <MyApp/>
+            <Header />
+            <ToasterContext />
+            {children}
+            <Footer />
+            <ScrollToTop />
+          </ThemeProvider>
         </Provider>
       </body>
     </html>

@@ -52,7 +52,7 @@ export const LoginPartial = () => {
             <Link href="/seen">Seen</Link>
           </li>
           <li className="hover:text-primary">
-            <a onClick={handleLogout}>Logout</a>
+            <a href="#" onClick={handleLogout}>Logout</a>
           </li>
          
         </ul>
