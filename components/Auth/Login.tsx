@@ -10,6 +10,7 @@ import { googleHandler } from "@/utils/authUtils";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 
   const router = useRouter();
@@ -110,7 +111,7 @@ const Login = () => {
             <div className="flex flex-col">
               <div className="flex items-center gap-4 sm:gap-8">
                 <button
-                  onClick={() => googleHandler("http://localhost:3000/auth/login")}
+                  onClick={() => googleHandler(`${baseUrl}auth/login`)}
                   aria-label="sign with google"
                   className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-4 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none sm:px-6"
                 >

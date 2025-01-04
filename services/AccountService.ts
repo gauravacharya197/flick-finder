@@ -1,6 +1,6 @@
 import apiClient from "@/axiosConfig";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-let baseUrl = `${'https://localhost:7264/'}`;
 
 export const GetUser = async (code: string) => {
    return apiClient.post(`${baseUrl}api/auth/AuthenticateWithGoogle`, { code })

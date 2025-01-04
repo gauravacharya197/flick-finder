@@ -1,6 +1,6 @@
 import { delay } from 'framer-motion';
 import apiClient from '../axiosConfig';
-let baseUrl = `${'https://localhost:7264/'}`;
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const getRecommendation = async (text: string) => {
 

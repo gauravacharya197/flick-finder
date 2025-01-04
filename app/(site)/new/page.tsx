@@ -1,3 +1,4 @@
+import { Dashboard } from '@/components/Dashboard';
 import React from 'react'
 
 const NewMoviesPage = () => {
@@ -6,6 +7,7 @@ const NewMoviesPage = () => {
     <div className="mx-auto flex max-w-c-1390  px-4 md:px-8 2xl:px-0">
       <div className="flex flex-col lg:items-start lg:gap-8 xl:gap-32.5">
       NewMoviesPage
+      <Dashboard/>
       </div>
     </div>
   </section>
