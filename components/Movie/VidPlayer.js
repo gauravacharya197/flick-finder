@@ -138,7 +138,7 @@ const createPopupBlocker = () => {
       
         <iframe
           src={sourceUrl}
-          poster="true"
+          poster="true" referrerpolicy="origin"
           allowFullScreen
           style={{ width: "95%", height: "60vh", border: "none" }}
         />

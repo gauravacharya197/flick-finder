@@ -1,40 +1,44 @@
 "use client";
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { Input, Select, Slider, Button } from 'antd';
+import { FilterState, setCountries, setGenres, setImdbRating, setQuery, setYears } from '@/redux/movies/advanceSearchSlice';
+import { RootState } from '@/redux/store';
 
 export const SearchFilter = () => {
-  const { countries, genres, languages, years } = useSelector((state: any) => state.filters); // Destructure the filters from the Redux store
+  const dispatch = useDispatch();
+  const { countries, genres, languages } = useSelector((state: any) => state.filters); 
+  const { query, countries: searchCountries, genres: searchGenres, years: searchYears, imdbRating } = useSelector((state: RootState) => state.advanceSearch); 
 
   const countryOptions = countries?.map((country: any) => ({
-    value: country.nativeName,
+    value: country.isoName,
     label: country.nativeName,
   }));
 
   const genreOptions = genres?.map((genre: any) => ({
-    value: genre.name,
+    value: genre.externalId,
     label: genre.name,
   }));
 
-  const languageOptions = languages?.map((x: any) => ({
-    value: x.englishName,
-    label: x.englishName,
-  }));
+ 
 
-  const yearOptions = years?.map((year: any) => ({
+  const yearOptions = [2022,2021,2020,2019,2018]?.map((year: any) => ({
     value: year,
     label: year,
   }));
 
   return (
     <div >
-      <h2 className="text-2xl font-bold mb-4">Movies</h2>
+     
+      {/* <h2 className="text-2xl font-bold mb-4">Movies</h2> */}
       <div className="flex flex-wrap gap-4">
+        {/* {query+ searchCountries+ " " +searchGenres + " " +searchYears +" " + imdbRating} */}
         {/* Search Query */}
         <div className="flex-1 min-w-[200px]">
         <label className="block text-gray-700 dark:text-gray-300 mb-2">Query</label>
 
-          <Input placeholder="Search for movies..." className="w-full" />
+          <Input placeholder="Search for movies..." value={query} className="w-full" onChange={(e) => dispatch(setQuery(e.target.value))}
+          />
         </div>
 
         {/* Country */}
@@ -42,11 +46,13 @@ export const SearchFilter = () => {
         <label className="block text-gray-700 dark:text-gray-300 mb-2">Country</label>
 
           <Select
-            mode="multiple"
+            
             showSearch
             placeholder="Select Country"
             className="w-full"
             options={countryOptions}
+            value={searchCountries}
+            onChange={(value) => dispatch(setCountries(value))}
             
           />
         </div>
@@ -56,11 +62,13 @@ export const SearchFilter = () => {
         <label className="block text-gray-700 dark:text-gray-300 mb-2">Genre</label>
 
           <Select
-            mode="multiple"
+           
             showSearch
             placeholder="Select Genre"
             className="w-full"
             options={genreOptions}
+            value={searchGenres}
+            onChange={(value) => dispatch(setGenres(value))}
             
           />
         </div>
@@ -70,38 +78,33 @@ export const SearchFilter = () => {
         <label className="block text-gray-700 dark:text-gray-300 mb-2">Released Year</label>
 
           <Select
-            mode="multiple"
+           
             showSearch
             placeholder="Select Year"
             className="w-full"
             options={yearOptions}
+            value={searchYears}
+            onChange={(value) => dispatch(setYears(value))}
             
           />
         </div>
 
-        {/* Language */}
-        <div className="flex-1 min-w-[200px]">
-        <label className="block text-gray-700 dark:text-gray-300 mb-2">Language</label>
-
-          <Select
-            mode="multiple"
-            showSearch
-            placeholder="Select Language"
-            className="w-full"
-            options={languageOptions}
-            
-          />
-        </div>
+       
 
         {/* IMDb Rating */}
         <div className="flex-1 min-w-[200px]">
           <label className="block text-gray-700 dark:text-gray-300 mb-2">IMDb Rating</label>
-          <Slider className='mt-4.5' range defaultValue={[0, 10]} min={0} max={10} step={0.1} />
+          <Slider className='mt-4.5' range defaultValue={imdbRating} min={0}  max={10} step={0.1}  onChange={(value) => {
+              if (Array.isArray(value) && value.length === 2) {
+                dispatch(setImdbRating([value[0], value[1]]));
+              }
+            }} />
         </div>
+        
 
         {/* Search Button */}
-        <div className="flex-1 min-w-[200px] flex justify-start">
-          <Button type="primary" className="flex items-center justify-center  bg-primary px-7.5 py-2.5 text-regular text-white duration-300 ease-in-out hover:bg-primaryho">Search</Button>
+        <div className="w-full flex justify-start">
+          <Button type="primary" className="flex items-center justify-center bg-primary px-7.5 py-2.5 text-regular text-white duration-300 ease-in-out hover:bg-primaryho">Search</Button>
         </div>
       </div>
     </div>

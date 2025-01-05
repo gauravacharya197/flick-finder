@@ -5,9 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
-  useEffect(() => {
-    console.log("UI Effect running");
-  }, []);
+  
     return (
         <Dashboard/>
   )

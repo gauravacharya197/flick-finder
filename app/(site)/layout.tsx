@@ -7,7 +7,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import store from "../../redux/store";
 const inter = Inter({ subsets: ["latin"] });
 
 import ToasterContext from "../context/ToastContext";
@@ -17,6 +16,7 @@ import { getFilters } from "@/services/MovieService";
 import { setFilters } from "@/redux/movies/filterSlice";
 import toast from "react-hot-toast";
 import { MyApp } from "./MyApp";
+import store from "@/redux/store";
 
 export default function RootLayout({
   children,
