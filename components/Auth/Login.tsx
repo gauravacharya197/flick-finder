@@ -33,6 +33,9 @@ const Login = () => {
             if (res) {
               localStorage.setItem("user", JSON.stringify(res.data));
               router.push("/");
+              toast.success("Login successful",
+                { position: "bottom-center" },
+              );
             }
           })
           .catch((err) => {
