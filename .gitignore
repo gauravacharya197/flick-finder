@@ -30,6 +30,5 @@ yarn-error.log*
 
 # Ignore environment variables file
 .env
-
 # vercel
 .vercel
