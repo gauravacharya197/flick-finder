@@ -10,10 +10,14 @@ import { googleHandler } from "@/utils/authUtils";
 import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  
+  //for login redirect
 
 
   const router = useRouter();
+  const baseUrl = window.location.origin+"/"
+
+
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const effectRan = useRef(false); // Ref to track if useEffect ran
