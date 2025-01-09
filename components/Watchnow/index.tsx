@@ -6,6 +6,7 @@ import { PlayCircleOutlined } from "@ant-design/icons";
 import VidPlayer from "@/components/Movie/VidPlayer";
 import { Tag } from "antd";
 import { SimilarMovie } from "@/components/Movie/SimilarMovie";
+import { FaStar } from "react-icons/fa";
 
 const WatchNow = () => {
   const params = useParams();
@@ -38,7 +39,7 @@ const WatchNow = () => {
           <img
             style={{ width: "100%", height: "100%", border: "none" }}
             className="rounded-md object-cover"
-            src={movie?.poster}
+            src={movie?.coverImage || movie?.poster}
           />
           <PlayCircleOutlined
             onClick={() => setIsPlaying(true)}
@@ -56,14 +57,14 @@ const WatchNow = () => {
       case 1:
         return (
           <VidPlayer
-            sourceUrl={`https://vidlink.pro/movie/${imdbID}`}
+            sourceUrl={`https://moviesapi.club/movie/${imdbID}`}
           ></VidPlayer>
         );
 
       case 2:
         return (
           <VidPlayer
-            sourceUrl={`https://moviesapi.club/movie/${imdbID}`}
+            sourceUrl={`https://vidlink.pro/movie/${imdbID}`}
           ></VidPlayer>
         );
       case 3:
@@ -150,24 +151,32 @@ const WatchNow = () => {
                       </Tag>
                     ))}
                     <br />
-                    <p className="mb-2 text-lg">{movie?.plot}</p>
-                    <p className="mb-2 text-lg">
-                      <strong>Cast:</strong> {movie?.actors}
-                    </p>
-                    <p className="mb-2 text-lg">
-                      <strong>Director:</strong> {movie?.director}
-                    </p>
-                    <p className="mb-2 text-lg">
-                      <strong>Awards:</strong> {movie?.awards}
-                    </p>
-                    <p className="mb-2 text-lg">
-                      <strong>Runtime:</strong> {movie?.runtime}
-                    </p>
-                    <p className="mb-2 text-lg">
-                      <strong>Rating:</strong> {movie?.imdbRating} of{" "}
-                      {movie?.imdbVotes} votes
-                    </p>
-                    <div className="mt-4"></div>
+<div className="mb-2 text-lg">
+  <p>{movie?.plot}</p>
+</div>
+<div className="mb-2 text-lg flex">
+  <strong className="w-24">Cast</strong>
+  <span>: {movie?.actors}</span>
+</div>
+<div className="mb-2 text-lg flex">
+  <strong className="w-24">Director</strong>
+  <span>: {movie?.director}</span>
+</div>
+<div className="mb-2 text-lg flex">
+  <strong className="w-24">Awards</strong>
+  <span>: {movie?.awards}</span>
+</div>
+<div className="mb-2 text-lg flex">
+  <strong className="w-24">Runtime</strong>
+  <span>: {movie?.runtime}</span>
+</div>
+<div className="mb-2 text-lg flex">
+  <strong className="w-24">Rating</strong>
+  <span className="flex items-center">
+   :&nbsp; <FaStar /> {movie?.imdbRating}
+  </span>
+</div>
+<div className="mt-4"></div>
                   </div>
                 </div>
               </div>

@@ -13,24 +13,40 @@ const menuData: Menu[] = [
     title: "Trending",
     newTab: false,
     path: "/trending",
+    requireLogin : false
+
   },
   {
     id: 2.1,
     title: "New",
     newTab: false,
     path: "/new",
+    requireLogin : false
+
   },
-  {
-    id: 3,
-    title: "Favorites",
-    newTab: false,
-    path: "/favorites",
-  },
+  
   {
     id: 4,
     title: "IMDB Top 100",
     newTab: false,
     path: "/imdb",
+    requireLogin : false
+
+  },
+  {
+    id: 3,
+    title: "My Favorites",
+    newTab: false,
+    path: "/favorites",
+    requireLogin : true
+
+  },
+  {
+    id: 3,
+    title: "Watchlist",
+    newTab: false,
+    path: "/watchlist",
+    requireLogin : true
   },
  
   // {

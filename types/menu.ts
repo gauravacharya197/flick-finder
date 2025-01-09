@@ -3,5 +3,6 @@ export type Menu = {
   title: any;
   path?: string;
   newTab: boolean;
+  requireLogin : boolean;
   submenu?: Menu[];
 };

@@ -5,6 +5,7 @@ export interface FilterState {
   countries: string;
   genres: string;
   years: string;
+  mediaType : string;
   imdbRating: [number, number];
 }
 
@@ -13,6 +14,7 @@ const initialState: FilterState = {
   countries: '',
   genres:'',
   years: '',
+  mediaType:'All',
   imdbRating: [0, 0],
 };
 
@@ -32,6 +34,9 @@ const advanceSearchSlice = createSlice({
     setYears: (state, action: PayloadAction<string>) => {
       state.years = action.payload;
     },
+    setMediaType: (state, action: PayloadAction<string>) => {
+      state.mediaType = action.payload;
+    },
    
     setImdbRating: (state, action: PayloadAction<[number, number]>) => {
       state.imdbRating = action.payload;
@@ -45,6 +50,7 @@ export const {
   setGenres,
   setYears,
   setImdbRating,
+  setMediaType
 } = advanceSearchSlice.actions;
 
 export default advanceSearchSlice.reducer;

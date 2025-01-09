@@ -28,11 +28,12 @@ export const SearchFilter = () => {
   }));
 
   return (
-    <div >
+    < >
+   
      
       {/* <h2 className="text-2xl font-bold mb-4">Movies</h2> */}
-      <div className="flex flex-wrap gap-4">
-        {/* {query+ searchCountries+ " " +searchGenres + " " +searchYears +" " + imdbRating} */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 w-full">
+      {/* {query+ searchCountries+ " " +searchGenres + " " +searchYears +" " + imdbRating} */}
         {/* Search Query */}
         <div className="flex-1 min-w-[200px]">
         <label className="block text-gray-700 dark:text-gray-300 mb-2">Query</label>
@@ -40,6 +41,8 @@ export const SearchFilter = () => {
           <Input placeholder="Search for movies..." value={query} className="w-full" onChange={(e) => dispatch(setQuery(e.target.value))}
           />
         </div>
+
+       
 
         {/* Country */}
         <div className="flex-1 min-w-[200px]">
@@ -103,10 +106,10 @@ export const SearchFilter = () => {
         
 
         {/* Search Button */}
-        <div className="w-full flex justify-start">
+        {/* <div className="w-full flex justify-start">
           <Button type="primary" className="flex items-center justify-center bg-primary px-7.5 py-2.5 text-regular text-white duration-300 ease-in-out hover:bg-primaryho">Search</Button>
-        </div>
+        </div> */}
       </div>
-    </div>
+    </>
   );
 };

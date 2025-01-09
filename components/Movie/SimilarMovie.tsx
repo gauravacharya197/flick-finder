@@ -2,6 +2,7 @@ import { getPopular, getSimilarMovies } from '@/services/MovieService';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
+import { FaStar } from 'react-icons/fa';
 
 export const SimilarMovie = ({id}) => {
     const [movies, setmovies] = useState<any>([]);
@@ -15,7 +16,6 @@ export const SimilarMovie = ({id}) => {
       
   return (
     <div className="w-full lg:w-1/4">
-            <h2 className="mb-4 text-2xl font-bold">Related Movies</h2>
             <div className="flex flex-col gap-4">
               {movies?.results?.map((relatedMovie, index) => (
                 <div
@@ -34,10 +34,10 @@ export const SimilarMovie = ({id}) => {
                   <div>
                     <h3 className="text-lg font-bold">{relatedMovie?.title}</h3>
                     <p className="text-sm">{relatedMovie?.releaseDate}</p>
-                    <p className="text-sm">
-                      <strong>Runtime:</strong> {relatedMovie?.runtime}
-                    </p>
-                    <strong>Rating:</strong> {Number(relatedMovie?.voteAverage.toFixed(1))}
+                    <span className="rounded px-2 py-1">
+                                          <FaStar className="mb-1 inline text-yellow-500" />{" "}
+                                          {Number(relatedMovie?.voteAverage?.toFixed(1))}
+                                        </span>
 
                   </div>
                   </Link>
