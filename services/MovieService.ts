@@ -8,14 +8,14 @@ export const getRecommendation = async (text: string) => {
     }
   });
 };
-export const getDetails = async (imdbID: string) => {
-  return await apiClient.get(`${baseUrl}api/Movies/details/${imdbID}`)
+export const getDetails = async (imdbID: string,mediaType:string) => {
+  return await apiClient.get(`${baseUrl}api/Movies/details/${imdbID}/${mediaType}`)
 };
 export const getPopular = async () => {
   return await apiClient.get(`${baseUrl}api/Movies/popular`)
 };
-export const getSimilarMovies = async (id:string) => {
-  return await apiClient.get(`${baseUrl}api/Movies/similar/${id}`)
+export const getSimilarMovies = async (id:string,mediaType:string) => {
+  return await apiClient.get(`${baseUrl}api/Movies/similar/${id}/${mediaType}`)
 };
 export const getFilters = async () => {
   return await apiClient.get(`${baseUrl}api/filters`)

@@ -7,21 +7,20 @@ import VidPlayer from "@/components/Movie/VidPlayer";
 import { Tag } from "antd";
 import { SimilarMovie } from "@/components/Movie/SimilarMovie";
 import { FaStar } from "react-icons/fa";
-
+import { CustomTag } from "../Common/CustomTag";
+import SeasonChooser from "../Movie/SeasonChooser";
 const WatchNow = () => {
   const params = useParams();
-  const { imdbID } = params; // Access the dynamic parameter
+  const { imdbID, mediaType } = params; // Extract the parameters
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedServer, setSelectedServer] = useState(1);
   const [movie, setMovie] = useState<any>(null);
 
   // Dummy movie data
 
- 
-
   useEffect(() => {
     if (imdbID) {
-      getDetails(imdbID.toString())
+      getDetails(imdbID.toString(), mediaType.toString())
         .then((response) => {
           console.log(response);
 
@@ -82,110 +81,133 @@ const WatchNow = () => {
   };
 
   return (
-        <>
-          {/* VidSrc embed iframe */}
-          <div
-            className="w-full max-w-4xl lg:w-3/4"
-            style={{ aspectRatio: "16/9" }}
-          >
-            {renderMovieScreen()}
+    <>
+      <section>
+        <div className="container">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+            <div className="col-span-2 rounded-lg">
+              <div className="relative pb-[10.25%]">
+                {renderMovieScreen()}
 
-            <div className="mt-4 flex gap-4">
-              {[1, 2, 3, 4].map((server) => (
-                <button
-                  key={server}
-                  onClick={() => setSelectedServer(server)}
-                  className={`rounded px-4 py-2 ${
-                    selectedServer === server ? "bg-blue-700" : "bg-blue-500"
-                  } text-white`}
-                >
-                  Server {server}
-                </button>
-              ))}
-            </div>
-            <p className="mt-2 text-sm text-gray-500">
-              If the current server doesn't work, change the server.
-            </p>
-
-            <br />
-            {movie==null ? <div>Loading...</div> : 
-            <div className="flex flex-col gap-7.5 lg:flex-row xl:gap-12.5">
-              <div className="grid grid-cols-12 gap-4">
-                <div className="col-span-3">
-                  <div
-                    className="relative"
-                    style={{ width: "95%", height: "60vh" }}
-                  >
-                    <img
-                      style={{
-                        width: "100%",
-                        height: "50%",
-                        borderRadius: "15px",
-                      }}
-                      src={movie?.poster}
-                    />
-                  </div>
+                <div className="mt-4 flex gap-4">
+                  {[1, 2, 3, 4].map((server) => (
+                    <button
+                      key={server}
+                      onClick={() => setSelectedServer(server)}
+                      className={`rounded px-4 py-2 ${
+                        selectedServer === server
+                          ? "bg-blue-700"
+                          : "bg-blue-500"
+                      } text-white`}
+                    >
+                      Server {server}
+                    </button>
+                  ))}
                 </div>
+                <p className="mt-2 text-sm text-gray-500">
+                  If the current server doesn't work, change the server.{" "}
+                  {imdbID.toString()} {mediaType}
+                </p>
 
-                <div className="col-span-9">
-                  <div className="flex-grow">
-                    <h1 className="mb-1 text-3xl font-bold">{movie?.title}</h1>
-                    <div className="mb-2 flex gap-4">
-                      <div>
-                        <Tag bordered={false} color="purple">
-                          Movie
-                        </Tag>
+                <br />
+                {movie == null ? (
+                  <div>Loading...</div>
+                ) : (
+                  <div className="flex flex-col gap-7.5 lg:flex-row xl:gap-12.5">
+                    <div className="grid grid-cols-12 gap-4">
+                      <div className="col-span-3">
+                        <div
+                          className="relative"
+                          style={{ width: "95%", height: "60vh" }}
+                        >
+                          <img
+                            style={{
+                              width: "100%",
+                              height: "50%",
+                              borderRadius: "15px",
+                            }}
+                            src={movie?.poster}
+                          />
+                        </div>
                       </div>
-                      <div> {movie?.runtime}</div> <div> {movie?.released}</div>
-                      <div>
-                        <Tag color="default">{movie?.rated}</Tag>
+
+                      <div className="col-span-9">
+                        <div className="flex-grow">
+                          <h1 className="mb-1 text-3xl font-bold">
+                            {movie?.title}
+                          </h1>
+                          <div className="mb-2 flex gap-4">
+                            <div>
+                              <CustomTag text={movie?.mediaType} />
+                            </div>
+                            <div> {movie?.runtime}</div>{" "}
+                            <div> {movie?.released}</div>
+                            <div>
+                              <Tag color="default">{movie?.rated}</Tag>
+                            </div>
+                          </div>
+                          {movie?.genre?.split(",").map((x, index) => (
+                            <Tag
+                              key={index}
+                              className={` mb-2 px-4 py-1 text-sm md:text-sm`}
+                              bordered={false}
+                            >
+                              {x}
+                            </Tag>
+                          ))}
+                          <br />
+                          <div className="mb-2 text-lg">
+                            <p>{movie?.plot}</p>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Cast</strong>
+                            <span>: {movie?.actors}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Director</strong>
+                            <span>: {movie?.director}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Awards</strong>
+                            <span>: {movie?.awards}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Runtime</strong>
+                            <span>: {movie?.runtime}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Rating</strong>
+                            <span className="flex items-center">
+                              :&nbsp; <FaStar className="pr-1" />{" "}
+                              {Number(movie?.imdbRating).toFixed(1) || "N/A"}
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    {movie?.genre?.split(",").map((x, index) => (
-                      <Tag
-                        key={index}
-                        className={` mb-2 px-4 py-1 text-sm md:text-sm`}
-                        bordered={false}
-                      >
-                        {x}
-                      </Tag>
-                    ))}
-                    <br />
-<div className="mb-2 text-lg">
-  <p>{movie?.plot}</p>
-</div>
-<div className="mb-2 text-lg flex">
-  <strong className="w-24">Cast</strong>
-  <span>: {movie?.actors}</span>
-</div>
-<div className="mb-2 text-lg flex">
-  <strong className="w-24">Director</strong>
-  <span>: {movie?.director}</span>
-</div>
-<div className="mb-2 text-lg flex">
-  <strong className="w-24">Awards</strong>
-  <span>: {movie?.awards}</span>
-</div>
-<div className="mb-2 text-lg flex">
-  <strong className="w-24">Runtime</strong>
-  <span>: {movie?.runtime}</span>
-</div>
-<div className="mb-2 text-lg flex">
-  <strong className="w-24">Rating</strong>
-  <span className="flex items-center">
-   :&nbsp; <FaStar /> {movie?.imdbRating}
-  </span>
-</div>
-<div className="mt-4"></div>
                   </div>
-                </div>
+                )}
               </div>
-            </div>}
-          </div>
+            </div>
 
-          {/* Sidebar for related movies */}
-          <SimilarMovie id={imdbID}/>
-        </>
+            <div className="space-y-8">
+              <div className=" rounded-lg p-4 dark:text-white">
+              {mediaType == "movie" && (
+        <SimilarMovie id={imdbID} mediaType={mediaType} />
+      )}
+      {mediaType == "tv" && <SeasonChooser seasons={movie?.seasons} />}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+
+      {/* Sidebar for related movies */}
+
+      
+    </>
   );
 };
 

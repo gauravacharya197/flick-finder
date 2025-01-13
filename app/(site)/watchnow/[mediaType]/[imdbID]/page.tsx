@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 const WatchNowPage = () => {
   return (
-    <section className="pb-20 pt-35 dark:bg-gray-900 dark:text-white lg:pb-25 lg:pt-40 xl:pb-30 xl:pt-25">
+    <section className="pb-20 pt-15 dark:bg-gray-900 dark:text-white lg:pb-25 lg:pt-40 xl:pb-30 xl:pt-25">
       <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
         <div className="mt-8 flex flex-col gap-3.5 lg:flex-row xl:gap-4.5">
           {/* VidSrc embed iframe */}

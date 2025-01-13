@@ -22,6 +22,7 @@ export const Trending = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [page, setPage] = useState(1); // Page number state
   const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const [debouncedRating, setDebouncedRating] = useState(imdbRating);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -38,17 +39,19 @@ export const Trending = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query); // Update debounced query only after delay
+      setDebouncedRating(imdbRating); // Update debounced query only after delay
+
     }, 500); // Adjust the debounce delay as needed (e.g., 500ms)
 
     return () => {
       clearTimeout(handler); // Cleanup the timeout on every render
     };
-  }, [query]);
+  }, [query,imdbRating]);
 
   useEffect(() => {
     setPage(1); // Reset page to 1
     setMovies([]); // Clear the movie list
-  }, [debouncedQuery, genres, countries, years, imdbRating,mediaType]);
+  }, [debouncedQuery, genres, countries, years, debouncedRating,mediaType]);
 
   // API call effect
   useEffect(() => {
@@ -60,8 +63,8 @@ export const Trending = () => {
       countries,
       genres,
       years,
-      imdbRating[0].toString(),
-      imdbRating[1].toString(),
+      debouncedRating[0].toString(),
+      debouncedRating[1].toString(),
       mediaType
     )
       .then((response) => {
@@ -75,11 +78,11 @@ export const Trending = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [page, debouncedQuery, genres, imdbRating, years, countries,mediaType]);
+  }, [page, debouncedQuery, genres, debouncedRating, years, countries,mediaType]);
 
   const featuredMovie = movies?.[0];
-  const featuredMovieTitle = featuredMovie?.mediaType?.toLowerCase() === "movie" ? featuredMovie?.originalTitle : featuredMovie?.name;
-  const featuredMovieRelease = featuredMovie?.mediaType?.toLowerCase() === "movie" ? featuredMovie?.releaseDate : featuredMovie?.firstAirDate;
+  const featuredMovieTitle = featuredMovie?.displayTitle
+  const featuredMovieRelease = featuredMovie?.displayReleaseDate
   return (
     
     <>
@@ -105,7 +108,7 @@ export const Trending = () => {
           {featuredMovie && (
             
             <div className="relative mb-8  w-full">
-              <Link href={`watchnow/${featuredMovie.id}`}>
+              <Link href={`watchnow/${featuredMovie?.mediaType}/${featuredMovie.id}`}>
                 <img
                   src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
                   alt={featuredMovieTitle}
@@ -154,8 +157,7 @@ export const Trending = () => {
           )}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6">
             {movies?.slice(1).map((movie, index) => {
-              const title = movie.mediaType.toLowerCase() === "movie" ? movie.originalTitle : movie.name;
-              const releaseDate = movie.mediaType.toLowerCase() === "movie" ? movie.releaseDate : movie.firstAirDate;
+              
 
            
            return <div
@@ -164,12 +166,12 @@ export const Trending = () => {
                 className="flex flex-col items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800"
               >
                 <Link
-                  href={`watchnow/${movie.id}`}
+                  href={`watchnow/${movie?.mediaType}/${movie.id}`}
                   className="flex items-center space-x-2 hover:text-blue-600"
                 >
                   <img
                     src={`http://image.tmdb.org/t/p/w500/${movie?.posterPath}`}
-                    alt={title}
+                    alt={movie?.displayTitle}
                     className="h-60 w-80 rounded-md object-cover" // Increased height
                     onError={(e) => {
                       e.currentTarget.src =
@@ -181,13 +183,13 @@ export const Trending = () => {
                 <div className="w-100">
                   <h3 className="text-lg font-bold">
                     {" "}
-                    <Tooltip title={title}>
-                      {truncateString(title, 36)}
+                    <Tooltip title={movie?.displayTitle}>
+                      {truncateString(movie?.displayTitle, 36)}
                     </Tooltip>
                   </h3>
                   <div className="flex items-center space-x-4">
                       <p className="text-sm">
-                      { new Date(releaseDate).getFullYear()}
+                      { new Date(movie?.displayReleaseDate).getFullYear()}
                     </p>
                    
                     <p className="flex items-center text-sm">

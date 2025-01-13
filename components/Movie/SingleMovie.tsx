@@ -87,7 +87,7 @@ export const SingleMovie = ({ index, movie }) => {
             <Link
                href={`watchnow/${movie.imdbID}`}
               className="flex items-center space-x-2 hover:text-blue-600"
-            >            <FaStar className="text-lg md:text-xl text-blue-500 dark:text-blue-400" />
+            >            <FaStar fill="white" className="text-lg md:text-xl text-blue-500 dark:text-blue-400" />
               <span>Watch Now</span>
             </Link>
           </div>
