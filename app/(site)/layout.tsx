@@ -17,6 +17,8 @@ import { setFilters } from "@/redux/movies/filterSlice";
 import toast from "react-hot-toast";
 import { MyApp } from "./MyApp";
 import store from "@/redux/store";
+import ErroPage from "./error/page";
+import { CustomTag } from "@/components/Common/CustomTag";
 
 export default function RootLayout({
   children,
@@ -24,7 +26,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   console.log("loaded");
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`dark:bg-black ${inter.className}`}>

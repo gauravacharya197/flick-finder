@@ -4,33 +4,35 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import VidPlayer from "@/components/Movie/VidPlayer";
-import { Tag } from "antd";
+import { Skeleton, Spin, Tag } from "antd";
 import { SimilarMovie } from "@/components/Movie/SimilarMovie";
 import { FaStar } from "react-icons/fa";
 import { CustomTag } from "../Common/CustomTag";
-import SeasonChooser from "../Movie/SeasonChooser";
+import SeasonChooser from "./SeasonChooser";
+import toast from "react-hot-toast";
+import useFetch from "@/hooks/useFetch";
 const WatchNow = () => {
   const params = useParams();
   const { imdbID, mediaType } = params; // Extract the parameters
   const [isPlaying, setIsPlaying] = useState(false);
   const [selectedServer, setSelectedServer] = useState(1);
-  const [movie, setMovie] = useState<any>(null);
-
+  const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
+  const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   // Dummy movie data
 
-  useEffect(() => {
-    if (imdbID) {
-      getDetails(imdbID.toString(), mediaType.toString())
-        .then((response) => {
-          console.log(response);
+  const { data: movie, loading, error } = useFetch(
+    () => getDetails(imdbID.toString(), mediaType.toString()).then((res) => res.data),
+    [imdbID, mediaType]
+  );
 
-          setMovie(response?.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching movie details:", error);
-        });
+  
+
+  const constructUrl = (baseUrl: string, mediaType: any, imdbID: any, selectedSeason: number | null, selectedEpisode: number | null,seperator='-') => {
+    if (mediaType === "tv" && selectedSeason !== null && selectedEpisode !== null) {
+      return `${baseUrl}/${mediaType}/${imdbID}${seperator}${selectedSeason}${seperator}${selectedEpisode}`;
     }
-  }, [imdbID]);
+    return `${baseUrl}/${mediaType}/${imdbID}`;
+  };
   const renderMovieScreen = () => {
     if (!isPlaying) {
       return (
@@ -39,9 +41,10 @@ const WatchNow = () => {
             style={{ width: "100%", height: "100%", border: "none" }}
             className="rounded-md object-cover"
             src={movie?.coverImage || movie?.poster}
+            
           />
           <PlayCircleOutlined
-            onClick={() => setIsPlaying(true)}
+            onClick={() => {movie!==null? setIsPlaying(true) : null}}
             className="absolute inset-0 m-auto text-6xl text-white"
             style={{
               top: "50%",
@@ -56,24 +59,26 @@ const WatchNow = () => {
       case 1:
         return (
           <VidPlayer
-            sourceUrl={`https://moviesapi.club/movie/${imdbID}`}
+          sourceUrl={constructUrl("https://moviesapi.club", mediaType, imdbID, selectedSeason, selectedEpisode)}
           ></VidPlayer>
         );
 
       case 2:
         return (
           <VidPlayer
-            sourceUrl={`https://vidlink.pro/movie/${imdbID}`}
+          sourceUrl={constructUrl("https://vidlink.pro", mediaType, imdbID, selectedSeason, selectedEpisode,"/")}
           ></VidPlayer>
         );
       case 3:
         return (
           <VidPlayer
-            sourceUrl={`https://multiembed.mov/?video_id=${imdbID}`}
+            sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${imdbID.toString()?.startsWith('t') ? '' : '&tmdb=1'} ${mediaType=="tv"? `&s=${selectedSeason}&e=${selectedEpisode}` : '' }`}
           ></VidPlayer>
         );
       case 4:
-        return <VidPlayer sourceUrl={`https://v2.vidsrc.me/embed/${imdbID}`} />;
+        return <VidPlayer 
+        sourceUrl={constructUrl("https://v2.vidsrc.me/embed/", mediaType, imdbID, selectedSeason, selectedEpisode,"/")}
+        />;
 
       default:
         break;
@@ -86,8 +91,16 @@ const WatchNow = () => {
         <div className="container">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div className="col-span-2 rounded-lg">
-              <div className="relative pb-[10.25%]">
-                {renderMovieScreen()}
+              <div className="relative pb-[10.25%] ">
+                {loading ? (
+               
+                <p>Loading</p>
+                ) : error ? (
+                  <div className="text-red-500">{error}</div>
+                ) : (
+                  <>
+                  {renderMovieScreen()}
+                
 
                 <div className="mt-4 flex gap-4">
                   {[1, 2, 3, 4].map((server) => (
@@ -105,14 +118,11 @@ const WatchNow = () => {
                   ))}
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                  If the current server doesn't work, change the server.{" "}
-                  {imdbID.toString()} {mediaType}
+                If the current server doesn't work, change the server
                 </p>
 
                 <br />
-                {movie == null ? (
-                  <div>Loading...</div>
-                ) : (
+                
                   <div className="flex flex-col gap-7.5 lg:flex-row xl:gap-12.5">
                     <div className="grid grid-cols-12 gap-4">
                       <div className="col-span-3">
@@ -160,23 +170,23 @@ const WatchNow = () => {
                             <p>{movie?.plot}</p>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Cast</strong>
+                            <strong className="w-22">Cast</strong>
                             <span>: {movie?.actors}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Director</strong>
+                            <strong className="w-22">Director</strong>
                             <span>: {movie?.director}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Awards</strong>
+                            <strong className="w-22">Awards</strong>
                             <span>: {movie?.awards}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Runtime</strong>
+                            <strong className="w-22">Runtime</strong>
                             <span>: {movie?.runtime}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Rating</strong>
+                            <strong className="w-22">Rating</strong>
                             <span className="flex items-center">
                               :&nbsp; <FaStar className="pr-1" />{" "}
                               {Number(movie?.imdbRating).toFixed(1) || "N/A"}
@@ -186,27 +196,25 @@ const WatchNow = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                
+              </>)}
               </div>
             </div>
-
             <div className="space-y-8">
               <div className=" rounded-lg p-4 dark:text-white">
               {mediaType == "movie" && (
         <SimilarMovie id={imdbID} mediaType={mediaType} />
       )}
-      {mediaType == "tv" && <SeasonChooser seasons={movie?.seasons} />}
+      {mediaType == "tv" &&  <SeasonChooser
+                    seasons={movie?.seasons}
+                    onSeasonChange={setSelectedSeason}
+                    onEpisodeChange={setSelectedEpisode}
+                  />}
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      
-
-      {/* Sidebar for related movies */}
-
-      
+      </section>    
     </>
   );
 };

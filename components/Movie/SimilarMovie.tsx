@@ -17,14 +17,14 @@ export const SimilarMovie = ({id,mediaType}) => {
      // Dummy related movies data
       
   return (
-<div className="flex flex-col gap-4">
+<div className="flex flex-col gap-4 -mt-4">
               {movies?.results?.map((relatedMovie, index) => (
                 <div
                   key={index}
                   className="flex items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800"
                 >
                      <Link
-               href={`/watchnow/${relatedMovie.id}`}
+               href={`/watchnow/${mediaType}/${relatedMovie.id}`}
               className="flex items-center space-x-2 hover:text-blue-600"
             >  
                   <img

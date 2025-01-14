@@ -23,9 +23,11 @@ interface Season {
 
 interface SeasonChooserProps {
   seasons: Season[];
+  onSeasonChange: (seasonNumber: number) => void;
+  onEpisodeChange: (episodeNumber: number) => void;
 }
 
-const SeasonChooser: React.FC<SeasonChooserProps> = ({ seasons }) => {
+const SeasonChooser: React.FC<SeasonChooserProps> = ({ seasons, onSeasonChange, onEpisodeChange }) => {
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
   const [playingEpisode, setPlayingEpisode] = useState<number | null>(null); // State for the currently playing episode
 
@@ -35,12 +37,22 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({ seasons }) => {
     );
     setSelectedSeason(season || null);
     setPlayingEpisode(1); // Reset the playing episode when a new season is selected
+    onSeasonChange(seasonNumber); // Call the callback function
+    onEpisodeChange(1); // Call the callback function
+
+
   };
   const handlePlayEpisode = (episodeNumber: number) => {
     setPlayingEpisode(episodeNumber); // Set the currently playing episode
+    onEpisodeChange(episodeNumber); // Call the callback function
+
   };
   useEffect(() => {
     setSelectedSeason(seasons?.[0]);
+    setPlayingEpisode(1);
+    onSeasonChange(1); // Call the callback function
+    onEpisodeChange(1);
+
   }, [seasons]);
 
   return (
@@ -64,13 +76,11 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({ seasons }) => {
               const episodes: JSX.Element[] = []; // Explicitly type the array
               for (let i = 1; i <= (selectedSeason?.episodeCount || 0); i++) {
                 episodes.push(
-                  <li key={i} className="mb-3 flex items-center gap-3">
+                  <li key={i} className={`cursor-pointer mb-3 flex items-center gap-3 ${
+                    playingEpisode === i ? "text-blue-500" : ""
+                  }`}  onClick={() => handlePlayEpisode(i)}>
                     <FaPlay
-                      className={`cursor-pointer ${
-                        playingEpisode === i ? "text-blue-500" : "text-gray-500"
-                      }`}
-                      onClick={() => handlePlayEpisode(i)} // Handle play icon click
-                    />
+                                          />
                     <h5
                       className={`${
                         playingEpisode === i ? "font-bold text-blue-500" : ""

@@ -3,10 +3,11 @@ import { getRecommendation } from "@/services/MovieService";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
-import Movie from "../Movie/Movie";
+import AISuggestedMovies from "../Movie/AISuggestedMovies";
 import { Spin } from "antd";
 import searchTexts from "../../data/searchTexts"; // Adjust the import path as necessary
 import { setMovies, setSearch } from "@/redux/movies/moviesSlice";
+import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
 
 const Hero = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,31 @@ const Hero = () => {
 
   const [loading, setLoading] = useState(false); // Loading state
   const [loadingText, setLoadingText] = useState("");
+  const [placeholder, setPlaceholder] = useState("");
+  useEffect(() => {
+    let typingInterval;
+    if (!search) {
+      typingInterval = setInterval(() => {
+        const randomSuggestion = searchSuggestion[Math.floor(Math.random() * searchSuggestion.length)];
+        let typedText = "";
+        let index = 0;
 
+        const typeEffect = setInterval(() => {
+          typedText += randomSuggestion.charAt(index);
+          setPlaceholder(typedText);
+          index++;
+
+          if (index === randomSuggestion.length) {
+            clearInterval(typeEffect); // Clear the interval once the word is fully typed
+          }
+        }, 100); // Speed of typing effect
+
+        return () => clearInterval(typingInterval); // Cleanup the interval when component unmounts or when search is not empty
+      }, 3000); // Change suggestion every 3 seconds
+    }
+
+    return () => clearInterval(typingInterval); // Cleanup if unmounted
+  }, [search]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!search) return;
@@ -51,12 +76,13 @@ const Hero = () => {
           <div className="flex flex-col items-center lg:items-start lg:gap-8 xl:gap-32.5">
             <div className="text-center md:text-left">
               <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white xl:text-hero">
-                🎥 Describe Your Next Favorite Movie!
+              🎬 Let AI Suggest Your Next Movie!
               </h2>
-              <p className="mb-7 flex justify-center text-sm text-gray-700 dark:text-gray-300">
-                🍿 Whether you're into action, romance, or thrillers, we've got
-                the perfect movie for your next binge session! 🎉
-              </p>
+              <h4 className="mb-7 flex justify-center text-medium text-gray-700 dark:text-gray-300">
+              🍿 
+              You can also just type emoji of your mood and let our AI suggest the perfect movie for you! 🎉
+
+              </h4>
 
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-wrap justify-center">
@@ -64,13 +90,15 @@ const Hero = () => {
                     value={search}
                     onChange={(e) => dispatch(setSearch(e.target.value))}
                     type="text"
-                    placeholder="Describe your movie"
-                    className="w-full max-w-md rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-                  />
+                    placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
+                    className="max-w-md w-auto md:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+                    />
+                  
+              
                   <button
                     disabled={!search || loading} // Disable the button if search is empty or loading
                     aria-label="get started button"
-                    className={`flex rounded px-7.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
+                    className={`flex rounded px-2.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
                       !search || loading ? "bg-gray-400 opacity-50" : "bg-black"
                     }`}
                   >
@@ -97,12 +125,15 @@ const Hero = () => {
               <br />
             </div>
           ) : movies.length > 0 ? (
-            <Movie movies={movies} />
+            <AISuggestedMovies movies={movies} />
           ) : (
             <></>
           )}
         </div>
       </section>
+      <div className=" dark:bg-gray-900 dark:text-white">
+        
+     </div>
     </>
   );
 };

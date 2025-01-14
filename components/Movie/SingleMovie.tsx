@@ -22,7 +22,7 @@ export const SingleMovie = ({ index, movie }) => {
           <img
             src={movie.poster}
             alt={movie.title}
-            className="h-full w-full object-cover"
+            className=" w-full object-cover"
           />
         </div>
         <div className="flex flex-col">
@@ -68,8 +68,8 @@ export const SingleMovie = ({ index, movie }) => {
           <p className="font-sans mt-2 text-base md:text-lg font-medium">
             <span className="text-gray-500">Awards:</span> {movie.awards}
           </p>
-          <div className="flex mt-auto space-x-4 md:space-x-8">
-            <a  className="flex items-center space-x-2 hover:text-blue-600">
+          <div className="flex mt-10 md:mt-auto space-x-4 md:space-x-8">
+          <a  className="flex items-center space-x-2 hover:text-blue-600">
               <FaHeart className={`text-lg md:text-xl ${liked ? "text-blue-500 dark:text-blue-400" : ""}`} />
               <span>Favorite</span>
             </a>
@@ -85,7 +85,7 @@ export const SingleMovie = ({ index, movie }) => {
             </a>
             
             <Link
-               href={`watchnow/${movie.imdbID}`}
+               href={`watchnow/${movie.mediaType}/${movie.imdbID}`}
               className="flex items-center space-x-2 hover:text-blue-600"
             >            <FaStar fill="white" className="text-lg md:text-xl text-blue-500 dark:text-blue-400" />
               <span>Watch Now</span>

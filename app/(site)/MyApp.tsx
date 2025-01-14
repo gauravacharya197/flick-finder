@@ -18,7 +18,7 @@ export const MyApp = () => {
           console.log('Filters set');
           
         } catch (error) {
-          toast.error('Error fetching filters:', error);
+          toast.error('Error fetching filters:');
         }
       };
   
