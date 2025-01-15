@@ -1,18 +1,14 @@
 import Login from "@/components/Auth/Login";
-import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Login Page",
-  description: "This is Login",
-  // other metadata
-};
 
-const LoginPage = ({ searchParams }: { searchParams: { code?: string } }) => {
-  return (
-    <>
-      <Login code={searchParams.code} />
-    </>
-  );
-};
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ code?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const code = resolvedSearchParams.code;
 
-export default LoginPage;
+  return <Login code={code} />;
+}
+
