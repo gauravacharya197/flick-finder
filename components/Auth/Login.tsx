@@ -3,20 +3,19 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { GetUser, UserLogin } from "@/services/AccountService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { googleHandler } from "@/utils/authUtils";
 import { useForm } from "react-hook-form";
+import { GetUser, UserLogin} from "@/services/AccountService";
 
-const Login = () => {
+const Login = ({ code }: { code?: string }) => {
   //for login
   const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const code = searchParams.get("code");
   const effectRan = useRef(false); // Ref to track if useEffect ran
   const {
     register,
@@ -110,7 +109,7 @@ const Login = () => {
             className="animate_top rounded-lg bg-white px-4 pt-7.5 shadow-solid-8 dark:border dark:border-strokedark dark:bg-black sm:px-7.5 xl:px-15 xl:pt-15"
           >
             <h2 className="mb-15 text-center text-2xl font-semibold text-black dark:text-white sm:text-3xl xl:text-sectiontitle2">
-              Login to Your Account
+              Login to Your Account 
             </h2>
             <div className="flex flex-col">
               <div className="flex items-center gap-4 sm:gap-8">

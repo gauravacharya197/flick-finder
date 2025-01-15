@@ -1,4 +1,4 @@
-import Signin from "@/components/Auth/Login";
+import Login from "@/components/Auth/Login";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,10 +7,10 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const LoginPage = () => {
+const LoginPage = ({ searchParams }: { searchParams: { code?: string } }) => {
   return (
     <>
-      <Signin />
+      <Login code={searchParams.code} />
     </>
   );
 };

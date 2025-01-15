@@ -38,8 +38,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "app/(site)/watchnow/[imdbID].js", "components/Movie/SecureIframe.jsx"  ],
+    ".next/types/**/*.ts"],
   "exclude": [
     "node_modules"
   ]
