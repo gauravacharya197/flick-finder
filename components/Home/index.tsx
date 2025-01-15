@@ -8,8 +8,9 @@ import { Spin } from "antd";
 import searchTexts from "../../data/searchTexts"; // Adjust the import path as necessary
 import { setMovies, setSearch } from "@/redux/movies/moviesSlice";
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
+import { FaSearch } from "react-icons/fa";
 
-const Hero = () => {
+const Home = () => {
   const dispatch = useDispatch();
   const { search, movies } = useSelector((state: any) => state.movie);
 
@@ -71,8 +72,8 @@ const Hero = () => {
 
   return (
     <>
-      <section className="flex items-center justify-center overflow-hidden pb-5 pt-20 dark:bg-gray-900 dark:text-white md:pt-15 xl:pb-9 xl:pt-46">
-        <div className="mx-auto flex max-w-c-1390 justify-center px-4 md:px-8 2xl:px-0">
+      <section className="flex items-center justify-center overflow-hidden pb-5 pt-35 dark:bg-gray-900 dark:text-white md:pt-15 xl:pb-9 xl:pt-46">
+        <div className="mx-auto flex justify-center px-4 md:px-8 2xl:px-0">
           <div className="flex flex-col items-center lg:items-start lg:gap-8 xl:gap-32.5">
             <div className="text-center md:text-left">
               <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white xl:text-hero">
@@ -90,8 +91,8 @@ const Hero = () => {
                     value={search}
                     onChange={(e) => dispatch(setSearch(e.target.value))}
                     type="text"
-                    placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
-                    className="max-w-md w-auto md:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+                   // placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
+                    className="max-w-md w-auto sm:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
                     />
                   
               
@@ -102,7 +103,7 @@ const Hero = () => {
                       !search || loading ? "bg-gray-400 opacity-50" : "bg-black"
                     }`}
                   >
-                    🍿 Let's Go!
+                    <FaSearch className="mt-1.5 w-8"/>
                   </button>
                 </div>
               </form>
@@ -138,4 +139,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default Home;
