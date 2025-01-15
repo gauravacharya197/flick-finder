@@ -19,7 +19,9 @@ const WatchNow = () => {
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   // Dummy movie data
-
+  if (!imdbID || !mediaType) {
+    return <div>Error: Missing required parameters.</div>;
+  }
   const { data: movie, loading, error } = useFetch(
     () => getDetails(imdbID.toString(), mediaType.toString()).then((res) => res.data),
     [imdbID, mediaType]
