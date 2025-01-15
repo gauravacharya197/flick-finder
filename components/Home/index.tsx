@@ -76,7 +76,7 @@ const Home = () => {
         <div className="mx-auto flex justify-center px-4 md:px-8 2xl:px-0">
           <div className="flex flex-col items-center lg:items-start lg:gap-8 xl:gap-32.5">
             <div className="text-center md:text-left">
-              <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white xl:text-hero">
+              <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white  text-2xl xl:text-hero">
               🎬 Let AI Suggest Your Next Movie!
               </h2>
               <h4 className="mb-7 flex justify-center text-medium text-gray-700 dark:text-gray-300">
@@ -91,7 +91,7 @@ const Home = () => {
                     value={search}
                     onChange={(e) => dispatch(setSearch(e.target.value))}
                     type="text"
-                   // placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
+                    placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
                     className="max-w-md w-auto sm:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
                     />
                   

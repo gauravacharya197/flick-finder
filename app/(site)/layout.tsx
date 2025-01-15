@@ -18,7 +18,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("loaded");
   return (
     <html lang="en" suppressHydrationWarning>
                 <link rel="icon" href="/favicon.ico" />

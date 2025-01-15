@@ -87,6 +87,7 @@ const WatchNow = () => {
 
   return (
     <>
+    
       <section>
         <div className="container">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -170,23 +171,35 @@ const WatchNow = () => {
                             <p>{movie?.plot}</p>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-22">Cast</strong>
+                            <strong className="w-24">Cast</strong>
                             <span>: {movie?.actors}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-22">Director</strong>
+                            <strong className="w-24">Director</strong>
                             <span>: {movie?.director}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-22">Awards</strong>
+                            <strong className="w-24">Awards</strong>
                             <span>: {movie?.awards}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-22">Runtime</strong>
+                            <strong className="w-24">Runtime</strong>
                             <span>: {movie?.runtime}</span>
                           </div>
                           <div className="mb-2 flex text-lg">
-                            <strong className="w-22">Rating</strong>
+                            <strong className="w-24">Country</strong>
+                            <span>: {movie?.country}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Language</strong>
+                            <span>: {movie?.language}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Box Office</strong>
+                            <span>: {movie?.boxOffice}</span>
+                          </div>
+                          <div className="mb-2 flex text-lg">
+                            <strong className="w-24">Rating</strong>
                             <span className="flex items-center">
                               :&nbsp; <FaStar className="pr-1" />{" "}
                               {Number(movie?.imdbRating).toFixed(1) || "N/A"}

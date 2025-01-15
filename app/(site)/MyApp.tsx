@@ -6,8 +6,7 @@ import { useDispatch } from 'react-redux';
 
 export const MyApp = () => {
 
-    console.log("configuration");
-    const effectRan = useRef(false); // Ref to track if useEffect ran
+    console.log("load configuration");
     const dispatch = useDispatch();
   
     useEffect(() => {
@@ -22,14 +21,11 @@ export const MyApp = () => {
         }
       };
   
-      if (effectRan.current === true || process.env.NODE_ENV === "production") {
         fetchFilters();
-      }
+      
   
-      return () => {
-        effectRan.current = true;
-      };
-    }, [dispatch]);
+     
+    }, []);
     
   return (
     <div></div>
