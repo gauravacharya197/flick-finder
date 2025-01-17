@@ -29,7 +29,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # Ignore environment variables
-**/.env
+.env
+
 
 # vercel
 .vercel
