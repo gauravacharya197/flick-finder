@@ -13,7 +13,6 @@ import { FaSearch } from "react-icons/fa";
 const Home = () => {
   const dispatch = useDispatch();
   const { search, movies } = useSelector((state: any) => state.movie);
-
   const [loading, setLoading] = useState(false); // Loading state
   const [loadingText, setLoadingText] = useState("");
   const [placeholder, setPlaceholder] = useState("");

@@ -18,19 +18,26 @@ export const SimilarMovie = ({id,mediaType}) => {
       
   return (
 <div className="flex flex-col gap-4 -mt-4">
-              {movies?.results?.map((relatedMovie, index) => (
+{/* <h3 className="text-2xl font-semibold">Suggested Videos</h3> */}
+
+{movies?.results?.map((relatedMovie, index) => (
                 <div
                   key={index}
                   className="flex items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800"
                 >
                      <Link
-               href={`/watchnow/${mediaType}/${relatedMovie.id}`}
+               href={`/watch/${mediaType}/${relatedMovie.id}`}
               className="flex items-center space-x-2 hover:text-blue-600"
             >  
                   <img
                     src={`http://image.tmdb.org/t/p/w500/${relatedMovie?.posterPath}`}
                     alt={relatedMovie?.title}
                     className="h-24 w-16 rounded-md"
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg"; // Fallback image
+                      e.currentTarget.onerror = null; // Prevent infinite loop in case fallback image is also not found
+                    }}
                   />
                   <div>
                     <h3 className="text-lg font-bold">{relatedMovie?.displayTitle}</h3>

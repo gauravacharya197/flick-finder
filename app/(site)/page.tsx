@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Home from "@/components/Home";
+import useMetadata from "@/hooks/useMetaData";
 
 export const metadata: Metadata = {
   title: "FlickFinder - Pick movie of based on your emotion",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+ 
   return (
     <main>
       <Home />

@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Button, Card } from "antd";
-import { SingleMovie } from "./SingleMovie";
+import { SingleMovieCard } from "./SingleMovieCard";
 
 const AISuggestedMovies = ({movies}) => {
   
@@ -12,7 +12,7 @@ const AISuggestedMovies = ({movies}) => {
         <div className="flex justify-center">
           <div className="grid grid-cols-1  gap-2 w-screen">
             {movies.map((movie, index) => (
-               <SingleMovie index movie={movie}/>
+               <SingleMovieCard index movie={movie}/>
             ))}
           </div>
         </div>
