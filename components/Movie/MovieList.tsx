@@ -74,8 +74,8 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
           </Link>
         </div>
       )}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6">
-        {movies?.slice(1).map((movie, index) => {
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-4">
+                  {movies?.slice(1).map((movie, index) => {
           return (
             <div
               ref={lastMovieElementRef}

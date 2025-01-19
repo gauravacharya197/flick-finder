@@ -118,10 +118,11 @@ const createPopupBlocker = () => {
   src={sourceUrl as string} // Ensure sourceUrl is a string
   referrerPolicy="origin"
   allowFullScreen={true}
-  style={{ width: "95%", height: "60vh", border: "none" }}
+  style={{ width: "95%", height: "56vh", border: "none" }}
 />
       
     </>
   );
 }
 export default VidPlayer;
+
