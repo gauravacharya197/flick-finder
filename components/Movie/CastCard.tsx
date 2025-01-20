@@ -1,6 +1,7 @@
 
 
 const CastCard = ({ imgSrc, name, role }) => {
+  let fallBackImageUrl = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
   return (
     <>
     <div
@@ -9,15 +10,11 @@ const CastCard = ({ imgSrc, name, role }) => {
     >
       <div className="aspect-[2/3] overflow-hidden">
         <img
-          src={imgSrc}
+          src={imgSrc || fallBackImageUrl }
           alt={name}
           className="h-full w-full object-cover"
           loading="lazy"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"; // Fallback image
-            e.currentTarget.onerror = null; // Prevent infinite loop in case fallback image is also not found
-          }}
+          
         />
       </div>
       <div className="p-4  text-white">

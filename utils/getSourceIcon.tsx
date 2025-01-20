@@ -14,6 +14,6 @@ export const getSourceIcon = (source:string) => {
     case "Metacritic":
       return <SiMetacritic className="text-blue-500" />;
     default:
-      return <FaFilm className="text-gray-400" />; // Fallback icon
+      return <FaFilm className="text-gray-400" />; 
   }
 };
