@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import useFetch from "@/hooks/useFetch";
 import useMetadata from "@/hooks/useMetaData";
 import CastCard from "../Movie/CastCard";
+import { getSourceIcon } from "@/utils/getSourceIcon";
 
 const Watch = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -224,13 +225,25 @@ const Watch = () => {
                             <span>: {movie?.boxOffice}</span>
                           </div>
                           </>}
-                          <div className="mb-2 flex text-lg">
-                            <strong className="w-24">Rating</strong>
-                            <span className="flex items-center">
-                              :&nbsp; <FaStar className="pr-1" />{" "}
-                              {Number(movie?.imdbRating).toFixed(1) || "N/A"}
-                            </span>
-                          </div>
+                          <div className="mb-2 flex items-center text-lg">
+  <strong className="w-24">Ratings</strong>
+  <span>: </span>
+  <div className="flex flex-wrap items-center gap-4 ml-2">
+    {movie?.ratings?.length > 0 ? (
+      movie.ratings.map((rating, index) => (
+        <div key={index} className="flex items-center">
+          {/* Display icon based on source */}
+          {getSourceIcon(rating.source)}
+          <span className="ml-2">
+            {rating.value}
+          </span>
+        </div>
+      ))
+    ) : (
+      <span className="text-gray-500">N/A</span>
+    )}
+  </div>
+</div>
                         </div>
                         
                       </div>

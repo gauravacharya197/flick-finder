@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/third-parties": "^15.1.5",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/bcrypt": "^5.0.2",
     "antd": "^5.23.1",

@@ -6,6 +6,8 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
 import "../globals.css";
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 const inter = Inter({ subsets: ["latin"] });
 
 import ToasterContext from "../context/ToastContext";
@@ -18,6 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  let googleAnalyticsCode = process.env.NEXT_GOOGLE_ANALYTICS;
   return (
     <html lang="en" suppressHydrationWarning>
                 <link rel="icon" href="/favicon.ico" />
@@ -36,7 +39,10 @@ export default function RootLayout({
             
             {children}
             <Footer />
+            
             <ScrollToTop />
+            <GoogleAnalytics gaId={googleAnalyticsCode || ''} />
+
           </ThemeProvider>
         </Provider>
       </body>
