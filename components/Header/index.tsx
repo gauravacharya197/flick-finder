@@ -8,7 +8,7 @@ import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
 
 import LoginPartial from "../Auth/LoginPartial";
-import MyNav from "./MyNav";
+import Navbar from "./Navbar";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
@@ -31,7 +31,7 @@ const Header = () => {
   });
 
   return (
-    <MyNav/>
+    <Navbar/>
   );
 };
 

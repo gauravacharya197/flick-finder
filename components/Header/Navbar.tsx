@@ -36,8 +36,8 @@ const MyNav = () => {
             </button>
             <Link
               href="/"
-              className="rounded-md bg-primary px-3 py-1 text-xl font-bold text-black dark:bg-primary dark:text-black"
-            >
+              className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black sm:text-xl dark:bg-primary dark:text-black"
+              >
               FLICK FINDER
             </Link>
           </div>
