@@ -131,8 +131,8 @@ const Watch = () => {
                       onClick={() => setSelectedServer(server)}
                       className={`rounded px-4 py-2 ${
                         selectedServer === server
-                          ? "bg-blue-700"
-                          : "bg-blue-500"
+                          ? "bg-primary"
+                          : "bg-teal-500/35"
                       } text-white`}
                     >
                       Server {server}

@@ -69,25 +69,25 @@ export const SingleMovieCard = ({ index, movie }) => {
             <span className="text-gray-500">Awards:</span> {movie.awards}
           </p>
           <div className="flex mt-10 md:mt-auto space-x-4 md:space-x-8">
-          <a  className="flex items-center space-x-2 hover:text-blue-600">
-              <FaHeart className={`text-lg md:text-xl ${liked ? "text-blue-500 dark:text-blue-400" : ""}`} />
+          <a  className="flex items-center space-x-2 hover:text-teal-600">
+              <FaHeart className={`text-lg md:text-xl ${liked ? "text-primary dark:text-teal-500/35" : ""}`} />
               <span>Favorite</span>
             </a>
             
-            <a  className="flex items-center space-x-2 hover:text-blue-600">
-              <FaBookmark className={`text-lg md:text-xl ${liked ? "text-blue-500 dark:text-blue-400" : ""}`} />
+            <a  className="flex items-center space-x-2 hover:text-teal-600">
+              <FaBookmark className={`text-lg md:text-xl ${liked ? "text-primary dark:text-teal-500/35" : ""}`} />
               <span>Watch later</span>
             </a>
             
-            <a  className="flex items-center space-x-2 hover:text-blue-600">
-              <FaShareAlt className={`text-lg md:text-xl ${liked ? "text-blue-500 dark:text-blue-400" : ""}`} />
+            <a  className="flex items-center space-x-2 hover:text-teal-600">
+              <FaShareAlt className={`text-lg md:text-xl ${liked ? "text-primary dark:text-teal-500/35" : ""}`} />
               <span>Share</span>
             </a>
             
             <Link
                href={`watch/${movie.mediaType}/${movie.imdbID}`}
-              className="flex items-center space-x-2 hover:text-blue-600"
-            >            <FaStar fill="white" className="text-lg md:text-xl text-blue-500 dark:text-blue-400" />
+              className="flex items-center space-x-2 hover:text-teal-600"
+            >            <FaStar fill="white" className="text-lg md:text-xl text-primary dark:text-teal-500/35" />
               <span>Watch Now</span>
             </Link>
           </div>

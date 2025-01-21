@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, Dropdown, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-export const LoginPartial = () => {
+const LoginPartial = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   let user;
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   if (typeof window !== "undefined") {
-    user = localStorage.getItem("user") || ""
+    user = localStorage.getItem("user") || "";
   }
 
   useEffect(() => {
@@ -17,54 +17,99 @@ export const LoginPartial = () => {
     }
   }, [user]);
 
-  const handleLogout = () => {
-   
-      localStorage.removeItem("user");
-      setIsLoggedIn(false);
-    
-  };
+  useEffect(() => {
+    // Close mobile menu on window resize
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
 
- 
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
-     
       {isLoggedIn ? (
-       
-         <div className="group relative">
-        <button className="flex cursor-pointer items-center justify-between gap-3 hover:text-primary">
+  <div className="relative">
+    {/* Desktop View */}
+    <div className="hidden md:block group relative">
+      <button className="flex cursor-pointer items-center justify-between gap-3 hover:text-primary">
+        <UserOutlined color="white"/>
+        <span>
+          <svg
+            className="h-3 w-3 cursor-pointer fill-waterloo group-hover:fill-primary transition-colors"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+          </svg>
+        </span>
+      </button>
+      <ul className="absolute right-0 mt-2 w-48 bg-black dark:bg-gray-800 shadow-lg rounded-md opacity-0 invisible 
+                         group-hover:opacity-100 group-hover:visible
+                         transition-all duration-300 ease-in-out
+                         z-50">
+        <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
+          <Link href="/watchlist" className="block w-full">Watchlist</Link>
+        </li>
+        <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
+          <Link href="/seen" className="block w-full">Seen</Link>
+        </li>
+        <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
+          <a href="#" onClick={handleLogout} className="block w-full">Logout</a>
+        </li>
+      </ul>
+    </div>
+
+    {/* Mobile View */}
+    <div className="md:hidden">
+      <button 
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="flex cursor-pointer items-center justify-between gap-3 hover:text-primary p-2"
+      >
         <UserOutlined />
-          <span>
-            <svg
-              className="h-3 w-3 cursor-pointer fill-waterloo group-hover:fill-primary"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path>
-            </svg>
-          </span>
-        </button>
-        <ul className="dropdown ">
-          <li className="hover:text-primary">
-            <Link href="/watchlist">Watchlist</Link>
-          </li>
-          <li className="hover:text-primary">
-            <Link href="/seen">Seen</Link>
-          </li>
-          <li className="hover:text-primary">
-            <a href="#" onClick={handleLogout}>Logout</a>
-          </li>
-         
-        </ul>
-      </div>
+        <span>
+          <svg
+            className={`h-3 w-3 cursor-pointer fill-waterloo transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-180' : ''}`}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+          >
+            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+          </svg>
+        </span>
+      </button>
       
-      ) : (
-        <Link
-          href="/auth/login"
-          className="flex items-center justify-center rounded-full bg-primary px-7.5 py-2.5 text-regular text-white duration-300 ease-in-out hover:bg-primaryho"
-        >
-          Login
-        </Link>
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <ul className="absolute right-0 mt-2 w-48 bg-black text-white dark:bg-gray-800 shadow-lg rounded-md z-50 animate-fadeIn">
+          <li className="px-4 py-3 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 border-b">
+            <Link href="/watchlist" className="block w-full">Watchlist</Link>
+          </li>
+          <li className="px-4 py-3 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 border-b">
+            <Link href="/seen" className="block w-full">Seen</Link>
+          </li>
+          <li className="px-4 py-3 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
+            <a href="#" onClick={handleLogout} className="block w-full">Logout</a>
+          </li>
+        </ul>
+      )}
+    </div>
+  </div>
+) : (
+  <Link
+  href="/auth/login"
+  className="flex items-center gap-2 px-4 py-2 border border-teal-500 text-teal-500 rounded-md hover:bg-teal-500 hover:text-black transition dark:border-teal-500 dark:text-teal-500 dark:hover:bg-teal-600 dark:hover:text-black"
+>
+  Login
+</Link>
       )}
     </>
   );

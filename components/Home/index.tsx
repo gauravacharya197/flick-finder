@@ -9,6 +9,7 @@ import searchTexts from "../../data/searchTexts"; // Adjust the import path as n
 import { setMovies, setSearch } from "@/redux/movies/moviesSlice";
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
 import { FaSearch } from "react-icons/fa";
+import SectionHeader from "../Common/SectionHeader";
 
 const Home = () => {
   const dispatch = useDispatch();

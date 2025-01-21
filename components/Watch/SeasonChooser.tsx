@@ -1,6 +1,7 @@
-import { Select } from "antd";
-import React, { useEffect, useState } from "react";
-import { FaPlay } from "react-icons/fa"; // Import play icon from react-icons
+import React, { useEffect, useState } from 'react';
+import { FaPlay } from 'react-icons/fa';
+import { FaDownload } from 'react-icons/fa6';
+import { MdArrowDropDown, MdMenu } from 'react-icons/md';
 
 interface Episode {
   airDate: string;
@@ -10,6 +11,7 @@ interface Episode {
   overview: string;
   voteAverage: number;
 }
+
 interface Season {
   airDate: string;
   episodeCount: number;
@@ -27,73 +29,99 @@ interface SeasonChooserProps {
   onEpisodeChange: (episodeNumber: number) => void;
 }
 
-const SeasonChooser: React.FC<SeasonChooserProps> = ({ seasons, onSeasonChange, onEpisodeChange }) => {
+
+
+const SeasonChooser: React.FC<SeasonChooserProps> = ({
+  seasons,
+  onSeasonChange,
+  onEpisodeChange,
+}) => {
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
-  const [playingEpisode, setPlayingEpisode] = useState<number | null>(null); // State for the currently playing episode
+  const [isOpen, setIsOpen] = useState(false);
+  const [playingEpisode, setPlayingEpisode] = useState<number>(1);
 
-  const handleSeasonChange = (seasonNumber: number) => {
-    const season = seasons.find(
-      (season) => season.seasonNumber === seasonNumber,
-    );
-    setSelectedSeason(season || null);
-    setPlayingEpisode(1); // Reset the playing episode when a new season is selected
-    onSeasonChange(seasonNumber); // Call the callback function
-    onEpisodeChange(1); // Call the callback function
-
-
-  };
-  const handlePlayEpisode = (episodeNumber: number) => {
-    setPlayingEpisode(episodeNumber); // Set the currently playing episode
-    onEpisodeChange(episodeNumber); // Call the callback function
-
-  };
   useEffect(() => {
-    setSelectedSeason(seasons?.[0]);
-    setPlayingEpisode(1);
-    onSeasonChange(1); // Call the callback function
-    onEpisodeChange(1);
-
+    if (seasons?.length > 0) {
+      setSelectedSeason(seasons[0]);
+      setPlayingEpisode(1);
+      onSeasonChange(1);
+      onEpisodeChange(1);
+    }
   }, [seasons]);
 
-  return (
-    <div className="flex flex-col gap-4 -mt-4">
-      <Select
-        placeholder="Select a season"
-        options={seasons?.map((season) => ({
-          value: season.seasonNumber,
-          label: season.name,
-        }))}
-        value={selectedSeason?.seasonNumber}
-        onChange={(value) => handleSeasonChange(value)}
-      />
+  const handleSeasonChange = (season: Season) => {
+    setSelectedSeason(season);
+    setPlayingEpisode(1);
+    setIsOpen(false);
+    onSeasonChange(season.seasonNumber);
+    onEpisodeChange(1);
+  };
 
+  const handleEpisodeClick = (episodeNumber: number) => {
+    setPlayingEpisode(episodeNumber);
+    onEpisodeChange(episodeNumber);
+  };
+
+  return (
+    <div className="w-full max-w-md bg-black/95 text-gray-300 rounded-lg -mt-4">
+      {/* Season Dropdown */}
+      <div className="p-4 cursor-pointer hover:bg-gray-800/50">
+        <div 
+          className="flex items-center justify-between"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <div className="flex items-center space-x-2">
+            <FaPlay />
+            <span>{selectedSeason?.name || 'Select Season'}</span>
+          </div>
+          <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
+            <MdArrowDropDown className='text-2xl' />
+          </div>
+        </div>
+      </div>
+
+      {/* Seasons List */}
+      {isOpen && (
+        <div className="border-t border-gray-800">
+          {seasons.map((season) => (
+            <div
+              key={season.id}
+              className={`p-4 cursor-pointer flex items-center space-x-2
+                ${selectedSeason?.id === season.id 
+                  ? 'bg-cyan-500 text-white' 
+                  : 'hover:bg-gray-800/50'}`}
+              onClick={() => handleSeasonChange(season)}
+            >
+              <span>{season.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Episodes List */}
+      {selectedSeason && !isOpen && (
+        <div className="border-t border-gray-800">
+          {Array.from({ length: selectedSeason.episodeCount }, (_, i) => i + 1).map((episodeNum) => (
+            <div
+              key={episodeNum}
+              className={`p-4 cursor-pointer flex items-center space-x-2
+                ${playingEpisode === episodeNum 
+                  ? 'bg-primary text-white' 
+                  : 'hover:bg-gray-800/50'}`}
+              onClick={() => handleEpisodeClick(episodeNum)}
+            >
+              <span className="w-24">Episode {episodeNum}</span>
+              <span>Episode {episodeNum}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Bottom Bar */}
       {selectedSeason && (
-        <div>
-          <p>{selectedSeason.overview}</p>
-          
-          <ul>
-            {(() => {
-              const episodes: JSX.Element[] = []; // Explicitly type the array
-              for (let i = 1; i <= (selectedSeason?.episodeCount || 0); i++) {
-                episodes.push(
-                  <li key={i} className={`cursor-pointer mb-3 flex items-center gap-3 ${
-                    playingEpisode === i ? "text-blue-500" : ""
-                  }`}  onClick={() => handlePlayEpisode(i)}>
-                    <FaPlay
-                                          />
-                    <h5
-                      className={`${
-                        playingEpisode === i ? "font-bold text-blue-500" : ""
-                      }`}
-                    >
-                      Episode {i}
-                    </h5>
-                  </li>,
-                );
-              }
-              return episodes;
-            })()}
-          </ul>
+        <div className="border-t border-gray-800 p-4 flex items-center space-x-2">
+          <MdMenu />
+          <span>{selectedSeason.name} Episode {playingEpisode}</span>
         </div>
       )}
     </div>

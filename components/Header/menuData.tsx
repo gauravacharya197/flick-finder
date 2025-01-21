@@ -9,6 +9,14 @@ const menuData: Menu[] = [
   //   path: "/",
   // },
   {
+    id: 1,
+    title: "Home",
+    newTab: false,
+    path: "/",
+    requireLogin : false
+
+  },
+  {
     id: 2,
     title: "Trending",
     newTab: false,
@@ -33,21 +41,7 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
-  {
-    id: 3,
-    title: "My Favorites",
-    newTab: false,
-    path: "/favorites",
-    requireLogin : true
 
-  },
-  {
-    id: 3,
-    title: "Watchlist",
-    newTab: false,
-    path: "/watchlist",
-    requireLogin : true
-  },
  
   // {
   //   id: 3,
