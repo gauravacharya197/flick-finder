@@ -69,9 +69,7 @@ const Footer = () => {
               viewport={{ once: true }}
               className="animate_top"
             >
-              {/* <p>
-                &copy; {new Date().getFullYear()} FLICKFINDER. All rights reserved
-              </p> */}
+              
             </motion.div>
 
             <motion.div

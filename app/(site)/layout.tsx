@@ -20,7 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let googleAnalyticsCode = process.env.NEXT_GOOGLE_ANALYTICS;
+  let googleAnalyticsCode = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
   return (
     <html lang="en" suppressHydrationWarning>
                 <link rel="icon" href="/favicon.ico" />

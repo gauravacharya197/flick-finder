@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import Home from "@/components/Home";
 import useMetadata from "@/hooks/useMetaData";
+import { siteConfig } from "@/config/siteConfig";
 
 export const metadata: Metadata = {
-  title: "FlickFinder - Pick movie of based on your emotion",
-  description: "Home of your favorite Movies",
+  title: siteConfig.title,
+  description: siteConfig.description,
   // other metadata
 };
 

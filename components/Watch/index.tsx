@@ -14,6 +14,7 @@ import useFetch from "@/hooks/useFetch";
 import useMetadata from "@/hooks/useMetaData";
 import CastCard from "../Movie/CastCard";
 import { getSourceIcon } from "@/utils/getSourceIcon";
+import { siteConfig } from "@/config/siteConfig";
 
 const Watch = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -40,8 +41,8 @@ const Watch = () => {
     [imdbID, mediaType],
   );
   useMetadata(
-    ` ${movie?.title ? `Watch ${movie?.title} Full ${mediaType.toString().toUpperCase()} Online` : ""}`,
-    "",
+    ` ${movie?.title ? `Watch ${movie?.title} Full ${mediaType.toString().toUpperCase()} Online` : siteConfig.title }`,
+    siteConfig.description,
   );
 
   const constructUrl = (

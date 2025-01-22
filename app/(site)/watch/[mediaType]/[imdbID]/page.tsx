@@ -1,8 +1,9 @@
 import Watch from "@/components/Watch";
+import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
 export const metadata: Metadata = {
-  title: "FlickFinder - Pick movie of based on your emotion",
-  description: "Home of your favorite Movies",
+  title: siteConfig.title,
+  description: siteConfig.description,
   // other metadata
 };
 const WatchPage = () => {

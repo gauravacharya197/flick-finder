@@ -3,6 +3,7 @@ import Link from "next/link";
 import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
+import { SiteName } from "../Common/SiteName";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,11 +39,11 @@ const MyNav = () => {
               href="/"
               className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black sm:text-xl dark:bg-primary dark:text-black"
               >
-              FLICK FINDER
+              <SiteName/>
             </Link>
           </div>
 
-          {/* Search Bar for Larger Screens */}
+          {/* Search Bar for Larger Screens */} 
           <div className="mr-15 hidden flex-1 items-center justify-center gap-2 md:flex">
             <div className="flex items-center gap-2">
               <button className="h-10 flex items-center gap-2 rounded-md bg-white px-3 py-1 text-gray-400 transition hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700">

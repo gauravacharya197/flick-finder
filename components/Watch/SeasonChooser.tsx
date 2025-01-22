@@ -73,7 +73,9 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
           <div className="flex items-center space-x-2">
             <FaPlay />
             <span>{selectedSeason?.name || 'Select Season'}</span>
+           
           </div>
+          
           <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
             <MdArrowDropDown className='text-2xl' />
           </div>
@@ -88,17 +90,17 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
               key={season.id}
               className={`p-4 cursor-pointer flex items-center space-x-2
                 ${selectedSeason?.id === season.id 
-                  ? 'bg-cyan-500 text-white' 
+                  ? 'bg-primary text-white' 
                   : 'hover:bg-gray-800/50'}`}
               onClick={() => handleSeasonChange(season)}
             >
               <span>{season.name}</span>
+             
             </div>
           ))}
         </div>
       )}
 
-      {/* Episodes List */}
       {selectedSeason && !isOpen && (
         <div className="border-t border-gray-800">
           {Array.from({ length: selectedSeason.episodeCount }, (_, i) => i + 1).map((episodeNum) => (
@@ -110,14 +112,12 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
                   : 'hover:bg-gray-800/50'}`}
               onClick={() => handleEpisodeClick(episodeNum)}
             >
-              <span className="w-24">Episode {episodeNum}</span>
               <span>Episode {episodeNum}</span>
             </div>
           ))}
         </div>
       )}
 
-      {/* Bottom Bar */}
       {selectedSeason && (
         <div className="border-t border-gray-800 p-4 flex items-center space-x-2">
           <MdMenu />

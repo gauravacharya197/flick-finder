@@ -1,9 +1,10 @@
 import Signup from "@/components/Auth/Signup";
+import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign Up Page - FlickFinder SaaS Boilerplate",
-  description: "This is Sign Up page for Startup Pro",
+  title: `Sign Up Page - ${siteConfig.siteName}`,
+  description: "This is Sign Up page",
   // other metadata
 };
 
