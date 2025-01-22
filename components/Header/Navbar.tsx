@@ -4,6 +4,7 @@ import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
+import { MdClose } from "react-icons/md";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -137,7 +138,7 @@ const MyNav = () => {
             {showSearch && (
         <div className="bg-gray-900 p-4 dark:bg-gray-800 md:hidden">
           <div className="container mx-auto flex items-center gap-2">
-            <button className="flex h-full items-center gap-2 rounded-md bg-white px-3 py-1 text-gray-400 transition hover:bg-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600">
+            <button className="flex h-10 items-center gap-2 rounded-md bg-white px-3 py-1 text-gray-400 transition hover:bg-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -185,7 +186,7 @@ const MyNav = () => {
               onClick={() => setShowSearch(false)}
               aria-label="Close Search"
             >
-              Close
+              <MdClose className="text-2xl"/>
             </button>
           </div>
         </div>
