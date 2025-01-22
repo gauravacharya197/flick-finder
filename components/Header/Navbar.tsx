@@ -1,14 +1,18 @@
 import { useState } from "react";
 import Link from "next/link";
+import { FaBars, FaSearch, FaFilter } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
 import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
-import { MdClose } from "react-icons/md";
+import Image from "next/image";
+import FilterDropdown from "../SearchFilter/FilterDropdown";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-black bg-opacity-90 text-white dark:bg-gray-900 dark:text-white">
@@ -18,7 +22,7 @@ const MyNav = () => {
           <div className="flex items-center gap-4">
             <button
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => {setMenuOpen(!menuOpen) ,setShowFilter(false)}}
               aria-label="Toggle Menu"
             >
               <svg
@@ -38,56 +42,33 @@ const MyNav = () => {
             </button>
             <Link
               href="/"
-              className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black sm:text-xl dark:bg-primary dark:text-black"
-              >
-              <SiteName/>
+              className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
+            >
+              <SiteName />
             </Link>
           </div>
 
-          {/* Search Bar for Larger Screens */} 
+          {/* Search Bar for Larger Screens */}
           <div className="mr-15 hidden flex-1 items-center justify-center gap-2 md:flex">
             <div className="flex items-center gap-2">
-              <button className="h-10 flex items-center gap-2 rounded-md bg-white px-3 py-1 text-gray-400 transition hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.5 6.75h10.5m-10.5 5.25h7.5m-7.5 5.25h4.5M4.5 6.75h.008v.008H4.5V6.75zm0 5.25h.008v.008H4.5V12zm0 5.25h.008v.008H4.5v-.008z"
-                  />
-                </svg>
+              <button
+                onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
+                className="flex items-center gap-2 rounded bg-gray-200 px-4 py-2 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+              >
+                <FaFilter className="h-3.5 w-3.5" />
                 Filter
               </button>
               <div className="relative w-full">
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-80 rounded-md bg-white px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white dark:placeholder-gray-500"
+                  className="w-80 rounded-md border border-gray-300 bg-white px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
                 <button
-                  className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-teal-400"
                   aria-label="Search"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 1 0-10.606-10.606 7.5 7.5 0 0 0 10.606 10.606z"
-                    />
-                  </svg>
+                  <FaSearch className="h-3.5 w-3.5" />
                 </button>
               </div>
             </div>
@@ -95,90 +76,47 @@ const MyNav = () => {
 
           {/* Small Screen Layout: Search Icon, Theme Toggler, and Login Button */}
           <div className="flex items-center gap-3 md:hidden">
-            {/* Search Icon */}
             <button
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
               onClick={() => setShowSearch(!showSearch)}
               aria-label="Toggle Search"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-6 w-6 text-primary"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 1 0-10.606-10.606 7.5 7.5 0 0 0 10.606 10.606z"
-                />
-              </svg>
+              <FaSearch className="h-5 w-5 text-primary" />
             </button>
-
-            {/* Theme Toggler */}
             <ThemeToggler />
-
-            {/* Login Button */}
             <LoginPartial />
           </div>
 
           {/* Large Screen Layout */}
           <div className="hidden items-center gap-4 md:flex">
-            {/* Theme Toggler */}
             <ThemeToggler />
-
-            {/* Login Button */}
             <LoginPartial />
           </div>
         </div>
       </div>
-            {/* Search Bar for Small Screens */}
-            {showSearch && (
-        <div className="bg-gray-900 p-4 dark:bg-gray-800 md:hidden">
+
+      {/* Search Bar for Small Screens */}
+      {showSearch && (
+        <div className="bg-black bg-opacity-90 p-4 text-white dark:bg-gray-900 dark:text-white md:hidden">
           <div className="container mx-auto flex items-center gap-2">
-            <button className="flex h-10 items-center gap-2 rounded-md bg-white px-3 py-1 text-gray-400 transition hover:bg-gray-700 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.5 6.75h10.5m-10.5 5.25h7.5m-7.5 5.25h4.5M4.5 6.75h.008v.008H4.5V6.75zm0 5.25h.008v.008H4.5V12zm0 5.25h.008v.008H4.5v-.008z"
-                />
-              </svg>
+            <button
+              onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
+              className="flex items-center gap-2 rounded bg-gray-200 px-4 py-2 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+            >
+              <FaFilter className="h-3.5 w-3.5" />
               Filter
             </button>
             <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full rounded-md bg-white px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-gray-300 dark:placeholder-gray-500"
+                className="bborder-gray-300 w-full rounded-md bg-white px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
               />
               <button
                 className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
                 aria-label="Search"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 1 0-10.606-10.606 7.5 7.5 0 0 0 10.606 10.606z"
-                  />
-                </svg>
+                <FaSearch className="h-5 w-5" />
               </button>
             </div>
             <button
@@ -186,21 +124,24 @@ const MyNav = () => {
               onClick={() => setShowSearch(false)}
               aria-label="Close Search"
             >
-              <MdClose className="text-2xl"/>
+              <MdClose className="text-2xl" />
             </button>
           </div>
+          <FilterDropdown isOpen={showFilter} />
         </div>
       )}
-
       {/* Hamburger Menu Content */}
       {menuOpen && (
-        <nav className ="text-white">
+        <nav className="text-white">
           <div className="container mx-auto px-4">
-            <ul className="flex flex-col items-start space-y-2 p-4" onClick={()=>setMenuOpen(!menuOpen)}>
-            {menuData.map((item) => (
+            <ul
+              className="flex flex-col items-start space-y-2 p-4"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              {menuData.map((item) => (
                 <li key={item.id}>
                   <Link
-                    href={item.path || '#'}
+                    href={item.path || "#"}
                     className="hover:text-primary dark:hover:text-primary"
                   >
                     {item.title}
@@ -208,6 +149,14 @@ const MyNav = () => {
                 </li>
               ))}
             </ul>
+          </div>
+        </nav>
+      )}
+      {/* Filter menu content */}
+      {showFilter && (
+        <nav className="text-white hidden md:block">
+          <div className="container mx-auto px-4 pb-2">
+            <FilterDropdown isOpen={true} />
           </div>
         </nav>
       )}

@@ -80,7 +80,7 @@ const Watch = () => {
             onClick={() => {
               setIsPlaying(true);
             }}
-            className="absolute inset-0 m-auto text-6xl text-white"
+            className="absolute inset-0 m-auto text-6xl text-primary"
             style={{
               top: "50%",
               left: "65%",

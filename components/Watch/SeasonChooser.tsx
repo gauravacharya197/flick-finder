@@ -64,7 +64,6 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
 
   return (
     <div className="w-full max-w-md bg-black/95 text-gray-300 rounded-lg -mt-4">
-      {/* Season Dropdown */}
       <div className="p-4 cursor-pointer hover:bg-gray-800/50">
         <div 
           className="flex items-center justify-between"
@@ -82,7 +81,6 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
         </div>
       </div>
 
-      {/* Seasons List */}
       {isOpen && (
         <div className="border-t border-gray-800">
           {seasons.map((season) => (
