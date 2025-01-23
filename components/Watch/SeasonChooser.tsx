@@ -83,7 +83,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
 
       {isOpen && (
         <div className="border-t border-gray-800">
-          {seasons.map((season) => (
+          {seasons?.map((season) => (
             <div
               key={season.id}
               className={`p-4 cursor-pointer flex items-center space-x-2

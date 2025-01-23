@@ -54,7 +54,7 @@ const FilterOption = () => {
 
   return (
     <div className="flex justify-center items-center w-full  ">
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 max-w-5xl sm:px-25 w-full mt-2
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 max-w-5xl sm:px-25 w-full mt-2 md:mt-0
 ">
         {renderDropdown('genre', genres, selectedGenre, setSelectedGenre)}
         {renderDropdown('country', countries, selectedCountry, setSelectedCountry)}

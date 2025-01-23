@@ -192,7 +192,7 @@ const Watch = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-                      {movie?.casts.map((character, index) => (
+                      {movie?.casts?.map((character, index) => (
                         <CastCard
                           key={index}
                           imgSrc={character.profilePath}

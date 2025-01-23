@@ -35,7 +35,7 @@ const MovieDetails = ({ movie, mediaType }) => {
             </div>
 
             <div className="mb-4 flex flex-wrap gap-2">
-              {movie?.genres.map((x, index) => (
+              {movie?.genres?.map((x, index) => (
                 <Tag
                   key={index}
                   className="mb-2 px-4 py-1 text-sm"

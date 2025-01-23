@@ -15,7 +15,6 @@ const Login = ({ code }: { code?: string }) => {
 
 
   const router = useRouter();
-  const searchParams = useSearchParams();
   const effectRan = useRef(false); // Ref to track if useEffect ran
   const {
     register,

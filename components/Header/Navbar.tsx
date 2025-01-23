@@ -1,23 +1,36 @@
 import { useState } from "react";
 import Link from "next/link";
-import { FaBars, FaSearch, FaFilter } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
-import Image from "next/image";
 import FilterDropdown from "../SearchFilter/FilterDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { setQuery } from "@/redux/movies/advanceSearchSlice";
+import { useRouter } from "next/navigation";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const { query, countries: searchCountries, genres: searchGenres, years: searchYears, imdbRating } = useSelector((state: RootState) => state.advanceSearch); 
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleSearch = (e) => {
+    e.preventDefault(); // Prevent the form from reloading the page
+    if (query.trim()) {
+      router.push(`/results?query=${encodeURIComponent(query)}`);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-black bg-opacity-90 text-white dark:bg-gray-900 dark:text-white">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
           <div className="flex items-center gap-4">
             <button
@@ -58,19 +71,22 @@ const MyNav = () => {
                 <FaFilter className="h-3.5 w-3.5" />
                 Filter
               </button>
-              <div className="relative w-full">
-                <input
+              <form onSubmit={handleSearch} className="relative w-full">
+              <input
                   type="text"
                   placeholder="Search..."
+                  value={query}
+                  onChange={(e) => dispatch(setQuery(e.target.value))}
                   className="w-80 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
                 <button
+                   type="submit"
                   className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-teal-400"
                   aria-label="Search"
                 >
                   <FaSearch className="h-3.5 w-3.5" />
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 
@@ -131,8 +147,8 @@ const MyNav = () => {
         </div>
       )}
       {/* Hamburger Menu Content */}
-      {menuOpen && (
-        <nav className="text-white">
+      
+        <nav className={`text-white ${menuOpen? 'block':'hidden'}`  }>
           <div className="container mx-auto px-4">
             <ul
               className="flex flex-col items-start space-y-2 p-4"
@@ -151,11 +167,11 @@ const MyNav = () => {
             </ul>
           </div>
         </nav>
-      )}
+      
       {/* Filter menu content */}
       {showFilter && (
-        <nav className="text-white hidden md:block">
-          <div className="container mx-auto px-4 pb-2">
+        <nav className=" hidden md:block bg-white bg-opacity-90 p-1 text-white dark:bg-gray-900 dark:text-white">
+          <div className="container mx-auto ">
             <FilterDropdown isOpen={true} />
           </div>
         </nav>
