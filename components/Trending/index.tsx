@@ -1,14 +1,10 @@
 "use client";
-import { discover, getPopular } from "@/services/MovieService";
+import { discover } from "@/services/MovieService";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { SearchFilter } from "../SearchFilter/SearchFilter";
-import Link from "next/link";
 import { useSelector,useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { Segmented, Skeleton, Tag, Tooltip } from "antd";
-import { FaStar } from "react-icons/fa";
-import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
+import { Segmented, Skeleton } from "antd";
 import { setMediaType } from "@/redux/movies/advanceSearchSlice";
 import { MovieList } from "../Movie/MovieList";
 
@@ -80,13 +76,12 @@ export const Trending = () => {
       });
   }, [page, debouncedQuery, genres, debouncedRating, years, countries,mediaType]);
 
-  const featuredMovie = movies?.[0];
 
   return (
     
     <>
-      <h2 className="text-2xl font-bold">Trending Now</h2>
-      <SearchFilter />
+      <h2 className="text-2xl font-bold pb-2">Trending Now</h2>
+      
       <Segmented size="large" color="primary" value={mediaType} options={["All","Movie", "TV"]} className="custom-segmented"
       onChange={(value)=> dispatch(setMediaType(value))}
       />

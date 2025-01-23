@@ -204,7 +204,7 @@ const Watch = () => {
                   </div>
                 </div>
                 <div className="space-y-8">
-                  <div className=" rounded-lg p-4 dark:text-white">
+                  <div className=" rounded-lg p-2 dark:text-white">
                     {mediaType == "movie" && (
                       <SimilarMovie id={imdbID} mediaType={mediaType} />
                     )}

@@ -19,7 +19,10 @@ export const SimilarMovie = ({id,mediaType}) => {
   return (
 <div className="flex flex-col gap-4 -mt-4">
 {/* <h3 className="text-2xl font-semibold">Suggested Videos</h3> */}
-
+<div className="flex items-center gap-2">
+                      <div className="h-6 w-1.5 bg-primary"></div>
+                      <h3 className="text-2xl font-semibold">You may like</h3>
+                    </div>
 {movies?.results?.map((relatedMovie, index) => (
                 <div
                   key={index}
@@ -27,7 +30,7 @@ export const SimilarMovie = ({id,mediaType}) => {
                 >
                      <Link
                href={`/watch/${mediaType}/${relatedMovie.id}`}
-              className="flex items-center space-x-2 hover:text-blue-600"
+              className="flex items-center space-x-2 hover:text-primaryho"
             >  
                   <img
                     src={`http://image.tmdb.org/t/p/w500/${relatedMovie?.posterPath}`}

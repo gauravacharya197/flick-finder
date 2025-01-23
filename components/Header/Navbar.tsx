@@ -53,7 +53,7 @@ const MyNav = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
-                className="flex items-center gap-2 rounded bg-gray-200 px-4 py-2 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 <FaFilter className="h-3.5 w-3.5" />
                 Filter
@@ -62,7 +62,7 @@ const MyNav = () => {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-80 rounded-md border border-gray-300 bg-white px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                  className="w-80 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
                 <button
                   className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-teal-400"
@@ -97,12 +97,12 @@ const MyNav = () => {
 
       {/* Search Bar for Small Screens */}
       {showSearch && (
-        <div className="bg-black bg-opacity-90 p-4 text-white dark:bg-gray-900 dark:text-white md:hidden">
+        <div className="bg-white bg-opacity-90 p-2 text-white dark:bg-gray-900 dark:text-white md:hidden">
           <div className="container mx-auto flex items-center gap-2">
             <button
               onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
-              className="flex items-center gap-2 rounded bg-gray-200 px-4 py-2 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-            >
+              className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+              >
               <FaFilter className="h-3.5 w-3.5" />
               Filter
             </button>
@@ -110,7 +110,7 @@ const MyNav = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="bborder-gray-300 w-full rounded-md bg-white px-4 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                className="bborder-gray-300 w-full rounded-md bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
               />
               <button
                 className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"

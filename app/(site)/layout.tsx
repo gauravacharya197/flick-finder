@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
                 <link rel="icon" href="/favicon.ico" />
 
-      <body className={`dark:bg-black ${inter.className}`}>
+      <body className={`dark:bg-gray-900 ${inter.className}`}>
         <Provider store={store}>
           <ThemeProvider
             enableSystem={false}
