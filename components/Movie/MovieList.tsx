@@ -1,16 +1,10 @@
 "use client";
-import { discover, getPopular } from "@/services/MovieService";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { SearchFilter } from "../SearchFilter/SearchFilter";
+import React, {  } from "react";
 import Link from "next/link";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
-import { Segmented, Skeleton, Tag, Tooltip } from "antd";
+import { useSelector } from "react-redux";
+import { Tag, Tooltip } from "antd";
 import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
-import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { setMediaType } from "@/redux/movies/advanceSearchSlice";
 
 export const MovieList = ({ movies, lastMovieElementRef }) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);

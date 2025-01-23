@@ -1,5 +1,4 @@
 'use client'
-import { FilterOption } from '@/components/SearchFilter/FilterOption';
 import React from 'react'
 
  const SearchPage = () => {
