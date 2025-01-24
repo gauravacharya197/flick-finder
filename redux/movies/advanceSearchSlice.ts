@@ -6,7 +6,7 @@ export interface FilterState {
   genres: string;
   years: string;
   mediaType : string;
-  imdbRating: [number, number];
+  sortBy: string;
 }
 
 const initialState: FilterState = {
@@ -15,7 +15,7 @@ const initialState: FilterState = {
   genres:'',
   years: '',
   mediaType:'All',
-  imdbRating: [0, 0],
+  sortBy : '',
 };
 
 const advanceSearchSlice = createSlice({
@@ -38,8 +38,8 @@ const advanceSearchSlice = createSlice({
       state.mediaType = action.payload;
     },
    
-    setImdbRating: (state, action: PayloadAction<[number, number]>) => {
-      state.imdbRating = action.payload;
+    setSortBy: (state, action: PayloadAction<string>) => {
+      state.sortBy = action.payload;
     },
   },
 });
@@ -49,7 +49,7 @@ export const {
   setCountries,
   setGenres,
   setYears,
-  setImdbRating,
+  setSortBy,
   setMediaType
 } = advanceSearchSlice.actions;
 

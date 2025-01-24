@@ -6,17 +6,16 @@ import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
-import FilterDropdown from "../SearchFilter/FilterDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter } from "next/navigation";
+import { IoMdClose } from "react-icons/io";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const { query, countries: searchCountries, genres: searchGenres, years: searchYears, imdbRating } = useSelector((state: RootState) => state.advanceSearch); 
+  const { query } = useSelector((state: RootState) => state.advanceSearch); 
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -26,16 +25,18 @@ const MyNav = () => {
       router.push(`/results?query=${encodeURIComponent(query)}`);
     }
   };
+  
 
   return (
-    <header className="sticky top-0 z-50 bg-black bg-opacity-90 text-white dark:bg-gray-900 dark:text-white">
+    <header className="">
       <div className="container mx-auto px-4">
         <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
           <div className="flex items-center gap-4">
             <button
+             
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
-              onClick={() => {setMenuOpen(!menuOpen) ,setShowFilter(false)}}
+              onClick={() => {setMenuOpen(!menuOpen)}}
               aria-label="Toggle Menu"
             >
               <svg
@@ -65,7 +66,7 @@ const MyNav = () => {
           <div className="mr-15 hidden flex-1 items-center justify-center gap-2 md:flex">
             <div className="flex items-center gap-2">
               <button
-                onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
+                onClick={() => {router.push(`/results`), setMenuOpen(false)}}
                 className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
                 <FaFilter className="h-3.5 w-3.5" />
@@ -77,14 +78,20 @@ const MyNav = () => {
                   placeholder="Search..."
                   value={query}
                   onChange={(e) => dispatch(setQuery(e.target.value))}
-                  className="w-80 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                  className="w-96 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
+               {query &&  <button type="button" onClick={(e)=> {dispatch(setQuery(''))}}
+              className="mr-5 absolute right-2 top-1/2 -translate-y-1/2 transform"
+             
+            >
+               <IoMdClose className="text-2xl mr-1 text-primary"  />
+            </button>}
                 <button
                    type="submit"
                   className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-teal-400"
                   aria-label="Search"
                 >
-                  <FaSearch className="h-3.5 w-3.5" />
+                  <FaSearch className="h-4.5 w-4.5 text-2xl" />
                 </button>
               </form>
             </div>
@@ -116,34 +123,39 @@ const MyNav = () => {
         <div className="bg-white bg-opacity-90 p-2 text-white dark:bg-gray-900 dark:text-white md:hidden">
           <div className="container mx-auto flex items-center gap-2">
             <button
-              onClick={() => {setShowFilter(!showFilter),setMenuOpen(false)}}
+              
+              onClick={() => {router.push(`/results`),setMenuOpen(false)}}
               className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
               >
               <FaFilter className="h-3.5 w-3.5" />
               Filter
             </button>
-            <div className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full">
               <input
                 type="text"
+                value={query}
+                onChange={(e) => dispatch(setQuery(e.target.value))}
                 placeholder="Search..."
                 className="bborder-gray-300 w-full rounded-md bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
               />
+              
               <button
+                type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
                 aria-label="Search"
               >
                 <FaSearch className="h-5 w-5" />
               </button>
-            </div>
+              </form>
+          
             <button
               className="rounded-md p-2 text-red-500 hover:bg-gray-700 dark:hover:bg-gray-600"
-              onClick={() => setShowSearch(false)}
+              onClick={() => {setShowSearch(false),dispatch(setQuery(''))}}
               aria-label="Close Search"
             >
               <MdClose className="text-2xl" />
             </button>
           </div>
-          <FilterDropdown isOpen={showFilter} />
         </div>
       )}
       {/* Hamburger Menu Content */}
@@ -168,14 +180,7 @@ const MyNav = () => {
           </div>
         </nav>
       
-      {/* Filter menu content */}
-      {showFilter && (
-        <nav className=" hidden md:block bg-white bg-opacity-90 p-1 text-white dark:bg-gray-900 dark:text-white">
-          <div className="container mx-auto ">
-            <FilterDropdown isOpen={true} />
-          </div>
-        </nav>
-      )}
+      
     </header>
   );
 };

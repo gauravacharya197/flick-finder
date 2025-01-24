@@ -1,5 +1,5 @@
 "use client";
-import { discover, getTrending } from "@/services/MovieService";
+import { discover } from "@/services/MovieService";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector,useDispatch } from "react-redux";
@@ -7,31 +7,57 @@ import { RootState } from "@/redux/store";
 import { Segmented, Skeleton } from "antd";
 import { setMediaType } from "@/redux/movies/advanceSearchSlice";
 import { MovieList } from "../Movie/MovieList";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 export const Trending = () => {
-  const { mediaType } = useSelector(
+  const { query, countries, genres, years,mediaType } = useSelector(
     (state: RootState) => state.advanceSearch,
   );
   const dispatch = useDispatch();
   const [movies, setMovies] = useState<any>([]);
-  const [loading, setLoading] = useState(true); 
-  const [page, setPage] = useState(1); 
+  const [loading, setLoading] = useState(true); // Loading state
+  const [page, setPage] = useState(1); // Page number state
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  const lastMovieElementRef = useInfiniteScroll(loading, setPage);
- 
+  const observer = useRef<IntersectionObserver | null>(null);
 
-   useEffect(() => {
-     setPage(1); // Reset page to 1
-     setMovies([]); // Clear the movie list
-   }, [mediaType]);
+  const lastMovieElementRef = useCallback((node) => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [loading]);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query); // Update debounced query only after delay
 
-    
+    }, 500); // Adjust the debounce delay as needed (e.g., 500ms)
+
+    return () => {
+      clearTimeout(handler); // Cleanup the timeout on every render
+    };
+  }, [query]);
+
+  useEffect(() => {
+    setPage(1); // Reset page to 1
+    setMovies([]); // Clear the movie list
+  }, [debouncedQuery, genres, countries, years,mediaType]);
+
   // API call effect
   useEffect(() => {
   
     setLoading(true)
-    getTrending(mediaType,'day',page.toString() )
+    discover(
+      page,
+      debouncedQuery, // Use the debounced query
+      countries,
+      genres,
+      years,
+      mediaType
+    )
       .then((response) => {
         setMovies((prevMovies) =>
           page === 1 ? response.data.results : [...prevMovies, ...response.data.results]
@@ -43,7 +69,7 @@ export const Trending = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [page,mediaType]);
+  }, [page, debouncedQuery, genres, years, countries,mediaType]);
 
 
   return (

@@ -1,4 +1,3 @@
-import { delay } from 'framer-motion';
 import apiClient from '../axiosConfig';
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const getRecommendation = async (text: string) => {
@@ -11,8 +10,8 @@ export const getRecommendation = async (text: string) => {
 export const getDetails = async (imdbID: string,mediaType:string) => {
   return await apiClient.get(`${baseUrl}api/Movies/details/${imdbID}/${mediaType}`)
 };
-export const getPopular = async () => {
-  return await apiClient.get(`${baseUrl}api/Movies/popular`)
+export const getTrending = async (mediaType:string,timeWindow='day',pageNumber='1') => {
+  return await apiClient.get(`${baseUrl}api/Movies/trending?mediaType=${mediaType}&timeWindow=${timeWindow}&pageNumber=${pageNumber}`)
 };
 export const getSimilarMovies = async (id:string,mediaType:string) => {
   return await apiClient.get(`${baseUrl}api/Movies/similar/${id}/${mediaType}`)
@@ -24,8 +23,6 @@ export const discover = async (pageNumber=1, keyword = '',
   country = '',
   genre = '',
   year = '',
-  minRating = '0',
-  maxRating = '',
   mediaType='') => {
   // Destructure filters with default values as null
 
@@ -38,8 +35,7 @@ export const discover = async (pageNumber=1, keyword = '',
   if (country) params.append("country", country);
   if (genre) params.append("genre", genre);
   if (year) params.append("year", year);
-  if (minRating) params.append("minRating", minRating)
-  if (maxRating) params.append("maxRating", maxRating);
+
   if (mediaType) params.append("mediaType", mediaType);
 
 

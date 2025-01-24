@@ -1,4 +1,4 @@
-import { getPopular, getSimilarMovies } from '@/services/MovieService';
+import { getSimilarMovies } from '@/services/MovieService';
 import { Tag } from 'antd';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'

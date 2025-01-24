@@ -82,3 +82,26 @@ pre {
 }
 .custom-segmented .ant-segmented-item:hover {
 }
+/* Webkit (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+  width: 4px; /* Thin scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937; /* Dark background for track, adjust as needed */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #10B981; /* Tailwind primary color (emerald-500), adjust as needed */
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #059669; /* Slightly darker shade on hover */
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #10B981 #1f2937;
+}
