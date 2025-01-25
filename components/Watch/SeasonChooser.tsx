@@ -63,7 +63,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
   };
 
   return (
-    <div className="w-full max-w-md bg-black/95 text-gray-300 rounded-lg -mt-4">
+    <div className="w-full max-w-md bg-[rgba(20,28,49,0.95)] text-gray-300 rounded-lg -mt-4">
       <div className="p-4 cursor-pointer hover:bg-gray-800/50">
         <div 
           className="flex items-center justify-between"

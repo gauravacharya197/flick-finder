@@ -1,21 +1,16 @@
 "use client";
 import { getDetails } from "@/services/MovieService";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import VideoPlayer from "@/components/Player/VideoPlayer";
-import { Skeleton, Spin, Tag } from "antd";
+import { Skeleton, Alert } from "antd";
 import { SimilarMovie } from "@/components/Movie/SimilarMovie";
-import { FaStar } from "react-icons/fa";
-import { CustomTag } from "../Common/CustomTag";
 import SeasonChooser from "./SeasonChooser";
-import toast from "react-hot-toast";
-import useFetch from "@/hooks/useFetch";
-import useMetadata from "@/hooks/useMetaData";
 import CastCard from "../Movie/CastCard";
-import { getSourceIcon } from "@/utils/getSourceIcon";
-import { siteConfig } from "@/config/siteConfig";
 import MovieDetails from "./MovieDetails";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 const Watch = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -26,25 +21,23 @@ const Watch = () => {
   const [selectedServer, setSelectedServer] = useState(1);
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
-  // Dummy movie data
+
   if (!imdbID || !mediaType) {
     return <div>Error: Missing required parameters.</div>;
   }
+
   const {
-    data: movie,
-    loading,
+    data: movieData,
+    isLoading,
+    isError,
     error,
-  } = useFetch(
-    () =>
-      getDetails(imdbID.toString(), mediaType.toString()).then(
-        (res) => res.data,
-      ),
-    [imdbID, mediaType],
-  );
-  useMetadata(
-    ` ${movie?.title ? `Watch ${movie?.title} Full ${mediaType.toString().toUpperCase()} Online` : siteConfig.title}`,
-    siteConfig.description,
-  );
+  } = useQuery<AxiosResponse<any>>({
+    queryKey: ["movieDetails", imdbID, mediaType],
+    queryFn: () => getDetails(imdbID.toString(), mediaType.toString()),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const movie = movieData?.data;
 
   const constructUrl = (
     baseUrl: string,
@@ -52,17 +45,18 @@ const Watch = () => {
     imdbID: any,
     selectedSeason: number | null,
     selectedEpisode: number | null,
-    seperator = "-",
+    separator = "-",
   ) => {
     if (
       mediaType === "tv" &&
       selectedSeason !== null &&
       selectedEpisode !== null
     ) {
-      return `${baseUrl}/${mediaType}/${imdbID}${seperator}${selectedSeason}${seperator}${selectedEpisode}`;
+      return `${baseUrl}/${mediaType}/${imdbID}${separator}${selectedSeason}${separator}${selectedEpisode}`;
     }
     return `${baseUrl}/${mediaType}/${imdbID}`;
   };
+
   const renderMovieScreen = () => {
     if (!isPlaying) {
       return (
@@ -92,8 +86,6 @@ const Watch = () => {
     }
     switch (selectedServer) {
       case 1:
-        if (movie?.videoSource) {
-        }
         return (
           <VideoPlayer
             sourceUrl={
@@ -111,7 +103,6 @@ const Watch = () => {
             }
           />
         );
-
       case 2:
         return (
           <VideoPlayer
@@ -123,13 +114,19 @@ const Watch = () => {
               selectedEpisode,
               "/",
             )}
-          ></VideoPlayer>
+          />
         );
       case 3:
         return (
           <VideoPlayer
-            sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${imdbID.toString()?.startsWith("t") ? "" : "&tmdb=1"} ${mediaType == "tv" ? `&s=${selectedSeason}&e=${selectedEpisode}` : ""}`}
-          ></VideoPlayer>
+            sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${
+              imdbID.toString()?.startsWith("t") ? "" : "&tmdb=1"
+            } ${
+              mediaType == "tv"
+                ? `&s=${selectedSeason}&e=${selectedEpisode}`
+                : ""
+            }`}
+          />
         );
       case 4:
         return (
@@ -144,7 +141,6 @@ const Watch = () => {
             )}
           />
         );
-
       default:
         break;
     }
@@ -152,76 +148,85 @@ const Watch = () => {
 
   return (
     <>
-      <section>
-        <div className="container">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            {loading ? (
-              <Skeleton active />
-            ) : (
-              <>
-                <div className="col-span-2 rounded-lg">
-                  <div className="relative pb-[10.25%] ">
-                    {error && <div className="text-red-500">{error}</div>}
-                    {renderMovieScreen()}
+<div className="container">
+  <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 min-h-[200px]">
+    {/* Left Column */}
+    <div className="col-span-2 rounded-lg">
+      {isLoading ? (
+        <Skeleton
+        active
+/>
+      ) : isError ? (
+        <Alert
+          message="Error"
+          description={error?.message || "Something went wrong while fetching movie details."}
+          type="error"
+          showIcon
+        />
+      ) : (
+        <div className="relative pb-[10.25%]">
+          {renderMovieScreen()}
 
-                    <div className="mt-4 flex gap-4">
-                      {[1, 2, 3, 4].map((server) => (
-                        <button
-                          key={server}
-                          onClick={() => setSelectedServer(server)}
-                          className={`rounded px-4 py-2 ${
-                            selectedServer === server
-                              ? "bg-primary"
-                              : "bg-teal-500/35"
-                          } text-white`}
-                        >
-                          Server {server}
-                        </button>
-                      ))}
-                    </div>
-                    <p className="mt-2 text-sm text-gray-500">
-                      If the current server doesn't work, change the server
-                    </p>
+          <div className="mt-4 flex gap-4">
+            {[1, 2, 3, 4].map((server) => (
+              <button
+                key={server}
+                onClick={() => setSelectedServer(server)}
+                className={`rounded px-4 py-2 ${
+                  selectedServer === server ? "bg-primary" : "bg-teal-500/35"
+                } text-white`}
+              >
+                Server {server}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
+            If the current server doesn't work, change the server
+          </p>
 
-                    <br />
+          <br />
 
-                    <MovieDetails movie={movie} mediaType={mediaType} />
-                    <div className="mb-5 mt-10 flex items-center gap-2">
-                      <div className="h-6 w-1.5 bg-primary"></div>
-                      <h3 className="text-2xl font-semibold">Casts</h3>
-                    </div>
+          <MovieDetails movie={movie} mediaType={mediaType} />
+          <div className="mb-5 mt-10 flex items-center gap-2">
+            <div className="h-6 w-1.5 bg-primary"></div>
+            <h3 className="text-2xl font-semibold">Casts</h3>
+          </div>
 
-                    <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-                      {movie?.casts?.map((character, index) => (
-                        <CastCard
-                          key={index}
-                          imgSrc={character.profilePath}
-                          name={character.name}
-                          role={character.character}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-8">
-                  <div className=" rounded-lg p-2 dark:text-white">
-                    {mediaType == "movie" && (
-                      <SimilarMovie id={imdbID} mediaType={mediaType} />
-                    )}
-                    {mediaType == "tv" && (
-                      <SeasonChooser
-                        seasons={movie?.seasons}
-                        onSeasonChange={setSelectedSeason}
-                        onEpisodeChange={setSelectedEpisode}
-                      />
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
+            {movie?.casts?.map((character, index) => (
+              <CastCard
+                key={index}
+                imgSrc={character.profilePath}
+                name={character.name}
+                role={character.character}
+              />
+            ))}
           </div>
         </div>
-      </section>
+      )}
+    </div>
+
+    {/* Right Column */}
+    <div className="space-y-8">
+      <div className="rounded-lg p-2 dark:text-white">
+        {/* Always render SimilarMovie */}
+        {mediaType === "movie" && (
+          <SimilarMovie id={imdbID.toString()} mediaType={mediaType} />
+        )}
+
+        {/* Conditionally render SeasonChooser */}
+        {mediaType === "tv" && !isLoading && !isError && (
+          <SeasonChooser
+            seasons={movie?.seasons}
+            onSeasonChange={setSelectedSeason}
+            onEpisodeChange={setSelectedEpisode}
+          />
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
     </>
   );
 };

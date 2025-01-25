@@ -7,9 +7,9 @@ import { Segmented, Skeleton } from 'antd'
 import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { getTrending } from '@/services/MovieService'
+import { getTopRated, getTrending } from '@/services/MovieService'
 
-export const Trending = () => {
+export const TopRatedList = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
 
@@ -22,7 +22,7 @@ export const Trending = () => {
   } = useInfiniteQuery({
     queryKey: ['trending', mediaType],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await getTrending(mediaType, 'day', pageParam.toString())
+      const response = await getTopRated(mediaType, pageParam.toString())
       return response
     },
     getNextPageParam: (lastPage, pages) => {
@@ -31,7 +31,7 @@ export const Trending = () => {
       return currentPage < totalPages ? currentPage + 1 : undefined
     },
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 5, // Cache the data for 5 minutes (300,000 ms)
+    staleTime: 1000 * 60 * 30, // Cache the data for 5 minutes (300,000 ms)
   })
 
   const observerRef = useInfiniteScroll({
@@ -44,18 +44,17 @@ export const Trending = () => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold pb-2">Trending</h2>
+      <h2 className="text-2xl font-bold pb-1">Top Rated Movies/TV Series</h2>
       <Segmented
         size="large"
         value={mediaType}
-        options={['All', 'Movie', 'TV']}
+        options={['Movie', 'TV']}
         className="custom-segmented"
         onChange={(value) => dispatch(setMediaType(value))}
       />
       {isLoading ? (
         <Skeleton
-          active   
-          className="text-gray-300 dark:text-white"
+          active
           title={{ width: '100%' }}
           paragraph={{
             rows: 10,

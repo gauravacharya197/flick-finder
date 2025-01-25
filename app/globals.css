@@ -99,7 +99,10 @@ pre {
 ::-webkit-scrollbar-thumb:hover {
   background: #059669; /* Slightly darker shade on hover */
 }
-
+/* CSS */
+.ant-skeleton-element {
+  background-color: #4a90e2 !important; /* Example: Change the skeleton color to blue */
+}
 /* Firefox scrollbar */
 * {
   scrollbar-width: thin;

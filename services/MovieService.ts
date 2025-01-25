@@ -8,22 +8,26 @@ export const getRecommendation = async (text: string) => {
   });
 };
 export const getDetails = async (imdbID: string,mediaType:string) => {
-  return await apiClient.get(`${baseUrl}api/Movies/details/${imdbID}/${mediaType}`)
+  return await apiClient.get(`${baseUrl}api/Movies/Details/${imdbID}/${mediaType}`)
 };
 export const getTrending = async (mediaType:string,timeWindow='day',pageNumber='1') => {
-  return await apiClient.get(`${baseUrl}api/Movies/trending?mediaType=${mediaType}&timeWindow=${timeWindow}&pageNumber=${pageNumber}`)
+  return await apiClient.get(`${baseUrl}api/Movies/Trending?mediaType=${mediaType}&timeWindow=${timeWindow}&pageNumber=${pageNumber}`)
+};
+export const getTopRated = async (mediaType:string,pageNumber='1') => {
+  return await apiClient.get(`${baseUrl}api/Movies/TopRated?mediaType=${mediaType}&pageNumber=${pageNumber}`)
 };
 export const getSimilarMovies = async (id:string,mediaType:string) => {
-  return await apiClient.get(`${baseUrl}api/Movies/similar/${id}/${mediaType}`)
+  return await apiClient.get(`${baseUrl}api/Movies/Similar/${id}/${mediaType}`)
 };
 export const getFilters = async () => {
-  return await apiClient.get(`${baseUrl}api/filters`)
+  return await apiClient.get(`${baseUrl}api/Filters`)
 };
 export const discover = async (pageNumber=1, keyword = '',
   country = '',
   genre = '',
   year = '',
-  mediaType='') => {
+  mediaType='',
+sortBy='') => {
   // Destructure filters with default values as null
 
 
@@ -37,6 +41,7 @@ export const discover = async (pageNumber=1, keyword = '',
   if (year) params.append("year", year);
 
   if (mediaType) params.append("mediaType", mediaType);
+  if (sortBy) params.append("sortBy", sortBy);
 
 
   // Call the API with query parameters

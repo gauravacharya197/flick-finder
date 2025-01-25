@@ -1,28 +1,35 @@
-"use client";
-import React, {  } from "react";
+import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Tag, Tooltip } from "antd";
 import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
 
-export const MovieList = ({ movies, lastMovieElementRef }) => {
+interface MovieListProps {
+  movies: any[];
+  showFeaturedMovie?: boolean; // Optional prop to control the featured movie display
+}
+
+export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);
 
   const featuredMovie = movies?.[0];
   const featuredMovieTitle = featuredMovie?.displayTitle;
   const featuredMovieRelease = featuredMovie?.displayReleaseDate;
+
+  // If showFeaturedMovie is false, start the list from the second movie
+  const movieList = showFeaturedMovie ? movies?.slice(1) : movies;
+
   return (
     <>
-      {featuredMovie && (
-        <div className="relative mb-8  w-full">
-          <Link
-            href={`watch/${featuredMovie?.mediaType}/${featuredMovie.id}`}
-          >
+      {showFeaturedMovie && featuredMovie && (
+        <div className="relative mb-8 w-full">
+          <Link href={`watch/${featuredMovie?.mediaType}/${featuredMovie.id}`}>
             <img
               src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
               alt={featuredMovieTitle}
               className="h-full w-full rounded-md object-cover"
+              loading="lazy"
               onError={(e) => {
                 e.currentTarget.src =
                   "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg"; // Fallback image
@@ -30,16 +37,12 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
               }}
             />
             <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-black bg-opacity-50 p-4">
-              <h1 className="text-4xl font-bold text-white">
-                {featuredMovieTitle}
-              </h1>
+              <h1 className="text-4xl font-bold text-white">{featuredMovieTitle}</h1>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="rounded bg-gray-800 px-2 py-1 text-white">
                   {featuredMovie?.genreIds
                     ?.map((x: string) => {
-                      const genre = genresData.find(
-                        (y: any) => y.externalId === x,
-                      );
+                      const genre = genresData.find((y: any) => y.externalId === x);
                       return genre ? genre.name : "";
                     })
                     .filter((name) => name)
@@ -53,9 +56,7 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
                 </span>
                 <span className="rounded bg-gray-800 px-2 py-1 text-white">
                   <Tag bordered={false} color="purple">
-                    {featuredMovie?.mediaType?.toLowerCase() == "movie"
-                      ? "Movie"
-                      : "TV"}
+                    {featuredMovie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"}
                   </Tag>
                 </span>
 
@@ -68,21 +69,16 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
           </Link>
         </div>
       )}
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-4">
-                  {movies?.slice(1).map((movie, index) => {
+
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-4">
+        {movieList?.map((movie, index) => {
           return (
-            <div
-              ref={lastMovieElementRef}
-              key={index}
-              className="flex flex-col items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800"
-            >
-              <Link
-                href={`watch/${movie?.mediaType}/${movie.id}`}
-                className="flex items-center space-x-2 hover:text-blue-600"
-              >
+            <div key={index} className="flex flex-col items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800">
+              <Link href={`watch/${movie?.mediaType}/${movie.id}`} className="flex items-center space-x-2 hover:text-blue-600">
                 <img
                   src={`http://image.tmdb.org/t/p/w500/${movie?.posterPath}`}
                   alt={movie?.displayTitle}
+                  loading="lazy"
                   className="h-60 w-80 rounded-md object-cover" // Increased height
                   onError={(e) => {
                     e.currentTarget.src =
@@ -93,15 +89,12 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
               </Link>
               <div className="w-100">
                 <h3 className="text-lg font-bold">
-                  {" "}
                   <Tooltip title={movie?.displayTitle}>
                     {truncateString(movie?.displayTitle, 36)}
                   </Tooltip>
                 </h3>
                 <div className="flex items-center space-x-4">
-                  <p className="text-sm">
-                    {new Date(movie?.displayReleaseDate).getFullYear()}
-                  </p>
+                  <p className="text-sm">{new Date(movie?.displayReleaseDate).getFullYear()}</p>
 
                   <p className="flex items-center text-sm">
                     <FaStar className="mb-1 inline text-yellow-500" />{" "}
@@ -109,9 +102,7 @@ export const MovieList = ({ movies, lastMovieElementRef }) => {
                   </p>
                   <p className="text-sm">
                     <Tag bordered={false} color="purple">
-                      {movie?.mediaType?.toLowerCase() == "movie"
-                        ? "Movie"
-                        : "TV"}
+                      {movie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"}
                     </Tag>
                   </p>
                 </div>

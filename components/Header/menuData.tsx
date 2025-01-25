@@ -24,20 +24,20 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
-  {
-    id: 2.1,
-    title: "New",
-    newTab: false,
-    path: "/new",
-    requireLogin : false
+  // {
+  //   id: 2.1,
+  //   title: "New",
+  //   newTab: false,
+  //   path: "/new",
+  //   requireLogin : false
 
-  },
+  // },
   
   {
     id: 4,
-    title: "IMDB Top 100",
+    title: "Top Rated",
     newTab: false,
-    path: "/imdb",
+    path: "/top-movies-tv",
     requireLogin : false
 
   },
