@@ -8,9 +8,10 @@ interface CustomTagProps {
   color?: string;
 }
 
-export const CustomTag: React.FC<CustomTagProps> = ({ text, bordered = false, color = "purple" }) => {
+export const CustomTag: React.FC<CustomTagProps> = ({ text, bordered = false }) => {
   return (
-    <Tag bordered={bordered} color={color}>
+    <Tag bordered={bordered}   className="bg-primary text-white" // Example: Use the primary color as the background and text color
+>
       {capitalizeFirstLetter(text)}
     </Tag>
   );

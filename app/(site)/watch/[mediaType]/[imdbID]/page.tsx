@@ -1,11 +1,11 @@
 import Watch from "@/components/Watch";
 import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: siteConfig.title,
-  description: siteConfig.description,
-  // other metadata
-};
+// export const metadata: Metadata = {
+//   title: siteConfig.title,
+//   description: siteConfig.description,
+//   // other metadata
+// };
 const WatchPage = () => {
   return (
     <section className=" overflow-hidden pb-5  dark:bg-gray-900 dark:text-white md:pt-5 xl:pb-5 xl:pt-5">

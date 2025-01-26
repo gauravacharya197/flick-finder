@@ -11,6 +11,7 @@ import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
+import { useSearchParams } from 'next/navigation';
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,13 +19,24 @@ const MyNav = () => {
   const { query } = useSelector((state: RootState) => state.advanceSearch);
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
-    if (query.trim()) {
+   
       router.push(`/results?query=${encodeURIComponent(query)}`);
-    }
+    
   };
+  const handleClose = () => {
+    
+    const query = searchParams.get('query');
+    if (query) {
+      router.push('/results');
+    } 
+    setShowSearch(false);
+    dispatch(setQuery(''));
+
+  }
   const renderFilterButton = () => {
     return (
       <Link
@@ -94,9 +106,7 @@ const MyNav = () => {
                 {query && (
                   <button
                     type="button"
-                    onClick={(e) => {
-                      dispatch(setQuery(""));
-                    }}
+                    onClick={handleClose}
                     className="absolute right-2 top-1/2 mr-5 -translate-y-1/2 transform"
                   >
                     <IoMdClose className="mr-1 text-2xl text-primary" />
@@ -159,9 +169,7 @@ const MyNav = () => {
 
             <button
               className="rounded-md p-2 text-red-500 hover:bg-gray-700 dark:hover:bg-gray-600"
-              onClick={() => {
-                setShowSearch(false), dispatch(setQuery(""));
-              }}
+              onClick={handleClose}
               aria-label="Close Search"
             >
               <MdClose className="text-2xl" />

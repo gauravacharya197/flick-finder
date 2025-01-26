@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import { MyApp } from "./MyApp";
 import store from "@/redux/store";
 
+import NextTopLoader from "nextjs-toploader";
 
 export default function RootLayout({
   children,
@@ -36,21 +37,19 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="dark"
           >
-           
-              {/* <Lines /> */}
-              <MyApp />
-              <Header />
-              <ToasterContext />
+            <MyApp/>
 
-              <QueryClientProvider client={queryClient}>
-                
-      {children}
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-    </QueryClientProvider>
-              <Footer />
+            <Header />
+            <ToasterContext />
+            <NextTopLoader showSpinner={false} />
+            <QueryClientProvider client={queryClient}>
+              {children}
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+            </QueryClientProvider>
+            <Footer />
 
-              <ScrollToTop />
-            
+            <ScrollToTop />
+
             <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
           </ThemeProvider>
         </Provider>

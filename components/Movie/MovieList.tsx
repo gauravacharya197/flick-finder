@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Tag, Tooltip } from "antd";
 import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
+import { CustomTag } from "../Common/CustomTag";
 
 interface MovieListProps {
   movies: any[];
@@ -54,10 +55,9 @@ export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps)
                 <span className="rounded bg-gray-800 px-2 py-1 text-white">
                   {"120 min"}
                 </span>
-                <span className="rounded bg-gray-800 px-2 py-1 text-white">
-                  <Tag bordered={false} color="purple">
-                    {featuredMovie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"}
-                  </Tag>
+                <span className=" bg-gray-800 px-2 py-1 text-white">
+                 
+                  <CustomTag text={featuredMovie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"} />
                 </span>
 
                 <span className="rounded bg-gray-800 px-2 py-1 text-white">
@@ -101,9 +101,7 @@ export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps)
                     {Number(movie?.voteAverage.toFixed(1))}
                   </p>
                   <p className="text-sm">
-                    <Tag bordered={false} color="purple">
-                      {movie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"}
-                    </Tag>
+                  <CustomTag text={movie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"} />
                   </p>
                 </div>
               </div>

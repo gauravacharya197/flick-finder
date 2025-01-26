@@ -21,7 +21,6 @@ const FilterOption = () => {
     { value: "IN", label: "India" },
     { value: "CN", label: "China" },
     { value: "JP", label: "Japan" },
-    { value: "KR", label: "South Korea" },
     { value: "GB", label: "United Kingdom" },
     { value: "FR", label: "France" },
     { value: "DE", label: "Germany" },

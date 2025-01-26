@@ -9,7 +9,7 @@ export const SearchResult = ({ query,movies }: { query?: string, movies:any }) =
      
           
         
-            <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>
+           {query && <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>}
             <FilterOption/>
 
             

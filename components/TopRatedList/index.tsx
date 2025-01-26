@@ -3,17 +3,21 @@ import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/redux/store'
-import { Segmented, Skeleton } from 'antd'
+import { Alert, Segmented, Skeleton } from 'antd'
 import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getTopRated, getTrending } from '@/services/MovieService'
+import SectionHeader from '../Common/SectionHeader'
+import ErrorMessage from '../Common/ErrorMessage'
 
 export const TopRatedList = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
 
   const {
+    error,
+    isError,
     data,
     fetchNextPage,
     hasNextPage,
@@ -32,6 +36,7 @@ export const TopRatedList = () => {
     },
     initialPageParam: 1,
     staleTime: 1000 * 60 * 30, // Cache the data for 5 minutes (300,000 ms)
+    retry:0
   })
 
   const observerRef = useInfiniteScroll({
@@ -44,7 +49,7 @@ export const TopRatedList = () => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold pb-1">Top Rated Movies/TV Series</h2>
+      <SectionHeader className="pb-4 pt-4" text="Top Rated Movies/TV Series"/>
       <Segmented
         size="large"
         value={mediaType}
@@ -60,6 +65,12 @@ export const TopRatedList = () => {
             rows: 10,
             width: ['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'],
           }}
+        />
+      ) : isError ? (
+        <ErrorMessage
+          className='w-full mt-2'
+          message={error?.message || "Something went wrong while fetching movie details."}
+         
         />
       ) : (
         <>

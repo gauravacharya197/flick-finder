@@ -8,12 +8,15 @@ import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getTrending } from '@/services/MovieService'
+import ErrorMessage from '../Common/ErrorMessage'
 
 export const Trending = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
 
   const {
+    error,
+    isError,
     data,
     fetchNextPage,
     hasNextPage,
@@ -61,6 +64,12 @@ export const Trending = () => {
             rows: 10,
             width: ['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'],
           }}
+        />
+      ) : isError ? (
+        <ErrorMessage
+          className='w-full mt-2'
+          message={error?.message || "Something went wrong while fetching movie details."}
+         
         />
       ) : (
         <>

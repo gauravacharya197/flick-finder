@@ -1,17 +1,18 @@
 'use client';
+import ErrorMessage from '@/components/Common/ErrorMessage';
 import { SearchResult } from '@/components/SearchResult/SearchResult';
 import { siteConfig } from '@/config/siteConfig';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useMetadata from '@/hooks/useMetaData';
 import { RootState } from '@/redux/store';
-import { discover, getTrending } from '@/services/MovieService';
+import { discover } from '@/services/MovieService';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Alert, Skeleton } from 'antd';
-import { Metadata } from 'next';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Skeleton } from 'antd';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => {
+  useMetadata(`${searchParams.query? `${siteConfig.siteName} - Search result for ${searchParams.query}` : `${siteConfig.siteName} - Search Movies/TV`}`,"")
 
   const {
   
@@ -69,11 +70,11 @@ const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => 
             }}
           />
         ) : isError ? (
-          <div className="col-span-3">
-              <div className="text-red-500 text-center">
-            <h2>Error: {error.message || 'Something went wrong, please try again.'}</h2>
-          </div>
-            </div>
+          <ErrorMessage
+            className='w-full mt-2'
+            message={error?.message || "Something went wrong while fetching movie details."}
+           
+          />
         ) : (
           <>
             

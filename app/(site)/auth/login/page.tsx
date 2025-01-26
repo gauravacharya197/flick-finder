@@ -1,9 +1,10 @@
 import Login from "@/components/Auth/Login";
+import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login Page",
-  description: "This is Login",
+  title: siteConfig.siteName +" - "+ "Login Page",
+  description: "",
   // other metadata
 };
 

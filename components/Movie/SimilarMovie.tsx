@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import { CustomTag } from "../Common/CustomTag";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import SectionHeader from "../Common/SectionHeader";
 
 interface SimilarMovieProps {
   id: string;
@@ -32,10 +33,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
 
   return (
     <div className="-mt-4 flex flex-col gap-4 w-full max-w-full">
-  <div className="flex items-center gap-2">
-    <div className="h-6 w-1.5 bg-primary"></div>
-    <h3 className="text-2xl font-semibold">You may like</h3>
-  </div>
+  <SectionHeader text="You may like"/>
 
   {isLoading && <p>Loading similar movies...</p>}
   {isError && <p className="text-red-500">Error: {error?.message}</p>}

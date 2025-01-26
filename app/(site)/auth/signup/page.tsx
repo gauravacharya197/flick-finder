@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: `Sign Up Page - ${siteConfig.siteName}`,
+  title: siteConfig.siteName +" - "+ "Signup ",
   description: "This is Sign Up page",
   // other metadata
 };
