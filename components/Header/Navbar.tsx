@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
@@ -11,7 +12,7 @@ import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,24 +20,25 @@ const MyNav = () => {
   const { query } = useSelector((state: RootState) => state.advanceSearch);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [localQuery, setLocalQuery] = useState<string | null>(null);
+
   const searchParams = useSearchParams();
 
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
-   
-      router.push(`/results?query=${encodeURIComponent(query)}`);
-    
+
+    router.push(`/results?query=${encodeURIComponent(query)}`);
   };
   const handleClose = () => {
-    
-    const query = searchParams.get('query');
-    if (query) {
-      router.push('/results');
-    } 
+    if (localQuery) {
+      router.push("/results");
+    }
     setShowSearch(false);
-    dispatch(setQuery(''));
-
-  }
+    dispatch(setQuery(""));
+  };
+  useEffect(() => {
+    setLocalQuery(searchParams.get("query"));
+  }, [searchParams]);
   const renderFilterButton = () => {
     return (
       <Link
@@ -52,11 +54,8 @@ const MyNav = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-black bg-opacity-90 text-white dark:bg-gray-900 dark:text-white">
-      
       <div className="container mx-auto px-4">
-        
         <div className="flex h-13 items-center justify-between">
-          
           {/* Hamburger Menu and Site Name */}
           <div className="flex items-center gap-4">
             <button
@@ -81,7 +80,7 @@ const MyNav = () => {
                 />
               </svg>
             </button>
-            
+
             <Link
               href="/"
               className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
@@ -155,7 +154,7 @@ const MyNav = () => {
                 value={query}
                 onChange={(e) => dispatch(setQuery(e.target.value))}
                 placeholder="Search Movies/TV"
-                className="border-gray-300 w-full rounded-md bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                className="w-full rounded-md border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
               />
 
               <button
