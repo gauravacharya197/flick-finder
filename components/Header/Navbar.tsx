@@ -12,7 +12,6 @@ import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
-import { useSearchParams } from "next/navigation";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,9 +19,7 @@ const MyNav = () => {
   const { query } = useSelector((state: RootState) => state.advanceSearch);
   const dispatch = useDispatch();
   const router = useRouter();
-  const [localQuery, setLocalQuery] = useState<string | null>(null);
 
-  const searchParams = useSearchParams();
 
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
@@ -30,15 +27,13 @@ const MyNav = () => {
     router.push(`/results?query=${encodeURIComponent(query)}`);
   };
   const handleClose = () => {
-    if (localQuery) {
-      router.push("/results");
-    }
+    
+    //router.push("/results");
+    
     setShowSearch(false);
     dispatch(setQuery(""));
   };
-  useEffect(() => {
-    setLocalQuery(searchParams.get("query"));
-  }, [searchParams]);
+  
   const renderFilterButton = () => {
     return (
       <Link
