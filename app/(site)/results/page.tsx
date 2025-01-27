@@ -4,22 +4,23 @@ import { SearchResult } from '@/components/SearchResult/SearchResult';
 import { siteConfig } from '@/config/siteConfig';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import useMetadata from '@/hooks/useMetaData';
+import { setMediaType } from '@/redux/movies/advanceSearchSlice';
 import { RootState } from '@/redux/store';
 import { discover } from '@/services/MovieService';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Skeleton } from 'antd';
+import { Segmented, Skeleton } from 'antd';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => {
   useMetadata(`${searchParams.query? `${siteConfig.siteName} - Search result for ${searchParams.query}` : `${siteConfig.siteName} - Search Movies/TV`}`,"")
-
   const {
   
     countries, 
     genres, 
     years, 
-    sortBy 
+    sortBy,
+    mediaType
   } = useSelector((state: RootState) => state.advanceSearch);
 
   const {
@@ -31,9 +32,9 @@ const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => 
     isError,
     error,
   } = useInfiniteQuery({
-    queryKey: ['trending', searchParams.query,sortBy,genres,years,countries],
+    queryKey: ['searchResult', searchParams.query,sortBy,genres,years,countries,mediaType],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await discover(pageParam,searchParams.query,countries,genres,years,'all',sortBy)
+      const response = await discover(pageParam,searchParams.query,countries,genres,years,mediaType,sortBy)
       return response
     },
     //staleTime: 5 * 60 * 1000,
@@ -56,10 +57,10 @@ const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => 
   
   
   return (
-    <section className="pb-10 dark:bg-gray-900 dark:text-white md:pt-2 xl:pt-5">
-    <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-      <div className="flex flex-col lg:items-start lg:gap-3 xl:gap-4">
+    <div className="min-h-screen dark:bg-gray-900 dark:text-white">
+       <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
       <SearchResult query={searchParams.query} movies={movies} />
+      
         {isLoading ? (
           <Skeleton
             active
@@ -90,7 +91,7 @@ const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => 
         )}
       </div>
     </div>
-  </section>
+
   
       
     

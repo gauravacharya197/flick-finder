@@ -1,25 +1,60 @@
 "use client";
-import { getRecommendation } from "@/services/MovieService";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import AISuggestedMovies from "../Movie/AISuggestedMovies";
-import { Spin } from "antd";
-import searchTexts from "../../data/searchTexts"; // Adjust the import path as necessary
-import { setMovies, setSearch } from "@/redux/movies/moviesSlice";
-import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
 import { FaSearch } from "react-icons/fa";
+import { getRecommendation } from '@/services/MovieService';
+import { Spin } from 'antd';
+import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
 
+const QUERY_KEY = ['movieSearch'] as const;
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const { search, movies } = useSelector((state: any) => state.movie);
-  const [loading, setLoading] = useState(false); // Loading state
-  const [loadingText, setLoadingText] = useState("");
+  const queryClient = useQueryClient();
+  
+  // Get the cached data
+  const cachedData = queryClient.getQueryData(QUERY_KEY) as any;
+
+  const { data } = useQuery({
+    queryKey: QUERY_KEY,
+    queryFn: () => getRecommendation(cachedData?.searchText || ''),
+    enabled: false,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const mutation = useMutation({
+    mutationFn: getRecommendation,
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(QUERY_KEY, {
+        searchText: variables,
+        data: data.data
+      });
+    }
+  });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchText = e.target.value;
+    
+    queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+      searchText: newSearchText,
+      data: oldData?.data || [] // Preserve existing data
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const searchText = formData.get('search')?.toString().trim() || '';
+    
+    if (searchText) {
+      mutation.mutate(searchText);
+    }
+  };
   const [placeholder, setPlaceholder] = useState("");
   useEffect(() => {
     let typingInterval;
-    if (!search) {
+    if (!cachedData?.searchText) {
       typingInterval = setInterval(() => {
         const randomSuggestion = searchSuggestion[Math.floor(Math.random() * searchSuggestion.length)];
         let typedText = "";
@@ -40,67 +75,39 @@ const Home = () => {
     }
 
     return () => clearInterval(typingInterval); // Cleanup if unmounted
-  }, [search]);
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!search) return;
+  }, [cachedData?.searchText]);
 
-    setLoading(true); // Start loading
-    try {
-      const response = await getRecommendation(search);
-      dispatch(setMovies(response.data)); // Set movies data in Redux
-    } catch (error) {
-      toast.error("An error occurred. Please try again later.", {
-        position: "bottom-center",
-      });
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
-
-  useEffect(() => {
-    if (loading) {
-      const interval = setInterval(() => {
-        const randomText =
-          searchTexts[Math.floor(Math.random() * searchTexts.length)];
-        setLoadingText(randomText);
-      }, 3000);
-
-      return () => clearInterval(interval);
-    }
-  }, [loading]);
+  let loading = mutation.isPending;
 
   return (
     <>
-      <section className="flex items-center justify-center overflow-hidden pb-5 pt-35 dark:bg-gray-900 dark:text-white md:pt-15 xl:pb-9 xl:pt-46">
-        <div className="mx-auto flex justify-center px-4 md:px-8 2xl:px-0">
-          <div className="flex flex-col items-center lg:items-start lg:gap-8 xl:gap-32.5">
+        <div className="min-h-screen dark:bg-gray-900 dark:text-white">
+        <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10 pt-20 md:pt-40">
             <div className="text-center md:text-left">
-              <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white  text-2xl xl:text-hero">
-              🎬 Let AI Suggest Your Next Movie!
+              <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white text-2xl xl:text-hero">
+                🎬 Let AI Suggest Your Next Movie!
               </h2>
               <h4 className="mb-7 flex justify-center text-medium text-gray-700 dark:text-gray-300">
-              🍿 
-              You can also just type emoji of your mood and let our AI suggest the perfect movie for you! 🎉
-
+                🍿 You can also just type emoji of your mood and let our AI suggest the perfect movie for you! 🎉
               </h4>
 
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-wrap justify-center">
                   <input
-                    value={search}
-                    onChange={(e) => dispatch(setSearch(e.target.value))}
                     type="text"
+                    name="search"
+                    value={cachedData?.searchText || ''}
+                    onChange={handleInputChange}
                     placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
                     className="max-w-md w-auto sm:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-                    />
+                  />
                   
-              
                   <button
-                    disabled={!search || loading} // Disable the button if search is empty or loading
+                    type="submit"
+                    disabled={loading}
                     aria-label="get started button"
                     className={`flex rounded px-2.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
-                      !search || loading ? "bg-gray-400 opacity-50" : "bg-black"
+                      loading ? "bg-gray-400 opacity-50" : "bg-black"
                     }`}
                   >
                     <FaSearch className="mt-1.5 w-8"/>
@@ -110,31 +117,26 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      
       <section className="flex items-center justify-center overflow-hidden dark:bg-gray-900 dark:text-white">
         <div className="mx-auto flex max-w-c-1390 justify-center px-4 md:px-8 2xl:px-0">
           {loading ? (
-            <div className=" flex flex-col items-center">
-              {/* Increase spinner size */}
+            <div className="flex flex-col items-center">
               <Spin size="large" className="text-6xl" />
-
-              {/* Increase text size and add spacing */}
               <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300">
-                {loadingText}
+                Please wait
               </h2>
-
               <br />
             </div>
-          ) : movies.length > 0 ? (
-            <AISuggestedMovies movies={movies} />
+          ) : data?.data?.length > 0 || mutation.data?.data?.length > 0 ? (
+            <AISuggestedMovies 
+              movies={data?.data || mutation.data?.data || []} 
+            />
           ) : (
             <></>
           )}
         </div>
       </section>
-      <div className=" dark:bg-gray-900 dark:text-white">
-        
-     </div>
     </>
   );
 };

@@ -1,9 +1,15 @@
 import React from 'react'
 import FilterOption from '../SearchFilter/FilterOption'
 import { MovieList } from '../Movie/MovieList'
+import { Segmented } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/redux/store'
+import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 
 
 export const SearchResult = ({ query,movies }: { query?: string, movies:any }) => {
+  const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
+  const dispatch = useDispatch()
     return (
     <div className='container mx-auto'>
      
@@ -11,6 +17,7 @@ export const SearchResult = ({ query,movies }: { query?: string, movies:any }) =
         
            {query && <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>}
             <FilterOption/>
+           
 
             
       

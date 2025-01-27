@@ -5,6 +5,7 @@ import { Tag, Tooltip } from "antd";
 import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
 import { CustomTag } from "../Common/CustomTag";
+import MovieCard from "./MovieCard";
 
 interface MovieListProps {
   movies: any[];
@@ -70,44 +71,10 @@ export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps)
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-4">
-        {movieList?.map((movie, index) => {
-          return (
-            <div key={index} className="flex flex-col items-start gap-4 rounded-md bg-white p-4 shadow-lg dark:bg-gray-800">
-              <Link href={`watch/${movie?.mediaType}/${movie.id}`} className="flex items-center space-x-2 hover:text-blue-600">
-                <img
-                  src={`http://image.tmdb.org/t/p/w500/${movie?.posterPath}`}
-                  alt={movie?.displayTitle}
-                  loading="lazy"
-                  className="h-60 w-80 rounded-md object-cover" // Increased height
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg"; // Fallback image
-                    e.currentTarget.onerror = null; // Prevent infinite loop in case fallback image is also not found
-                  }}
-                />
-              </Link>
-              <div className="w-100">
-                <h3 className="text-lg font-bold">
-                  <Tooltip title={movie?.displayTitle}>
-                    {truncateString(movie?.displayTitle, 36)}
-                  </Tooltip>
-                </h3>
-                <div className="flex items-center space-x-4">
-                  <p className="text-sm">{new Date(movie?.displayReleaseDate).getFullYear()}</p>
-
-                  <p className="flex items-center text-sm">
-                    <FaStar className="mb-1 inline text-yellow-500" />{" "}
-                    {Number(movie?.voteAverage.toFixed(1))}
-                  </p>
-                  <p className="text-sm">
-                  <CustomTag text={movie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"} />
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-4">
+      {movieList?.map((movie) => (
+        <MovieCard key={movie.id} movie={movie} />
+      ))}
       </div>
     </>
   );

@@ -9,6 +9,7 @@ import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getTrending } from '@/services/MovieService'
 import ErrorMessage from '../Common/ErrorMessage'
+import SectionHeader from '../Common/SectionHeader'
 
 export const Trending = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
@@ -47,12 +48,12 @@ export const Trending = () => {
 
   return (
     <>
-      <h2 className="text-2xl font-bold pb-2">Trending</h2>
+      <SectionHeader className="pb-4 pt-2" text="Trending"/>
       <Segmented
         size="large"
         value={mediaType}
         options={['All', 'Movie', 'TV']}
-        className="custom-segmented"
+        className="custom-segmented mb-2"
         onChange={(value) => dispatch(setMediaType(value))}
       />
       {isLoading ? (

@@ -77,7 +77,7 @@ const MyNav = () => {
             </button>
 
             <Link
-              href="/"
+              href="/home"
               className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
             >
               <SiteName />

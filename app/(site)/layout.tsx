@@ -44,7 +44,7 @@ export default function RootLayout({
             <NextTopLoader showSpinner={false} />
             <QueryClientProvider client={queryClient}>
               {children}
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+              <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
             <Footer />
 

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { FilterOutlined, DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setGenres, setCountries, setYears, setSortBy } from "@/redux/movies/advanceSearchSlice";
+import { setGenres, setCountries, setYears, setSortBy, setMediaType } from "@/redux/movies/advanceSearchSlice";
+import { Segmented } from "antd";
 
 const FilterOption = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -12,7 +13,8 @@ const FilterOption = () => {
     countries: searchCountries, 
     genres: searchGenres, 
     years: searchYears, 
-    sortBy 
+    sortBy ,
+    mediaType
   } = useSelector((state: RootState) => state.advanceSearch);
 
   // Prepare options for countries, genres, years, and sort
@@ -134,6 +136,14 @@ const FilterOption = () => {
         {renderDropdown("year", yearOptions, searchYears)}
         {renderDropdown("sort", sortOptions, sortBy)}
       </div>
+
+       <Segmented
+              size="large"
+              value={mediaType}
+              options={['Movie', 'TV']}
+              className="custom-segmented mb-1 mt-4"
+              onChange={(value) => dispatch(setMediaType(value))}
+            />
     </div>
   );
 };

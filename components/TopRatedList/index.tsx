@@ -49,12 +49,12 @@ export const TopRatedList = () => {
 
   return (
     <>
-      <SectionHeader className="pb-4 pt-4" text="Top Rated Movies/TV Series"/>
+      <SectionHeader className="pb-4 pt-2" text="Top Rated Movies/TV Series"/>
       <Segmented
         size="large"
         value={mediaType}
         options={['Movie', 'TV']}
-        className="custom-segmented"
+        className="custom-segmented mb-2"
         onChange={(value) => dispatch(setMediaType(value))}
       />
       {isLoading ? (
