@@ -8,7 +8,7 @@ import { Segmented } from "antd";
 const FilterOption = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const dispatch = useDispatch();
-  const { countries, genres, languages } = useSelector((state: any) => state.filters);
+  const {  genres } = useSelector((state: any) => state.filters);
   const { 
     countries: searchCountries, 
     genres: searchGenres, 
@@ -115,7 +115,7 @@ const FilterOption = () => {
                 onClick={() => toggleSelection(type, option.value)}
                 className={`p-2 cursor-pointer  text-white text-sm
                   ${isGridLayout ? 'text-center flex items-center justify-center' : ''}
-                  ${selectedValue === option.value ? 'bg-blue-500' : 'hover:bg-gray-700'}  // Highlight selected item
+                  ${selectedValue === option.value ? 'bg-primary' : 'hover:bg-gray-700'}  // Highlight selected item
                 `}
               >
                 {option.label}

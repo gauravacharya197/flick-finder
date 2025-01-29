@@ -12,7 +12,7 @@ const MovieCarousel = ({ movies, title }) => {
   const swiperRef = useRef<any>(null);
 
   return (
-    <div className="container mx-auto px-4 lg:px-8 py-8 md:py-12">
+    <div className="container mx-auto px-4 lg:px-8 py-8 ">
       {title && (
         <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
           <span>{title}</span>

@@ -84,7 +84,7 @@ pre {
 }
 /* Webkit (Chrome, Safari, newer versions of Opera) */
 ::-webkit-scrollbar {
-  width: 4px; /* Thin scrollbar */
+  width: 1px !important; /* Thin scrollbar */
 }
 
 ::-webkit-scrollbar-track {
@@ -92,12 +92,12 @@ pre {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10B981; /* Tailwind primary color (emerald-500), adjust as needed */
+  background: var(--tw-primary); /* Tailwind primary color (emerald-500), adjust as needed */
   border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #059669; /* Slightly darker shade on hover */
+  background: var(--tw-primary-600); /* Slightly darker shade on hover */
 }
 /* CSS */
 .ant-skeleton-element {
@@ -106,5 +106,5 @@ pre {
 /* Firefox scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #10B981 #1f2937;
+  scrollbar-color: var(--tw-primary) #1f2937;
 }

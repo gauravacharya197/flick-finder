@@ -10,7 +10,7 @@ import { SiteName } from "../Common/SiteName";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 
 const MyNav = () => {
@@ -19,6 +19,8 @@ const MyNav = () => {
   const { query } = useSelector((state: RootState) => state.advanceSearch);
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
 
 
   const handleSearch = (e) => {
@@ -28,7 +30,12 @@ const MyNav = () => {
   };
   const handleClose = () => {
     
-    //router.push("/results");
+    const query = searchParams.get("query");
+
+    // Only navigate to /results if there is a query
+    if (query) {
+      router.push("/results");
+    }
     
     setShowSearch(false);
     dispatch(setQuery(""));
@@ -108,7 +115,7 @@ const MyNav = () => {
                 )}
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-teal-400"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-primary-400"
                   aria-label="Search"
                 >
                   <FaSearch className="h-4.5 w-4.5 text-2xl" />

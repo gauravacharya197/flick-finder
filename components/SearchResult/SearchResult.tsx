@@ -8,7 +8,6 @@ import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 
 
 export const SearchResult = ({ query,movies }: { query?: string, movies:any }) => {
-  const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
     return (
     <div className='container mx-auto'>

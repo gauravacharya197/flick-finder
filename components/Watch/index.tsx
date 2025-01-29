@@ -104,12 +104,13 @@ const Watch = () => {
                   ? movie.videoSource
                   : baseUrl + "?source=" + movie.videoSource
                 : constructUrl(
-                    "https://moviesapi.club",
-                    mediaType,
-                    imdbID,
-                    selectedSeason,
-                    selectedEpisode,
-                  )
+                  "https://embed.su/embed",
+                  mediaType,
+                  imdbID,
+                  selectedSeason,
+                  selectedEpisode,
+                  "/",
+                )
             }
           />
         );
@@ -128,15 +129,25 @@ const Watch = () => {
         );
       case 3:
         return (
-          <VideoPlayer
-            sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${
-              imdbID.toString()?.startsWith("t") ? "" : "&tmdb=1"
-            } ${
-              mediaType == "tv"
-                ? `&s=${selectedSeason}&e=${selectedEpisode}`
-                : ""
-            }`}
+           <VideoPlayer
+           sourceUrl={constructUrl(
+            "https://moviesapi.club",
+            mediaType,
+            imdbID,
+            selectedSeason,
+            selectedEpisode,
+          )}
           />
+
+          // <VideoPlayer
+          //   sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${
+          //     imdbID.toString()?.startsWith("t") ? "" : "&tmdb=1"
+          //   } ${
+          //     mediaType == "tv"
+          //       ? `&s=${selectedSeason}&e=${selectedEpisode}`
+          //       : ""
+          //   }`}
+          // />
         );
       case 4:
         return (
@@ -163,22 +174,14 @@ const Watch = () => {
           {/* Left Column */}
           <div className="col-span-2 rounded-lg">
             {isLoading ? (
-              <Skeleton
-                active
-                paragraph={{
-                  rows: 10,
-                  width: [
-                    "100%",
-                    "100%",
-                    "100%",
-                    "100%",
-                    "50%",
-                    "50%",
-                    "50%",
-                    "50%",
-                  ],
-                }}
-              />
+              <div key={1} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/50 p-3">
+              <Skeleton className="h-24 w-16 rounded-md" />
+              <div className="space-y-2 flex-1">
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="h-6 w-24" />
+              </div>
+            </div>
             ) : isError ? (
               <ErrorMessage
                 className="mt-2 w-full"
@@ -196,13 +199,13 @@ const Watch = () => {
                     <button
                       key={server}
                       onClick={() => setSelectedServer(server)}
-                      className={`rounded px-4 py-2 ${
+                      className={`rounded px-4 py-2 text-sm md:text-lg ${
                         selectedServer === server
                           ? "bg-primary"
-                          : "bg-teal-500/35"
+                          : "bg-primary-600"
                       } text-white`}
                     >
-                      Server {server}
+                      Player {server}
                     </button>
                   ))}
                 </div>

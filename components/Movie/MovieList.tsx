@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
 import { CustomTag } from "../Common/CustomTag";
 import MovieCard from "./MovieCard";
+import { Rating } from "../Common/Rating";
 
 interface MovieListProps {
   movies: any[];
@@ -41,15 +42,20 @@ export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps)
             <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-black bg-opacity-50 p-4">
               <h1 className="text-4xl font-bold text-white">{featuredMovieTitle}</h1>
               <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded bg-gray-800 px-2 py-1 text-white">
-                  {featuredMovie?.genreIds
-                    ?.map((x: string) => {
-                      const genre = genresData.find((y: any) => y.externalId === x);
-                      return genre ? genre.name : "";
-                    })
-                    .filter((name) => name)
-                    .join(", ")}
-                </span>
+              {featuredMovie?.genreIds
+    ?.map((x: string) => {
+      const genre = genresData.find((y: any) => y.externalId === x);
+      return genre ? genre.name : "";
+    })
+    .filter((name) => name)
+    .map((genreName, index) => (
+      <span
+        key={index}
+        className="rounded bg-gray-800 px-2 py-1 text-white"
+      >
+        {genreName}
+      </span>
+    ))}
                 <span className="rounded bg-gray-800 px-2 py-1 text-white">
                   {new Date(featuredMovieRelease).getFullYear()}{" "}
                 </span>
@@ -61,10 +67,8 @@ export const MovieList = ({ movies, showFeaturedMovie = false }: MovieListProps)
                   <CustomTag text={featuredMovie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"} />
                 </span>
 
-                <span className="rounded bg-gray-800 px-2 py-1 text-white">
-                  <FaStar className="mb-1 inline text-yellow-500" />{" "}
-                  {Number(featuredMovie?.voteAverage?.toFixed(1))}
-                </span>
+                  <Rating voteAverage={featuredMovie?.voteAverage}/>
+                
               </div>
             </div>
           </Link>

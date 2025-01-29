@@ -29,8 +29,12 @@ module.exports = {
         black: "#181C31",
         blackho: "#2C3149",
         blacksection: "#1C2136",
-        primary: "rgb(20 184 166)",
-        primaryho: "rgb(112, 184, 176)",
+        primary: {
+          400: "#2dd4bf",
+          500: "#14b8a6",
+          600: "rgba(20, 184, 166, 0.35)",
+          DEFAULT: "#14b8a6",
+        },
         meta: "#20C5A8",
         waterloo: "#757693",
         manatee: "#999AA1",
@@ -143,5 +147,16 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addBase, theme }) {
+      addBase({
+        ":root": {
+          "--tw-primary": theme("colors.primary"),
+        },
+        ".dark": {
+          "--tw-primary": theme("colors.primary.400"), // Adjust for dark mode
+        },
+      });
+    },
+  ],
 };

@@ -81,7 +81,7 @@ const ResultsPage = ({ searchParams }: { searchParams: { query?: string } }) => 
             
             {hasNextPage && (
               <div ref={observerRef} className="loading-indicator">
-                {isFetching && <h1>LOADING</h1>}
+                {isFetching && <h1 className='mt-2'>Loading</h1>}
               </div>
             )}
             {!hasNextPage && (

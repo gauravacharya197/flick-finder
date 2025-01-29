@@ -17,6 +17,7 @@ import { MyApp } from "./MyApp";
 import store from "@/redux/store";
 
 import NextTopLoader from "nextjs-toploader";
+import { Suspense } from "react";
 
 export default function RootLayout({
   children,
@@ -37,9 +38,11 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="dark"
           >
-            <MyApp/>
+            <MyApp />
+            <Suspense fallback={<></>}>
+              <Header />
+            </Suspense>
 
-            <Header />
             <ToasterContext />
             <NextTopLoader showSpinner={false} />
             <QueryClientProvider client={queryClient}>
