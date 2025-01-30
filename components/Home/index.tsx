@@ -99,7 +99,7 @@ const Home = () => {
                     value={cachedData?.searchText || ''}
                     onChange={handleInputChange}
                     placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
-                    className="max-w-md w-auto sm:w-full rounded border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+                    className="max-w-md w-auto sm:w-full rounded border border-stroke px-3 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
                   />
                   
                   <button
