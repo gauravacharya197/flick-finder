@@ -104,12 +104,11 @@ const Watch = () => {
                   ? movie.videoSource
                   : baseUrl + "?source=" + movie.videoSource
                 : constructUrl(
-                  "https://embed.su/embed",
+                  "https://moviesapi.club",
                   mediaType,
                   imdbID,
                   selectedSeason,
                   selectedEpisode,
-                  "/",
                 )
             }
           />
@@ -118,7 +117,7 @@ const Watch = () => {
         return (
           <VideoPlayer
             sourceUrl={constructUrl(
-              "https://vidlink.pro",
+              "https://embed.su/embed",
               mediaType,
               imdbID,
               selectedSeason,
@@ -131,11 +130,12 @@ const Watch = () => {
         return (
            <VideoPlayer
            sourceUrl={constructUrl(
-            "https://moviesapi.club",
+            "https://vidlink.pro",
             mediaType,
             imdbID,
             selectedSeason,
             selectedEpisode,
+            "/",
           )}
           />
 
@@ -175,11 +175,11 @@ const Watch = () => {
           <div className="col-span-2 rounded-lg">
             {isLoading ? (
               <div key={1} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/50 p-3">
-              <Skeleton className="h-24 w-16 rounded-md" />
+              <Skeleton active className="h-24 w-16 rounded-md" />
               <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-                <Skeleton className="h-6 w-24" />
+                <Skeleton active className="h-4 w-3/4" />
+                <Skeleton active className="h-3 w-1/2" />
+                <Skeleton active className="h-6 w-24" />
               </div>
             </div>
             ) : isError ? (
@@ -199,7 +199,7 @@ const Watch = () => {
                     <button
                       key={server}
                       onClick={() => setSelectedServer(server)}
-                      className={`rounded px-4 py-2 text-sm md:text-lg ${
+                      className={`rounded px-4 py-2 text-sm  ${
                         selectedServer === server
                           ? "bg-primary"
                           : "bg-primary-600"

@@ -7,14 +7,18 @@ import { Alert, Segmented, Skeleton } from 'antd'
 import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { getTopRated, getTrending } from '@/services/MovieService'
+import { discover, getTopRated, getTrending } from '@/services/MovieService'
 import SectionHeader from '../Common/SectionHeader'
 import ErrorMessage from '../Common/ErrorMessage'
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter'
 
-export const TopRatedList = () => {
+export const Genre = ({value}) => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
-
+  const {  genres } = useSelector((state: any) => state.filters);
+  
+  const genre = genres.find(x => x.name.toLowerCase() === value.toLowerCase());
+  const genreId = genre ? genre.externalId : null;
   const {
     error,
     isError,
@@ -24,18 +28,19 @@ export const TopRatedList = () => {
     isFetching,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['top-rated', mediaType],
+    queryKey: ['genre', mediaType],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await getTopRated(mediaType, pageParam.toString())
+      const response = await discover(pageParam,'','',genreId,'',mediaType,'popularity.desc')
       return response
     },
+    //enabled :genreId? true:false,
     getNextPageParam: (lastPage, pages) => {
       const totalPages = lastPage.data.totalPages
       const currentPage = pages.length
       return currentPage < totalPages ? currentPage + 1 : undefined
     },
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 30, // Cache the data for 5 minutes (300,000 ms)
+    //staleTime: 1000 * 60 * 30, // Cache the data for 5 minutes (300,000 ms)
     retry:0
   })
 
@@ -49,7 +54,7 @@ export const TopRatedList = () => {
 
   return (
     <>
-      <SectionHeader className="pb-4 pt-2" text="Top Rated Movies/TV Series"/>
+      <SectionHeader className="pb-4 pt-2" text={capitalizeFirstLetter(value)}/>
       <Segmented
         size="large"
         value={mediaType}

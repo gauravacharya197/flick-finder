@@ -1,6 +1,6 @@
 import React from "react";
 import { Input, Button, Card } from "antd";
-import { SingleMovieCard } from "./SingleMovieCard";
+import SingleMovieCard from "./SingleMovieCard";
 
 const AISuggestedMovies = ({movies}) => {
   

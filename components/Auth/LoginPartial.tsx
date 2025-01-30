@@ -37,12 +37,12 @@ const LoginPartial = () => {
 
   return (
     <>
-      {isLoggedIn ? (
+      {!isLoggedIn ? (
   <div className="relative">
     {/* Desktop View */}
     <div className="hidden md:block group relative">
-      <button className="flex cursor-pointer items-center justify-between gap-3 hover:text-primary">
-        <UserOutlined color="white"/>
+      <button className="flex cursor-pointer items-center justify-between gap-3 text-primary hover:text-primary-600">
+        <UserOutlined />
         <span>
           <svg
             className="h-3 w-3 cursor-pointer fill-waterloo group-hover:fill-primary transition-colors"
@@ -106,7 +106,7 @@ const LoginPartial = () => {
 ) : (
   <Link
   href="/auth/login"
-  className="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-black transition dark:border-primary dark:text-primary dark:hover:bg-teal-600 dark:hover:text-black"
+  className="flex items-center text-sm md:text-lg gap-2 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-black transition dark:border-primary dark:text-primary dark:hover:bg-teal-600 dark:hover:text-black"
 >
   Login
 </Link>

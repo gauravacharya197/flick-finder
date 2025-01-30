@@ -2,18 +2,22 @@
 
 import MovieCarousel from '@/components/Common/MovieCarousel';
 import FeaturedMovie from '@/components/Movie/FeaturedMovie';
+import GenreGrid from '@/components/SearchFilter/GenreGrid';
 import { siteConfig } from '@/config/siteConfig';
 import useMetadata from '@/hooks/useMetaData';
 import { RootState } from '@/redux/store';
 import { discover } from '@/services/MovieService';
 import { useQuery } from '@tanstack/react-query';
-import { Skeleton } from 'antd';
+import { Skeleton  } from 'antd';
 import { useSelector } from 'react-redux';
 const MovieHomepage = () => {
   useMetadata(siteConfig.siteName, '');
   
   const { countries, genres, years, sortBy, mediaType } = useSelector(
     (state: RootState) => state.advanceSearch
+  );
+  const { genres : genreFilters } = useSelector(
+    (state: RootState) => state.filters
   );
 
   const { data, isLoading, isError } = useQuery({
@@ -45,8 +49,8 @@ const MovieHomepage = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
       {isLoading ? (
-        <div className="w-full h-[60vh]">
-          <Skeleton className="w-full h-full" />
+        <div className="container mx-auto px-4 lg:px-8 py-8 ">
+          <Skeleton active className="w-full h-full" />
         </div>
       ) : (
         <FeaturedMovie movie={featuredMovie} />
@@ -54,11 +58,11 @@ const MovieHomepage = () => {
 
       {/* Trending Section with Carousel */}
       {isLoading ? (
-        <div className="p-8">
-          <Skeleton className="h-8 w-48 mb-4" />
+        <div className="container mx-auto px-4 lg:px-8 py-8 ">
+          <Skeleton active className="h-8 w-48 mb-4" />
           <div className="flex gap-4">
             {[...Array(5)].map((_, index) => (
-              <Skeleton
+              <Skeleton active
                 key={index}
                 className="w-[200px] h-[300px] rounded-lg"
               />
@@ -75,11 +79,11 @@ const MovieHomepage = () => {
 
       {/* New Releases Carousel */}
       {isLoading ? (
-        <div className="p-8">
-          <Skeleton className="h-8 w-48 mb-4" />
+        <div className="container mx-auto px-4 lg:px-8 py-8 ">
+          <Skeleton active className="h-8 w-48 mb-4" />
           <div className="flex gap-4">
             {[...Array(5)].map((_, index) => (
-              <Skeleton
+              <Skeleton active
                 key={index}
                 className="w-[200px] h-[300px] rounded-lg"
               />
@@ -93,6 +97,10 @@ const MovieHomepage = () => {
           title="This week popular"
         />
       )}
+          <div className="container mx-auto px-4 lg:px-8 py-8 ">
+
+      <GenreGrid genres={genreFilters}/>
+      </div>
     </div>
   );
 };

@@ -84,7 +84,7 @@ const FilterOption = () => {
     const isGridLayout = options.length > 10;
 
     return (
-      <div className="relative w-full md:w-60">
+      <div className="relative w-full md:w-full">
         {/* Dropdown button */}
         <button
           onClick={() => toggleDropdown(type)}
@@ -130,7 +130,7 @@ const FilterOption = () => {
   return (
     <div className="flex flex-col items-start w-full mt-1 overflow-visible">
       {/* Filter Options Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-5  w-full">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 w-full">
         {renderDropdown("genre", genreOptions, searchGenres)}
         {renderDropdown("country", countryOptions, searchCountries)}
         {renderDropdown("year", yearOptions, searchYears)}

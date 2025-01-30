@@ -1,3 +1,4 @@
+import { Tooltip } from "antd";
 
 
 const CastCard = ({ imgSrc, name, role }) => {
@@ -17,12 +18,14 @@ const CastCard = ({ imgSrc, name, role }) => {
           
         />
       </div>
-      <div className="p-4  text-white">
-        <h3 className="mb-1 truncate text-lg font-semibold leading-tight">
-          {name}
-        </h3>
-        <p className="truncate text-sm text-gray-50">{role}</p>
-      </div>
+      <Tooltip title={`${name} as ${role}`} placement="top">
+        <div className="p-4  text-white">
+          <h3 className="mb-1 truncate text-lg font-semibold leading-tight">
+            {name}
+          </h3>
+          <p className="truncate text-sm text-gray-50">{role}</p>
+        </div>
+      </Tooltip>
     </div>
     </>
   );

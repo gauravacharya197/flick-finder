@@ -41,7 +41,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
   }
 
   return (
-    <aside className=" -mt-4 w-full max-w-sm px-4">
+    <aside   className=" max-w-sm -mt-4 w-[110%] md:w-[80%] sm:max-w-none">
       {/* className="-mt-4 flex flex-col gap-4 w-full max-w-full" */}
       <SectionHeader text="You might like" />
       
@@ -50,11 +50,11 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
           // Loading skeletons
           [...Array(2)].map((_, i) => (
             <div key={i} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/50 p-3">
-              <Skeleton className="h-24 w-16 rounded-md" />
+              <Skeleton active  className="h-24 w-16 rounded-md" />
               <div className="space-y-2 flex-1">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-                <Skeleton className="h-6 w-24" />
+                <Skeleton active className="h-4 w-3/4" />
+                <Skeleton active className="h-3 w-1/2" />
+                <Skeleton active className="h-6 w-24" />
               </div>
             </div>
           ))

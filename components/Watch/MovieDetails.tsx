@@ -36,13 +36,10 @@ const MovieDetails = ({ movie, mediaType }) => {
 
             <div className="mb-4 flex flex-wrap gap-2">
               {movie?.genres?.map((x, index) => (
-                <Tag
-                  key={index}
-                  className="mb-2 px-4 py-1 text-sm"
-                  bordered={false}
-                >
-                  {x.name}
-                </Tag>
+               <CustomTag
+               text={x.name}
+               color="bg-gray-800"
+               small={false}/>
               ))}
             </div>
 

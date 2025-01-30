@@ -4,15 +4,14 @@ import React from "react";
 
 interface CustomTagProps {
   text: string;
-  bordered?: boolean;
+  small?: boolean;
   color?: string;
 }
 
-export const CustomTag: React.FC<CustomTagProps> = ({ text, bordered = false }) => {
+export const CustomTag: React.FC<CustomTagProps> = ({ text, small = true,color="bg-primary" }) => {
   return (
-    <Tag bordered={bordered}   className="bg-primary text-white" // Example: Use the primary color as the background and text color
->
-      {capitalizeFirstLetter(text)}
-    </Tag>
+
+<span className={` rounded ${color} px-2 py-1 ${small? 'text-xs':''}`}>{capitalizeFirstLetter(text)}</span>
+
   );
 };

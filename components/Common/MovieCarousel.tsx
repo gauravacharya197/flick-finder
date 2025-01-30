@@ -32,7 +32,7 @@ const MovieCarousel = ({ movies, title }) => {
           }}
         >
           {movies.map((movie, index) => (
-            <SwiperSlide key={index} className="!w-[160px] sm:!w-[200px] md:!w-[240px] lg:!w-[260px]">
+            <SwiperSlide key={index} className="!w-[170px] sm:!w-[220px] md:!w-[240px] lg:!w-[260px]">
               <MovieCard movie={movie} />
             </SwiperSlide>
           ))}

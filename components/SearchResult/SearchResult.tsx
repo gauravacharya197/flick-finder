@@ -1,10 +1,7 @@
 import React from 'react'
 import FilterOption from '../SearchFilter/FilterOption'
 import { MovieList } from '../Movie/MovieList'
-import { Segmented } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/redux/store'
-import { setMediaType } from '@/redux/movies/advanceSearchSlice'
+import { useDispatch } from 'react-redux'
 
 
 export const SearchResult = ({ query,movies }: { query?: string, movies:any }) => {

@@ -24,7 +24,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
     <div className="group relative overflow-hidden rounded-lg bg-gray-900 transition-transform">
       <Link 
-        href={`watch/${movie.mediaType}/${movie.id}`} 
+        href={`/watch/${movie.mediaType}/${movie.id}`} 
         className="block aspect-[2.2/2.8] w-full overflow-hidden"
       >
         <div className="relative h-full w-full">
@@ -56,7 +56,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             </h3>
           </Tooltip>
           {/* Meta Information */}
-          <div className="flex items-center space-x-3 text-sm text-gray-200">
+          <div className="flex items-center space-x-1.5 text-sm text-gray-200 md:space-x-6">
             {/* Year */}
             <span className="drop-shadow-md">
               {new Date(movie.displayReleaseDate).getFullYear()}

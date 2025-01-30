@@ -4,12 +4,12 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ThemeProvider } from "next-themes";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google"; // Replace Inter with Poppins
 import "../globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"] }); // Configure Poppins
 
 import ToasterContext from "../context/ToastContext";
 import { Provider } from "react-redux";
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <link rel="icon" href="/favicon.ico" />
 
-      <body className={`dark:bg-gray-900 ${inter.className}`}>
+      <body className={`dark:bg-gray-900 ${poppins.className}`}>
         <Provider store={store}>
           <ThemeProvider
             enableSystem={false}
