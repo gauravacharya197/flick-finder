@@ -56,25 +56,36 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             </h3>
           </Tooltip>
           {/* Meta Information */}
-          <div className="flex items-center space-x-1.5 text-sm text-gray-200 md:space-x-6">
-            {/* Year */}
-            <span className="drop-shadow-md">
-              {new Date(movie.displayReleaseDate).getFullYear()}
-            </span>
-            {/* Divider */}
-            <span className="h-4 w-px bg-gray-700" />
-            {/* Rating */}
-            <div className="flex items-center space-x-1">
-              <FaStar className="text-yellow-500 drop-shadow-md" />
-              <span className="drop-shadow-md">{Number(movie.voteAverage.toFixed(1))}</span>
-            </div>
-            {/* Divider */}
-            <span className="h-4 w-px bg-gray-700" />
-            {/* Media Type */}
-            <CustomTag 
-              text={movie.mediaType.toLowerCase() === "movie" ? "Movie" : "TV"} 
-            />
-          </div>
+          <div className="flex items-center justify-center space-x-2 text-sm text-gray-200 xl:space-x-5 2xl:space-x-8">
+      {/* Wrapper to ensure equal width and centered alignment */}
+      <div className="flex items-center justify-center w-16 text-center">
+        <span className="drop-shadow-md">
+          {new Date(movie.displayReleaseDate).getFullYear()}
+        </span>
+      </div>
+
+      {/* Divider */}
+      <span className="h-4 w-px bg-gray-700" />
+
+      {/* Rating Container */}
+      <div className="flex items-center justify-center w-16 space-x-1">
+        <FaStar className="text-yellow-500 drop-shadow-md" />
+        <span className="drop-shadow-md">
+          {Number(movie.voteAverage.toFixed(1))}
+        </span>
+      </div>
+
+      {/* Divider */}
+      <span className="h-4 w-px bg-gray-700" />
+
+      {/* Media Type Container */}
+      <div className="flex items-center justify-center w-16">
+        <CustomTag 
+          text={movie.mediaType.toLowerCase() === "movie" ? "Movie" : "TV"} 
+        />
+      </div>
+    </div>
+
         </div>
       </div>
     </div>

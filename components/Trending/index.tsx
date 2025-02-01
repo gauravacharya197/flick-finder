@@ -35,7 +35,8 @@ export const Trending = () => {
       return currentPage < totalPages ? currentPage + 1 : undefined
     },
     initialPageParam: 1,
-    staleTime: 1000 * 60 * 5, // Cache the data for 5 minutes (300,000 ms)
+    staleTime: 1000 * 60 * 60 * 24, // Cache the data for 1day 
+
   })
 
   const observerRef = useInfiniteScroll({

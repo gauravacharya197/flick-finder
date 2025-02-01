@@ -30,7 +30,12 @@ export const Genre = ({value}) => {
   } = useInfiniteQuery({
     queryKey: ['genre', mediaType],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await discover(pageParam,'','',genreId,'',mediaType,'popularity.desc')
+      const response = await discover({
+        pageNumber: pageParam,
+        genre: genreId,
+        mediaType: mediaType,
+        sortBy: 'popularity.desc'
+      });
       return response
     },
     //enabled :genreId? true:false,

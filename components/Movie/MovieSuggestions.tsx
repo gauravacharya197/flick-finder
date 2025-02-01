@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Button, Card } from "antd";
 import SingleMovieCard from "./SingleMovieCard";
 
-const AISuggestedMovies = ({movies}) => {
+const MovieSuggestions = ({movies}) => {
   
 
   return (
@@ -21,4 +21,4 @@ const AISuggestedMovies = ({movies}) => {
   );
 };
 
-export default AISuggestedMovies;
+export default MovieSuggestions;

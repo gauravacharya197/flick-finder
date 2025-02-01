@@ -169,7 +169,7 @@ const Login = ({ code }: { code?: string }) => {
                   placeholder="Email"
                   {...register("email", { required: "Email is required" })}
                   type="email"
-                  className="w-full border-b border-stroke !bg-white pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:!bg-black dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
                 {errors.email && (
                   <p className="text-red-500">
@@ -188,7 +188,7 @@ const Login = ({ code }: { code?: string }) => {
                   type="password"
                   placeholder="Password"
                   
-                  className="w-full border-b border-stroke !bg-white pb-3.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:!bg-black dark:focus:border-manatee dark:focus:placeholder:text-white lg:w-1/2"
+                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
                 />
                  {errors.password && (
                   <p className="text-red-500">

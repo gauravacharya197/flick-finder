@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter } from "react-icons/fa";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdMenu, MdMenuBook } from "react-icons/md";
 import ThemeToggler from "./ThemeToggler";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
@@ -12,6 +12,8 @@ import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
+import { FaMarsAndVenus } from "react-icons/fa6";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,7 +22,6 @@ const MyNav = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
-
 
 
   const handleSearch = (e) => {
@@ -40,6 +41,15 @@ const MyNav = () => {
     setShowSearch(false);
     dispatch(setQuery(""));
   };
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuContentRef = useRef<HTMLDivElement>(null);
+
+  // Using our custom hook
+  useClickOutside(
+    [menuButtonRef as any, menuContentRef as any],
+    () => setMenuOpen(false),
+    menuOpen
+  );
   
   const renderFilterButton = () => {
     return (
@@ -59,28 +69,34 @@ const MyNav = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
-          <div className="flex items-center gap-4">
+          {/* Hamburger Menu and Site Name */}
+          <div className="flex items-center gap-4 relative"> {/* Added relative positioning */}
             <button
+              ref={menuButtonRef}
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
               onClick={() => {
                 setMenuOpen(!menuOpen);
               }}
               aria-label="Toggle Menu"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 5.75h16.5M3.75 12h16.5m-16.5 6.25h16.5"
-                />
-              </svg>
+              {!menuOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 5.75h16.5M3.75 12h16.5m-16.5 6.25h16.5"
+                  />
+                </svg>
+              ) : (
+                <MdClose className="w-6 h-6" />
+              )}
             </button>
 
             <Link
@@ -89,7 +105,34 @@ const MyNav = () => {
             >
               <SiteName />
             </Link>
+
+            {/* Hamburger Menu Content - Repositioned */}
+            <div
+              ref={menuContentRef}
+              className={`absolute left-0 top-full z-40 overflow-hidden rounded-md bg-black bg-opacity-95 shadow-lg backdrop-blur-sm transition-all duration-300 dark:bg-gray-900 ${
+                menuOpen
+                  ? "visible translate-y-0 opacity-100"
+                  : "invisible -translate-y-2 opacity-0"
+              }`}
+            >
+              <div className="flex flex-col">
+                <ul className="space-y-3">
+                  {menuData.map((item, index) => (
+                    <li key={item.id} className={index === 0 ? "pt-3" : ""}>
+                      <Link
+                        href={item.path || "#"}
+                        className="block px-4 py-1 text-white hover:bg-gray-800 hover:text-primary dark:hover:bg-gray-700 dark:hover:text-primary"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
+            
 
           {/* Search Bar for Larger Screens */}
           <div className="mr-15 hidden flex-1 items-center justify-center gap-2 md:flex">
@@ -133,13 +176,13 @@ const MyNav = () => {
             >
               <FaSearch className="h-5 w-5 text-primary" />
             </button>
-            <ThemeToggler />
+            {/* <ThemeToggler /> */}
             <LoginPartial />
           </div>
 
           {/* Large Screen Layout */}
           <div className="hidden items-center gap-4 md:flex">
-            <ThemeToggler />
+            {/* <ThemeToggler /> */}
             <LoginPartial />
           </div>
         </div>
@@ -178,27 +221,7 @@ const MyNav = () => {
           </div>
         </div>
       )}
-      {/* Hamburger Menu Content */}
-
-      <nav className={`text-white ${menuOpen ? "block" : "hidden"}`}>
-        <div className="container mx-auto px-4">
-          <ul
-            className="flex flex-col items-start space-y-2 p-4"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuData.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.path || "#"}
-                  className="hover:text-primary dark:hover:text-primary"
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </nav>
+      
     </header>
   );
 };

@@ -18,8 +18,8 @@ const CastCard = ({ imgSrc, name, role }) => {
           
         />
       </div>
-      <Tooltip title={`${name} as ${role}`} placement="top">
-        <div className="p-4  text-white">
+      <Tooltip title={role ? `${name} as ${role}` : name} placement="top">
+      <div className="p-4  text-white">
           <h3 className="mb-1 truncate text-lg font-semibold leading-tight">
             {name}
           </h3>

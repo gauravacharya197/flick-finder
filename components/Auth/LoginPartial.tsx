@@ -37,7 +37,7 @@ const LoginPartial = () => {
 
   return (
     <>
-      {!isLoggedIn ? (
+      {isLoggedIn ? (
   <div className="relative">
     {/* Desktop View */}
     <div className="hidden md:block group relative">
@@ -60,9 +60,7 @@ const LoginPartial = () => {
         <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
           <Link href="/watchlist" className="block w-full">Watchlist</Link>
         </li>
-        <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
-          <Link href="/seen" className="block w-full">Seen</Link>
-        </li>
+       
         <li className="px-4 py-2 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300">
           <a href="#" onClick={handleLogout} className="block w-full">Logout</a>
         </li>
@@ -106,7 +104,7 @@ const LoginPartial = () => {
 ) : (
   <Link
   href="/auth/login"
-  className="flex items-center text-sm md:text-lg gap-2 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-black transition dark:border-primary dark:text-primary dark:hover:bg-teal-600 dark:hover:text-black"
+  className="flex items-center text-sm 2xl:text-lg gap-2 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-black transition dark:border-primary dark:text-primary dark:hover:bg-teal-600 dark:hover:text-black"
 >
   Login
 </Link>

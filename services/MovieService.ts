@@ -22,28 +22,31 @@ export const getSimilarMovies = async (id:string,mediaType:string) => {
 export const getFilters = async () => {
   return await apiClient.get(`${baseUrl}api/Filters`)
 };
-export const discover = async (pageNumber=1, keyword = '',
-  country = '',
-  genre = '',
-  year = '',
-  mediaType='',
-sortBy='') => {
-  // Destructure filters with default values as null
-
-
-  // Construct query parameters
+export const discover = async (options: {
+  pageNumber?: number;
+  keyword?: string;
+  country?: string;
+  genre?: string;
+  year?: number;
+  mediaType?: string;
+  sortBy?: string;
+} = {}) => {
   const params = new URLSearchParams();
- params.append("pageNumber", pageNumber.toString());
 
-  if (keyword) params.append("keyword", keyword);
-  if (country) params.append("country", country);
-  if (genre) params.append("genre", genre);
-  if (year) params.append("year", year);
+  // Set default pageNumber if not provided
+  params.append("pageNumber", (options.pageNumber || 1).toString());
 
-  if (mediaType) params.append("mediaType", mediaType);
-  if (sortBy) params.append("sortBy", sortBy);
+  if (options.keyword) params.append("keyword", options.keyword);
+  if (options.country) params.append("country", options.country);
+  if (options.genre) params.append("genre", options.genre);
 
+  // Ignore year if sortBy is 'upcoming' or 'primary_release_date.desc'
+  if (options.sortBy !== 'upcoming' && options.sortBy !== 'primary_release_date.desc' && options.year) {
+    params.append("year", options.year.toString());
+  }
 
-  // Call the API with query parameters
+  if (options.mediaType) params.append("mediaType", options.mediaType);
+  if (options.sortBy) params.append("sortBy", options.sortBy);
+
   return await apiClient.get(`${baseUrl}api/movies/discover?${params.toString()}`);
 };

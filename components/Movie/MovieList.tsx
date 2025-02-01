@@ -10,7 +10,7 @@ import { Rating } from "../Common/Rating";
 
 interface MovieListProps {
   movies: any[];
-  showFeaturedMovie?: boolean; // Optional prop to control the featured movie display
+  showFeaturedMovie?: boolean; // Optional prop 
 }
 
 export const MovieList = ({

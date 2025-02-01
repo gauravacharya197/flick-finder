@@ -46,7 +46,7 @@ export default function RootLayout({
             <ToasterContext />
             <NextTopLoader showSpinner={false} />
             <QueryClientProvider client={queryClient}>
-              {children}
+             <div className=" min-h-screen"> {children}</div>
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
             <Footer />

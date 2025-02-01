@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import AISuggestedMovies from "../Movie/AISuggestedMovies";
 import { FaSearch } from "react-icons/fa";
 import { getRecommendation } from '@/services/MovieService';
 import { Spin } from 'antd';
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
+import MovieSuggestions from '../Movie/MovieSuggestions';
 
 const QUERY_KEY = ['movieSearch'] as const;
 
@@ -129,7 +129,7 @@ const Home = () => {
               <br />
             </div>
           ) : data?.data?.length > 0 || mutation.data?.data?.length > 0 ? (
-            <AISuggestedMovies 
+            <MovieSuggestions 
               movies={data?.data || mutation.data?.data || []} 
             />
           ) : (

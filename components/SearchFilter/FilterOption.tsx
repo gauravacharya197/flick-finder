@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { RefObject, useRef, useState } from "react";
 import { FilterOutlined, DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setGenres, setCountries, setYears, setSortBy, setMediaType } from "@/redux/movies/advanceSearchSlice";
 import { Segmented } from "antd";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const FilterOption = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -52,17 +53,32 @@ const FilterOption = () => {
   }));
 
   const sortOptions = [
-    { value: 'vote_count.desc', label: 'Top Rated' },
+ 
     { value: 'popularity.desc', label: 'Most Popular' },
     { value: 'primary_release_date.desc', label: 'Most Recent' },
+    { value: 'vote_count.desc', label: 'Top Rated' },
+    { value: 'revenue.desc', label: 'Top Grossing' },
     { value: 'upcoming', label: 'Upcoming Releases' },
     { value: 'original_title.asc', label: 'A to Z Title' },
   ];
+  const dropdownRefs = {
+    genre: useRef<HTMLDivElement>(null),
+    country: useRef<HTMLDivElement>(null),
+    year: useRef<HTMLDivElement>(null),
+    sort: useRef<HTMLDivElement>(null)
+  };
 
+  // Use click outside hook for all dropdowns
+  useClickOutside(
+    Object.values(dropdownRefs) as RefObject<HTMLElement>[],
+    () => setOpenDropdown(null),
+    openDropdown !== null // Only enable when any dropdown is open
+  );
   // Toggles the dropdown state when clicking on a filter
   const toggleDropdown = (dropdown) => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);
   };
+
 
   // Toggles the selection for each filter type
   const toggleSelection = (type, value) => {
@@ -84,7 +100,7 @@ const FilterOption = () => {
     const isGridLayout = options.length > 10;
 
     return (
-      <div className="relative w-full md:w-full">
+      <div className="relative w-full md:w-full" ref={dropdownRefs[type]}>
         {/* Dropdown button */}
         <button
           onClick={() => toggleDropdown(type)}
