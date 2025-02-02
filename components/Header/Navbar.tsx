@@ -135,7 +135,7 @@ const MyNav = () => {
             
 
           {/* Search Bar for Larger Screens */}
-          <div className="mr-15 hidden flex-1 items-center justify-center gap-2 md:flex">
+          <div className="mr-25 hidden flex-1 items-center justify-center gap-2 md:flex">
             <div className="flex items-center gap-2">
               {renderFilterButton()}
 

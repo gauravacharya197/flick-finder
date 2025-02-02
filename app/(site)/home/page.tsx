@@ -9,6 +9,8 @@ import { RootState } from "@/redux/store";
 import { discover, getTrending } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
+import { FaFire } from "react-icons/fa";
+import { MdPeople } from "react-icons/md";
 import { useSelector } from "react-redux";
 const MovieHomepage = () => {
   useMetadata(siteConfig.siteName, "");
@@ -18,14 +20,12 @@ const MovieHomepage = () => {
   );
   const lastYear = new Date().getFullYear() - 1;
 
-  const { error, isError, data, isLoading } = useInfiniteQuery({
+  const { error, isError, data:trendingMovies, isLoading:trendingMoviesLoading } = useInfiniteQuery({
     queryKey: ["trending", "All"],
     queryFn: async ({ pageParam = 1 }) => {const response = await getTrending("All", "day", pageParam.toString());
       return response;
     },
-    getNextPageParam: () => {
-      return null;
-    },
+    getNextPageParam: () => null,
     initialPageParam: 1,
     staleTime: 1000 * 60 * 60 * 24, // Cache the data for 1day 
   });
@@ -41,7 +41,7 @@ const MovieHomepage = () => {
     retry: 1,
   });
 
-  const movies = data?.pages.flatMap((page) => page.data.results) || [];
+  const movies = trendingMovies?.pages.flatMap((page) => page.data.results) || [];
   const featuredMovie = movies[0];
 
   // Split remaining movies into two groups of 10 for carousels
@@ -58,7 +58,9 @@ const MovieHomepage = () => {
   if (isError) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
+         <div className="container mx-auto px-4  lg:px-8 ">
         <p>Error loading movies. Please try again later.</p>
+        </div>
       </div>
     );
   }
@@ -66,7 +68,7 @@ const MovieHomepage = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
-      {isLoading ? (
+      {trendingMoviesLoading ? (
         <div className="container mx-auto px-4 py-8 lg:px-8 ">
           <Skeleton active className="h-full w-full" />
         </div>
@@ -75,7 +77,7 @@ const MovieHomepage = () => {
       )}
 
       {/* Trending Section with Carousel */}
-      {isLoading ? (
+      {trendingMoviesLoading ? (
         <div className="container mx-auto px-4 py-8 lg:px-8 ">
           <Skeleton active className="mb-4 h-8 w-48" />
           <div className="flex gap-4">
@@ -92,12 +94,13 @@ const MovieHomepage = () => {
         <MovieCarousel
           key={0}
           movies={firstCarouselMovies}
-          title="Trending Now 🔥"
+          title={`Trending Now `}
+          icon={FaFire}
         />
       )}
 
       {/* New Releases Carousel */}
-      {isLoading ? (
+      {trendingMoviesLoading ? (
         <div className="container mx-auto px-4 py-8 lg:px-8 ">
           <Skeleton active className="mb-4 h-8 w-48" />
           <div className="flex gap-4">
@@ -115,6 +118,7 @@ const MovieHomepage = () => {
           key={1}
           movies={secondCarouselMovies}
           title="Popular shows"
+          icon={MdPeople}
         />
       )}
       {/* New Releases Carousel */}
@@ -133,7 +137,7 @@ const MovieHomepage = () => {
         </div>
       ) : (
         <MovieCarousel
-          key={1}
+          key={2}
           movies={popularMovies?.data.results || []}
           title={`Best of ${lastYear}`}
         />

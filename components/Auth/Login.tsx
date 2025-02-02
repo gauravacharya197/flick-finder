@@ -8,28 +8,30 @@ import { toast } from "react-hot-toast";
 import { googleHandler } from "@/utils/authUtils";
 import { useForm } from "react-hook-form";
 import { GetUser, UserLogin} from "@/services/AccountService";
+import { useAuth } from "@/app/context/AuthContext";
 
 const Login = ({ code }: { code?: string }) => {
   //for login
   const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
 
+  const { login } = useAuth();
 
   const router = useRouter();
-  const effectRan = useRef(false); // Ref to track if useEffect ran
   const {
     register,
     handleSubmit,
   
     formState: { errors },
   } = useForm();
+  
   useEffect(() => {
-    if (effectRan.current === true || process.env.NODE_ENV === "production") {
+   
       if (code) {
         console.log("Sending request with code:", code);
         GetUser(code as string)
           .then((res:any) => {
             if (res) {
-              localStorage.setItem("user", JSON.stringify(res.data));
+              login(res.data); // Using the auth context login
               router.push("/");
               toast.success("Login successful",
                 { position: "bottom-center" },
@@ -40,30 +42,26 @@ const Login = ({ code }: { code?: string }) => {
             toast.error(err?.response?.data?.message || "An error occurred. Please try again.", { position: 'bottom-center' });
             console.log(err);
           });
-      }
+      
     }
-    return () => {
-      effectRan.current = true;
-    };
+    
   }, [code]);
 
- const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (data) => {
     UserLogin(data)
       .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        login(res.data); // Using the auth context login
         router.push("/");
-        toast.success("Login successful",
-          { position: "bottom-center" },
-        );
+        toast.success("Login successful", {
+          position: "bottom-center"
+        });
       })
       .catch((err) => {
         console.log(err);
-        
         toast.error(
           err?.response?.data?.message ||
             "An error occurred. Please try again.",
-          { position: "bottom-center" },
+          { position: "bottom-center" }
         );
       });
   };

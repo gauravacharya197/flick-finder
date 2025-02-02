@@ -6,17 +6,29 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { IconType } from 'react-icons';
+interface MovieCarouselProps {
+  movies: any[];  // Consider replacing 'any' with your movie type
+  title: string;
+  icon?: IconType;  // Using IconType for Font Awesome icons
 
-const MovieCarousel = ({ movies, title }) => {
+
+}
+const MovieCarousel = ({ 
+  movies = [], 
+  title, 
+  icon: Icon 
+}: MovieCarouselProps) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);
   const swiperRef = useRef<any>(null);
 
   return (
     <div className="container mx-auto px-4 lg:px-8 py-8 ">
-      {title && (
-        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
-          <span>{title}</span>
-        </h2>
+     {title && (
+        <div className="flex items-center gap-2 mb-4">
+          {Icon && <Icon className="w-6 h-6" />}
+          <h2 className="text-xl font-semibold">{title}</h2>
+        </div>
       )}
 
       <div className="relative">

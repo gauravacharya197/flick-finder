@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { UserOutlined } from "@ant-design/icons";
+import { useAuth } from "@/app/context/AuthContext";
 
 const LoginPartial = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  let user;
+  const { isLoggedIn, user, loading,  logout } = useAuth();
 
-  if (typeof window !== "undefined") {
-    user = localStorage.getItem("user") || "";
-  }
-
-  useEffect(() => {
-    if (user) {
-      setIsLoggedIn(true);
-    }
-  }, [user]);
+ 
 
   useEffect(() => {
     // Close mobile menu on window resize
@@ -29,12 +21,13 @@ const LoginPartial = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  
+
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
+    logout();
     setIsMobileMenuOpen(false);
   };
-
+  if(loading) return <button className="invisible">Loading..</button>;
   return (
     <>
       {isLoggedIn ? (

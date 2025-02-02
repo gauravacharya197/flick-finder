@@ -75,13 +75,10 @@ const SingleMovieCard = ({ index, movie }) => {
             </div>
 
             <div className="flex flex-wrap gap-4 sm:gap-6 mt-auto pt-2 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
-              <button className="flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-300 hover:text-teal-500 transition-colors duration-200 text-sm sm:text-base">
-                <FaHeart className={`${liked ? "text-teal-500" : ""} text-xs sm:text-base`} />
-                <span>Favorite</span>
-              </button>
+            
               <button className="flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-300 hover:text-teal-500 transition-colors duration-200 text-sm sm:text-base">
                 <FaBookmark className="text-xs sm:text-base" />
-                <span>Watch later</span>
+                <span>Watchlist</span>
               </button>
               <button className="flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-300 hover:text-teal-500 transition-colors duration-200 text-sm sm:text-base">
                 <FaShareAlt className="text-xs sm:text-base" />
