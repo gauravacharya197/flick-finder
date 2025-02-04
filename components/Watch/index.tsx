@@ -4,12 +4,12 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import VideoPlayer from "@/components/Player/VideoPlayer";
-import { Skeleton, Alert } from "antd";
+import { Skeleton } from "antd";
 import { SimilarMovie } from "@/components/Movie/SimilarMovie";
 import SeasonChooser from "./SeasonChooser";
 import CastCard from "../Movie/CastCard";
 import MovieDetails from "./MovieDetails";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import SectionHeader from "../Common/SectionHeader";
 import ErrorMessage from "../Common/ErrorMessage";
@@ -17,19 +17,12 @@ import useMetadata from "@/hooks/useMetaData";
 import { siteConfig } from "@/config/siteConfig";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import {
-  FaBookmark,
-  FaCheck,
-  FaExclamationCircle,
-  FaEye,
-  FaHeart,
-  FaPause,
   FaShare,
-  FaTimes,
 } from "react-icons/fa";
 import { constructUrl } from "@/utils/constructEmbedUrl";
 import { useAuth } from "@/app/context/AuthContext";
-import toast from "react-hot-toast";
 import WatchlistButton from "./WatchListButton";
+import { addToWatchHistory } from "@/utils/addToWatchHistory";
 const Watch = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { isLoggedIn, user } = useAuth();
@@ -57,6 +50,15 @@ const Watch = () => {
     `${siteConfig.siteName} - ${movie?.title ? ` Watch ${capitalizeFirstLetter(mediaType.toString())} ${movie?.title} Online` : "Watch Movies/TV Online"} `,
     "",
   );
+  const handlePlay=()=>{
+    setIsPlaying(true)
+   
+      // Add this line to save to watch history when user plays the video
+      if (movie) {
+        addToWatchHistory(movie);
+      }
+    
+  }
 
   const renderMovieScreen = () => {
     if (!isPlaying) {
@@ -74,7 +76,7 @@ const Watch = () => {
           {new Date(movie.released) <= new Date() && (
             <PlayCircleOutlined
               onClick={() => {
-                setIsPlaying(true);
+                handlePlay()
               }}
               className="absolute inset-0 m-auto text-6xl text-primary"
               style={{

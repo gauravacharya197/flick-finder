@@ -45,7 +45,7 @@ export default function RootLayout({
               </Suspense>
 
               <ToasterContext />
-              <NextTopLoader showSpinner={false} />
+              <NextTopLoader showSpinner={false} color="teal" />
               <QueryClientProvider client={queryClient}>
               <MyApp />
                 <div className="min-h-screen">{children}</div>

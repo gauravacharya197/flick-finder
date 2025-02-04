@@ -41,6 +41,14 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
+  {
+    id: 5,
+    title: "History",
+    newTab: false,
+    path: "/history",
+    requireLogin : false
+
+  },
 
  
   // {

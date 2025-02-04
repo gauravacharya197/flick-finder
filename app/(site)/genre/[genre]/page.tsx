@@ -28,7 +28,7 @@ const GenrePage = ({ params }: GenrePageProps) => {
   const formattedGenre = decodeURIComponent(genre).replace(/-/g, ' ');
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 dark:text-white">
+    <div className="min-h-screen  dark:text-white">
       <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
         <Genre value={formattedGenre}/>
       </div>

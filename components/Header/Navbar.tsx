@@ -1,9 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter } from "react-icons/fa";
-import { MdClose, MdMenu, MdMenuBook } from "react-icons/md";
-import ThemeToggler from "./ThemeToggler";
+import { MdClose } from "react-icons/md";
 import LoginPartial from "../Auth/LoginPartial";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
@@ -12,7 +11,6 @@ import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
-import { FaMarsAndVenus } from "react-icons/fa6";
 import useClickOutside from "@/hooks/useClickOutside";
 
 const MyNav = () => {
