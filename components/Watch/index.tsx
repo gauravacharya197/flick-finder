@@ -54,16 +54,13 @@ const Watch = () => {
     setIsPlaying(true)
    
       // Add this line to save to watch history when user plays the video
-     
+      setTimeout(() => {
+        addToWatchHistory(movie);
+      }, 600000); // 10 minutes in milliseconds
     
   }
 
   const renderMovieScreen = () => {
-    if (movie) {
-      console.log('movie is',movie);
-      
-      addToWatchHistory(movie);
-    }
     if (!isPlaying) {
       return (
         <div className="relative" style={{ width: "100%", height: "65vh" }}>
