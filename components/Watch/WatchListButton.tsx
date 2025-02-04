@@ -45,7 +45,7 @@ const WatchlistButton: React.FC<WatchlistButtonProps> = ({
         displayTitle: movie.displayTitle,
         displayReleaseDate: movie.displayReleaseDate,
        
-        posterPath: movie.poster,
+        posterPath: movie.posterPath,
         mediaType: movie.mediaType,
         
         voteAverage: movie.imdbRating,
