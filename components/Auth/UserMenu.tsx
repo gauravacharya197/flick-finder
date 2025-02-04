@@ -42,13 +42,14 @@ const UserMenu = () => {
       ref={menuRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={()=>setIsMenuOpen(!isMenuOpen)}
     >
       <button
-        className="flex items-center gap-3 text-primary hover:text-primary-600 transition-colors"
+        className="flex items-center gap-3 text-primary hover:text-primary-400 transition-colors"
         aria-expanded={isMenuOpen}
         aria-haspopup="true"
       >
-        <UserOutlined />
+        <UserOutlined className="text-xl"/>
         <svg
           className={`h-3 w-3 fill-waterloo transition-transform duration-300 ${
             isMenuOpen ? 'rotate-180' : ''

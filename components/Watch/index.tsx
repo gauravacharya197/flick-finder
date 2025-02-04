@@ -50,6 +50,17 @@ const Watch = () => {
     `${siteConfig.siteName} - ${movie?.title ? ` Watch ${capitalizeFirstLetter(mediaType.toString())} ${movie?.title} Online` : "Watch Movies/TV Online"} `,
     "",
   );
+  const handleShare = async () => {
+    try {
+      await navigator.share({
+        title: movie?.title,
+        text: `Watch ${capitalizeFirstLetter(mediaType.toString())} ${movie?.title} Online`,
+        url: window.location.href,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
   const handlePlay=()=>{
     setIsPlaying(true)
    
@@ -222,7 +233,7 @@ const Watch = () => {
             isLoggedIn={isLoggedIn}
             userId={user?.id}
           />
-          <button className="rounded-lg p-2 hover:bg-gray-800/50">
+          <button onClick={handleShare} className="rounded-lg p-2 hover:bg-gray-800/50">
             <FaShare className="h-5 w-5" />
           </button>
         </div>

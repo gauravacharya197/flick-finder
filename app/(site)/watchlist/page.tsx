@@ -2,8 +2,14 @@
 import SectionHeader from '@/components/Common/SectionHeader';
 import { MovieList } from '@/components/Movie/MovieList';
 import { Watchlist } from '@/components/Watchlist';
+import { siteConfig } from '@/config/siteConfig';
+import { Metadata } from 'next';
 import React from 'react'
-
+export const metadata: Metadata = {
+  title: `${siteConfig.siteName} - WatchList`,
+  description: siteConfig.description,
+  // other metadata
+};
 
  const WatchListPage = () => {
 
