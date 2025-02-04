@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import LoginPartial from "../Auth/LoginPartial";
+import LoginPartial from "../Auth/UserMenu";
 import menuData from "./menuData";
 import { SiteName } from "../Common/SiteName";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import useClickOutside from "@/hooks/useClickOutside";
+import ThemeToggler from "./ThemeToggler";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -63,7 +64,7 @@ const MyNav = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-black bg-opacity-90 text-white dark:bg-gray-900 dark:text-white">
+    <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background dark:text-white">
       <div className="container mx-auto px-4">
         <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
@@ -107,7 +108,7 @@ const MyNav = () => {
             {/* Hamburger Menu Content - Repositioned */}
             <div
               ref={menuContentRef}
-              className={`absolute left-0 top-full z-40 overflow-hidden rounded-md bg-black bg-opacity-95 shadow-lg backdrop-blur-sm transition-all duration-300 dark:bg-gray-900 ${
+              className={`absolute left-0 top-full z-40 overflow-hidden rounded-md bg-black bg-opacity-95 shadow-lg backdrop-blur-sm transition-all duration-300 dark:bg-background ${
                 menuOpen
                   ? "visible translate-y-0 opacity-100"
                   : "invisible -translate-y-2 opacity-0"
@@ -188,7 +189,7 @@ const MyNav = () => {
 
       {/* Search Bar for Small Screens */}
       {showSearch && (
-        <div className="bg-white bg-opacity-90 p-2 text-white dark:bg-gray-900 dark:text-white md:hidden">
+        <div className="bg-white bg-opacity-90 p-2 text-white dark:bg-background dark:text-white md:hidden">
           <div className="container mx-auto flex items-center gap-2">
             {renderFilterButton()}
             <form onSubmit={handleSearch} className="relative w-full">

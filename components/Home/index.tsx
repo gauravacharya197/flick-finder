@@ -81,7 +81,7 @@ const Home = () => {
 
   return (
     <>
-        <div className=" dark:bg-gray-900 dark:text-white">
+        <div className="  dark:text-white">
         <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10 pt-20 md:pt-40">
             <div className="text-center md:text-left">
               <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white text-2xl xl:text-hero">

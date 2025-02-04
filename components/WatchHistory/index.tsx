@@ -4,6 +4,7 @@ import { Skeleton } from 'antd';
 import { MovieList } from '../Movie/MovieList';
 import { FaPause, FaPlay, FaSearch, FaTrash } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { addToWatchHistory,getWatchHistory, clearWatchHistory, setPauseState } from '@/utils/addToWatchHistory';
 
 // Interface for watch history with metadata
 interface WatchHistoryData {
@@ -22,21 +23,12 @@ const WatchHistory = () => {
     loadWatchHistory();
   }, []);
 
-  // Load watch history from localStorage
+  // Load watch history using the helper function
   const loadWatchHistory = () => {
-    try {
-      const data = localStorage.getItem('watchHistory');
-      if (data) {
-        const parsedData: WatchHistoryData | any[] = JSON.parse(data);
-        if ('metadata' in parsedData) {
-          setIsPaused(parsedData.metadata.isPaused);
-          updateHistory(parsedData.movies);
-        } else {
-          updateHistory(parsedData);
-        }
-      }
-    } catch (error) {
-      console.error('Error loading watch history:', error);
+    const { movies, isPaused } = getWatchHistory();  // Destructure both movies and pause state
+    if (movies.length > 0) {
+      setIsPaused(isPaused);  // Set the pause state
+      updateHistory(movies);  // Update the history in state
     }
     setIsLoading(false);
   };
@@ -56,11 +48,6 @@ const WatchHistory = () => {
     setFilteredHistory(groupedHistory);
   };
 
-  // Save history with metadata
-  const saveWatchHistory = (movies: any[], paused: boolean) => {
-    localStorage.setItem('watchHistory', JSON.stringify({ movies, metadata: { isPaused: paused } }));
-  };
-
   // Handle search input
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -76,25 +63,20 @@ const WatchHistory = () => {
     setFilteredHistory(filtered);
   };
 
-  // Clear watch history
+  // Handle clearing watch history using the helper function
   const handleClearHistory = () => {
-  
-      saveWatchHistory([], isPaused);
-      setHistory({});
-      setFilteredHistory({});
-      toast.success("Watch history cleared successfuly",
-        { position: "bottom-center" },
-      );
+    clearWatchHistory();
+    setHistory({});
+    setFilteredHistory({});
+    toast.success("Watch history cleared successfully", { position: "bottom-center" });
   };
 
-  // Toggle pause state
+  // Toggle pause state and update history using the helper function
   const togglePause = () => {
     const newPaused = !isPaused;
     setIsPaused(newPaused);
-    saveWatchHistory(Object.values(history).flat(), newPaused);
-    toast.success(`Watch history ${newPaused? "paused":"resumed"} successfully`,
-      { position: "bottom-center" },
-    );
+    setPauseState(newPaused); // Update pause state in storage
+    toast.success(`Watch history ${newPaused ? "paused" : "resumed"} successfully`, { position: "bottom-center" });
   };
 
   if (isLoading) return <Skeleton active className="container mx-auto px-4 py-8" />;

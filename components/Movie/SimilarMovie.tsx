@@ -69,7 +69,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
               key={movie.id}
-              className="group relative overflow-hidden rounded-lg bg-white dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
+              className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
             >
               <Link
                 href={`/watch/${mediaType}/${movie.id}`}

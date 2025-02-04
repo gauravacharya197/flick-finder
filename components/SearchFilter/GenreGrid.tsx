@@ -58,8 +58,8 @@ const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
 <Link href={`genre/${encodeURIComponent(genre?.name?.toLowerCase().replace(/\s+/g, '-') || '')}`}>
 
                 <div
-                  className="px-4 py-2 border-2 border-white rounded-lg bg-transparent
-                    text-white hover:bg-white/10 transition-colors duration-200 cursor-pointer"
+                  className="px-4 py-2 border-2 border-black rounded-lg bg-transparent
+                    text-black hover:bg-white/10 transition-colors duration-200 cursor-pointer dark:text-white dark:border-white"
                 >
                   <span className="text-sm font-medium whitespace-nowrap">
                     {genre.name}

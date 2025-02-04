@@ -40,7 +40,7 @@ const Signup = () => {
   return (
     <>
       {/* <!-- ===== SignUp Form Start ===== --> */}
-      <section className="pb-10 dark:bg-gray-900 dark:text-white md:pt-2 xl:pt-5">
+      <section className="pb-10  md:pt-2 xl:pt-5">
         <div className="relative z-1 mx-auto max-w-c-1016 px-7.5 pb-7.5 pt-10 lg:px-15 lg:pt-15 xl:px-20 xl:pt-20">
           <div className="absolute bottom-17.5 left-0 -z-1 h-1/3 w-full">
             <Image

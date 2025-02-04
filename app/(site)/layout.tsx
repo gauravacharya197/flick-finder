@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <link rel="icon" href="/favicon.ico" />
 
-      <body className={`dark:bg-gray-900 ${poppins.className}`}>
+      <body className={`dark:bg-background dark:text-white  ${poppins.className}`}>
         <Provider store={store}>
           <AuthProvider>  
             <ThemeProvider

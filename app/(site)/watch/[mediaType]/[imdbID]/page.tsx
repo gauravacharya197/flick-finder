@@ -8,7 +8,7 @@ import { Metadata } from "next";
 // };
 const WatchPage = () => {
   return (
-    <section className="pb-10 dark:bg-gray-900 dark:text-white pt-5 md:pt-5 xl:pt-11">
+    <section className="pb-10  pt-5 md:pt-5 xl:pt-11">
     <div className="mx-auto  px-4 md:px-8 2xl:px-0">
       <div className="flex flex-col lg:items-start lg:gap-3 xl:gap-4 container mx-auto">
           <Watch/>

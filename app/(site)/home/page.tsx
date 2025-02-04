@@ -57,7 +57,7 @@ const MovieHomepage = () => {
 
   if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-900 text-white">
+      <div className="flex min-h-screen items-center justify-center  text-white">
          <div className="container mx-auto px-4  lg:px-8 ">
         <p>Error loading movies. Please try again later.</p>
         </div>
@@ -66,7 +66,7 @@ const MovieHomepage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen  text-white">
       {/* Hero Section */}
       {trendingMoviesLoading ? (
         <div className="container mx-auto px-4 py-8 lg:px-8 ">

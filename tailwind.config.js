@@ -28,6 +28,7 @@ module.exports = {
         white: "#FFFFFF",
         black: "#181C31",
         blackho: "#2C3149",
+        background:"#111827",
         blacksection: "#1C2136",
         primary: {
           400: "#2dd4bf",

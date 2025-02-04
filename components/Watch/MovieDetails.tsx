@@ -12,7 +12,7 @@ const MovieDetails = ({ movie, mediaType }) => {
           <div className="relative mx-auto h-64 w-48 sm:h-72 sm:w-52 md:h-80 md:w-56 lg:h-auto lg:w-[95%]">
             <img
               className="h-full w-full rounded-2xl object-cover"
-              src={movie?.poster || "/images/user/failedtoload.jpg"}
+              src={movie?.posterPath || "/images/user/failedtoload.jpg"}
               alt={movie?.title}
             />
           </div>

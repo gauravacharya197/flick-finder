@@ -4,15 +4,9 @@ import { FaStar } from "react-icons/fa";
 import { Tooltip } from "antd";
 import { CustomTag } from "../Common/CustomTag";
 import { formatRating } from "@/utils/formatRating";
+import { Movie } from "@/types/movie";
 
-interface Movie {
-  id: number;
-  posterPath: string;
-  displayTitle: string;
-  displayReleaseDate: string;
-  voteAverage: number;
-  mediaType: string;
-}
+
 
 interface MovieCardProps {
   movie: Movie;
@@ -69,16 +63,22 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       </div>
 
       {/* Divider */}
-      <span className="h-4 w-px bg-gray-700" />
+     
 
       {/* Rating Container */}
+      {formatRating(movie.voteAverage) !== 0 &&
+      <>
+       <span className="h-4 w-px bg-gray-700" />
       <div className="flex items-center justify-center w-16 space-x-1">
         <FaStar className="text-yellow-500 drop-shadow-md" />
         <span className="drop-shadow-md">
-        {formatRating(movie.voteAverage)}
+         {formatRating(movie.voteAverage)}
+
 
         </span>
       </div>
+      </>
+       }
 
       {/* Divider */}
       <span className="h-4 w-px bg-gray-700" />

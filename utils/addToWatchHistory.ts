@@ -1,75 +1,130 @@
-'use client'
-interface WatchHistoryItem {
-  id: string | number;
-  displayTitle: string;
-  displayReleaseDate?: string;
-  posterPath: string;
-  mediaType: string;
-  voteAverage: number;
-  watchedAt: string;
-}
+import { Movie } from '@/types/movie';
+import CryptoJS from 'crypto-js';
+
+// Secret key for encryption/decryption (should be kept safe)
+const SECRET_KEY = 'your-secret-key';
 
 // Helper to check if we're in the browser
 const isBrowser = () => typeof window !== 'undefined';
 
-export const addToWatchHistory = (movie: any) => {
+// Types for history data
+interface LocalMovie extends Movie {
+  
+  watchedAt: string;
+}
+
+interface WatchHistory {
+  movies: LocalMovie[];
+  metadata: { isPaused: boolean };
+}
+
+// Encrypt function
+const encryptData = (data: any): string => {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
+};
+
+// Decrypt function
+const decryptData = (cipherText: string): any => {
+  const bytes = CryptoJS.AES.decrypt(cipherText, SECRET_KEY);
+  const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+  return decryptedData ? JSON.parse(decryptedData) : null;
+};
+
+// Save to watch history with encryption
+export const addToWatchHistory = (movie: LocalMovie): void => {
   if (!isBrowser()) return;
- 
+
   try {
-    const data = JSON.parse(localStorage.getItem('watchHistory') || '{"movies":[],"metadata":{"isPaused":false}}');
-    
+    const data = localStorage.getItem('watchHistory');
+    let parsedData: WatchHistory = { movies: [], metadata: { isPaused: false } };
+
+    if (data) {
+      parsedData = decryptData(data);
+    }
+
     // If history is paused, don't add new items
-    if (data.metadata?.isPaused) {
+    if (parsedData.metadata?.isPaused) {
       return;
     }
 
-    const historyItem: WatchHistoryItem = {
+    const historyItem = {
       id: movie.id,
-      displayTitle: movie.title,
+      displayTitle: movie.displayTitle,
       displayReleaseDate: movie.displayReleaseDate,
-      posterPath: movie.poster,
+      posterPath: movie.posterPath,
       mediaType: movie.mediaType,
-      voteAverage: movie.imdbRating,
+      voteAverage: movie.voteAverage,
       watchedAt: new Date().toISOString()
     };
 
-    const existingMovies = Array.isArray(data.movies) ? data.movies : [];
-    const updatedMovies = existingMovies.filter(item => item.id !== historyItem.id);
+    const updatedMovies = parsedData.movies.filter(item => item.id !== historyItem.id);
     updatedMovies.unshift(historyItem);
     const trimmedMovies = updatedMovies.slice(0, 50);
-
-    localStorage.setItem('watchHistory', JSON.stringify({
+    console.log(historyItem);
+    
+    localStorage.setItem('watchHistory', encryptData({
       movies: trimmedMovies,
-      metadata: data.metadata
+      metadata: parsedData.metadata
     }));
   } catch (error) {
     console.error('Error saving to watch history:', error);
   }
 };
 
-export const getWatchHistory = (): WatchHistoryItem[] => {
-  if (!isBrowser()) return [];
- 
+// Get watch history with decryption
+export const getWatchHistory = (): { movies: Movie[]; isPaused: boolean } => {
+  if (!isBrowser()) return { movies: [], isPaused: false };
+
   try {
-    const data = JSON.parse(localStorage.getItem('watchHistory') || '{"movies":[],"metadata":{"isPaused":false}}');
-    return Array.isArray(data.movies) ? data.movies : [];
+    const data = localStorage.getItem('watchHistory');
+    if (!data) return { movies: [], isPaused: false };
+
+    const parsedData = decryptData(data);
+    return { movies: parsedData.movies || [], isPaused: parsedData.metadata?.isPaused ?? false };
   } catch (error) {
     console.error('Error getting watch history:', error);
-    return [];
+    return { movies: [], isPaused: false };
   }
 };
 
-export const clearWatchHistory = () => {
+// Clear watch history with encryption (preserve pause state)
+export const clearWatchHistory = (): void => {
   if (!isBrowser()) return;
- 
+
   try {
-    // Preserve the pause state when clearing
-    const data = JSON.parse(localStorage.getItem('watchHistory') || '{"movies":[],"metadata":{"isPaused":false}}');
-    localStorage.setItem('watchHistory', JSON.stringify({
+    const data = localStorage.getItem('watchHistory');
+    let parsedData: WatchHistory = { movies: [], metadata: { isPaused: false } };
+
+    if (data) {
+      parsedData = decryptData(data);
+    }
+
+    // Preserve pause state while clearing the history
+    localStorage.setItem('watchHistory', encryptData({
       movies: [],
-      metadata: data.metadata
+      metadata: parsedData.metadata
     }));
   } catch (error) {
     console.error('Error clearing watch history:', error);
+  }
+};
+
+// Set pause state in watch history
+export const setPauseState = (isPaused: boolean): void => {
+  if (!isBrowser()) return;
+
+  try {
+    const data = localStorage.getItem('watchHistory');
+    let parsedData: WatchHistory = { movies: [], metadata: { isPaused: false } };
+
+    if (data) {
+      parsedData = decryptData(data);
+    }
+
+    parsedData.metadata.isPaused = isPaused;
+
+    localStorage.setItem('watchHistory', encryptData(parsedData));
+  } catch (error) {
+    console.error('Error setting pause state:', error);
   }
 };
