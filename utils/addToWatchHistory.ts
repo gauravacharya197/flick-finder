@@ -1,8 +1,7 @@
 import { Movie } from '@/types/movie';
 import CryptoJS from 'crypto-js';
 
-// Secret key for encryption/decryption (should be kept safe)
-const SECRET_KEY = 'your-secret-key';
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY;
 
 // Helper to check if we're in the browser
 const isBrowser = () => typeof window !== 'undefined';

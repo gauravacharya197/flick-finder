@@ -49,7 +49,7 @@ export default function RootLayout({
               <QueryClientProvider client={queryClient}>
               <MyApp />
                 <div className="min-h-screen">{children}</div>
-                <ReactQueryDevtools initialIsOpen={false} />
+                {/* <ReactQueryDevtools initialIsOpen={false} /> */}
               </QueryClientProvider>
               <Footer />
 

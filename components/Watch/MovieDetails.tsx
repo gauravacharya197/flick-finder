@@ -1,4 +1,3 @@
-import { Tag } from "antd";
 import React from "react";
 import { CustomTag } from "../Common/CustomTag";
 import { getSourceIcon } from "@/utils/getSourceIcon";
@@ -30,7 +29,9 @@ const MovieDetails = ({ movie, mediaType }) => {
               <div>{movie?.runtime}</div>
               <div>{movie?.released}</div>
               <div>
-                <Tag color="default">{movie?.rated}</Tag>
+              <CustomTag color="bg-white text-black" text={movie?.rated} />
+
+                
               </div>
             </div>
 

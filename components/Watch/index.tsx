@@ -67,7 +67,7 @@ const Watch = () => {
       // Add this line to save to watch history when user plays the video
       setTimeout(() => {
         addToWatchHistory(movie);
-      }, 600000); // 10 minutes in milliseconds
+      }, 1); // 10 minutes in milliseconds
     
   }
 

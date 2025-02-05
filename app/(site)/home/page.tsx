@@ -1,6 +1,7 @@
 "use client";
 
 import MovieCarousel from "@/components/Common/MovieCarousel";
+import Home from "@/components/Home";
 import FeaturedMovie from "@/components/Movie/FeaturedMovie";
 import GenreGrid from "@/components/SearchFilter/GenreGrid";
 import { siteConfig } from "@/config/siteConfig";
@@ -9,7 +10,7 @@ import { RootState } from "@/redux/store";
 import { discover, getTrending } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
-import { FaFire } from "react-icons/fa";
+import { FaFire, FaHeart, FaTv } from "react-icons/fa";
 import { MdPeople } from "react-icons/md";
 import { useSelector } from "react-redux";
 const MovieHomepage = () => {
@@ -68,6 +69,7 @@ const MovieHomepage = () => {
   return (
     <div className="min-h-screen  text-white">
       {/* Hero Section */}
+      
       {trendingMoviesLoading ? (
         <div className="container mx-auto px-4 py-8 lg:px-8 ">
           <Skeleton active className="h-full w-full" />
@@ -118,7 +120,7 @@ const MovieHomepage = () => {
           key={1}
           movies={secondCarouselMovies}
           title="Popular shows"
-          icon={MdPeople}
+          icon={FaTv}
         />
       )}
       {/* New Releases Carousel */}
@@ -140,6 +142,7 @@ const MovieHomepage = () => {
           key={2}
           movies={popularMovies?.data.results || []}
           title={`Best of ${lastYear}`}
+          icon={FaHeart}
         />
       )}
       <div className="container mx-auto px-4 py-8 lg:px-8 ">

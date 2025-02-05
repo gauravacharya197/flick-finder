@@ -87,7 +87,7 @@ export const Genre = ({value}) => {
           <MovieList movies={movies} showFeaturedMovie/>
           {hasNextPage && (
             <div ref={observerRef} className="loading-indicator">
-              {isFetching && <h1>LOADING</h1>}
+              {isFetching && <h1>Loading...</h1>}
             </div>
           )}
           {!hasNextPage && (
