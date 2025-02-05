@@ -263,7 +263,7 @@ const Watch = () => {
             <div className="rounded-lg p-2 dark:text-white">
               {/* Always render SimilarMovie */}
               {mediaType === "movie" && (
-                <SimilarMovie id={imdbID.toString()} mediaType={mediaType} />
+                <SimilarMovie id={movie?.id} mediaType={mediaType} />
               )}
               {/* Conditionally render SeasonChooser */}
               {mediaType === "tv" && !isLoading && !isError && (
