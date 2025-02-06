@@ -1,59 +1,48 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { UserOutlined } from "@ant-design/icons";
 import { useAuth } from "@/app/context/AuthContext";
+import {
+  FaBookmark,
+  FaHistory,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUser,
+} from "react-icons/fa";
 
 const UserMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn, loading, logout } = useAuth();
   const menuRef = useRef(null);
 
-  const handleMouseEnter = () => {
-    setIsMenuOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsMenuOpen(false);
-  };
-
+  const handleToggleMenu = () => setIsMenuOpen((prev) => !prev);
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
   };
 
-  if (loading) {
-    return <div className="w-[100px] invisible">Loading...</div>;
-  }
+  if (loading) return <div className="invisible w-[100px]">Loading...</div>;
 
-  if (!isLoggedIn) {
-    return (
-      <Link
-        href="/auth/login"
-        className="flex items-center text-sm 2xl:text-lg gap-2 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-black transition dark:border-primary dark:text-primary dark:hover:bg-teal-600 dark:hover:text-black"
-      >
-        Login
-      </Link>
-    );
-  }
+  const menuItems = [
+    { href: "/history", icon: <FaHistory className="w-4 h-4" />, label: "History" },
+    isLoggedIn && { href: "/watchlist", icon: <FaBookmark className="w-4 h-4" />, label: "Watchlist" },
+    isLoggedIn
+      ? { href: "#", onClick: handleLogout, icon: <FaSignOutAlt className="w-4 h-4" />, label: "Logout" }
+      : { href: "/auth/login", icon: <FaSignInAlt className="w-4 h-4" />, label: "Login" },
+  ].filter((item): item is { href: string; icon: JSX.Element; label: string; onClick?: () => void } => Boolean(item));
 
   return (
-    <div 
-      className="relative"
-      ref={menuRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={()=>setIsMenuOpen(!isMenuOpen)}
-    >
+    <div className="relative" ref={menuRef}  onClick={handleToggleMenu}
+    onMouseEnter={()=>setIsMenuOpen(true)}
+    onMouseLeave={()=>setIsMenuOpen(false)}>
       <button
-        className="flex items-center gap-3 text-primary hover:text-primary-400 transition-colors"
+        className="flex items-center gap-3 text-primary transition-colors hover:text-primary-400"
         aria-expanded={isMenuOpen}
         aria-haspopup="true"
+        
       >
-        <UserOutlined className="text-xl"/>
+        <FaUser className="text-lg" />
         <svg
-          className={`h-3 w-3 fill-waterloo transition-transform duration-300 ${
-            isMenuOpen ? 'rotate-180' : ''
-          }`}
+          className={`h-3 w-3 fill-waterloo transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
         >
@@ -61,29 +50,24 @@ const UserMenu = () => {
         </svg>
       </button>
 
-      <ul 
-        className={`absolute right-0 mt-2 w-48 bg-black text-white dark:bg-gray-800 shadow-lg rounded-md z-50 transition-all duration-300 ${
-          isMenuOpen 
-            ? 'opacity-100 visible transform translate-y-0' 
-            : 'opacity-0 invisible transform -translate-y-2'
+      <ul
+        className={`absolute right-0 z-50 mt-2 w-40 rounded-md bg-[#111827] text-white shadow-lg transition-all duration-300 ${
+          isMenuOpen
+            ? "visible translate-y-0 opacity-100"
+            : "invisible -translate-y-2 opacity-0"
         }`}
       >
-        <li>
+        {menuItems.map(({ href, onClick, icon, label }, index) => (
           <Link
-            href="/watchlist"
-            className="block px-4 py-3 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors"
+            key={index}
+            href={href}
+            onClick={onClick}
+            className="flex items-center gap-3 px-4 py-2 transition duration-300 hover:bg-gray-800 hover:text-primary"
           >
-            Watchlist
+            {icon}
+            <span>{label}</span>
           </Link>
-        </li>
-        <li>
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-3 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors"
-          >
-            Logout
-          </button>
-        </li>
+        ))}
       </ul>
     </div>
   );

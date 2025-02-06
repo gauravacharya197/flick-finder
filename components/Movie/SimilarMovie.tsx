@@ -20,13 +20,14 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
   const {
     data: similarMoviesData,
     isLoading,
+    isFetching,
     isError,
     error,
   } = useQuery<AxiosResponse<any>>({
     queryKey: ["similarMovies", id, mediaType],
     queryFn: () => getSimilarMovies(id, mediaType),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
     retry: 2,
   });
 
@@ -44,9 +45,9 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
     <aside   className=" max-w-sm -mt-4 w-[110%] md:w-[80%] sm:max-w-none">
       {/* className="-mt-4 flex flex-col gap-4 w-full max-w-full" */}
       <SectionHeader text="You might like" />
-      
+
       <div className="space-y-4 mt-4">
-        {isLoading ? (
+        {isLoading  || !id? (
           // Loading skeletons
           [...Array(2)].map((_, i) => (
             <div key={i} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/50 p-3">

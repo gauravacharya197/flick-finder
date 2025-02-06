@@ -24,6 +24,14 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
+  {
+    id: 5,
+    title: "Anime",
+    newTab: false,
+    path: "/anime",
+    requireLogin : false
+
+  },
   // {
   //   id: 2.1,
   //   title: "New",
@@ -41,14 +49,14 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
-  {
-    id: 5,
-    title: "History",
-    newTab: false,
-    path: "/history",
-    requireLogin : false
+  // {
+  //   id: 5,
+  //   title: "History",
+  //   newTab: false,
+  //   path: "/history",
+  //   requireLogin : false
 
-  },
+  // },
 
  
   // {

@@ -16,9 +16,7 @@ import ErrorMessage from "../Common/ErrorMessage";
 import useMetadata from "@/hooks/useMetaData";
 import { siteConfig } from "@/config/siteConfig";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
-import {
-  FaShare,
-} from "react-icons/fa";
+import { FaShare } from "react-icons/fa";
 import { constructUrl } from "@/utils/constructEmbedUrl";
 import { useAuth } from "@/app/context/AuthContext";
 import WatchlistButton from "./WatchListButton";
@@ -61,15 +59,14 @@ const Watch = () => {
       console.error("Error sharing:", error);
     }
   };
-  const handlePlay=()=>{
-    setIsPlaying(true)
-   
-      // Add this line to save to watch history when user plays the video
-      setTimeout(() => {
-        addToWatchHistory(movie);
-      }, 1); // 10 minutes in milliseconds
-    
-  }
+  const handlePlay = () => {
+    setIsPlaying(true);
+
+    // Add this line to save to watch history when user plays the video
+    setTimeout(() => {
+      addToWatchHistory(movie);
+    }, 1); // 10 minutes in milliseconds
+  };
 
   const renderMovieScreen = () => {
     if (!isPlaying) {
@@ -87,7 +84,7 @@ const Watch = () => {
           {new Date(movie.released) <= new Date() && (
             <PlayCircleOutlined
               onClick={() => {
-                handlePlay()
+                handlePlay();
               }}
               className="absolute inset-0 m-auto text-6xl text-primary"
               style={{
@@ -201,44 +198,47 @@ const Watch = () => {
               <div className="relative pb-[10.25%]">
                 {renderMovieScreen()}
                 <div className="flex flex-col gap-4 bg-[rgba(20,28,49,0.95)] p-4 text-white md:flex-row md:items-center md:justify-between">
-      {/* Server selector - Full width on mobile, left side on desktop */}
-      <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4">
-        {[1, 2, 3, 4].map((server) => (
-          <button
-            key={server}
-            onClick={() => setSelectedServer(server)}
-            className={`rounded px-4 py-2 text-sm ${
-              selectedServer === server
-                ? "bg-primary"
-                : "bg-primary-600"
-            } text-white`}
-          >
-            Player {server}
-          </button>
-        ))}
-      </div>
+                  {/* Server selector - Full width on mobile, left side on desktop */}
+                  <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4">
+                    {[1, 2, 3, 4].map((server) => (
+                      <button
+                        key={server}
+                        onClick={() => setSelectedServer(server)}
+                        className={`rounded px-4 py-2 text-sm ${
+                          selectedServer === server
+                            ? "bg-primary"
+                            : "bg-primary-600"
+                        } text-white`}
+                      >
+                        Player {server}
+                      </button>
+                    ))}
+                  </div>
 
-      {/* Controls - Stack vertically on mobile, right side on desktop */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-        {/* Watching button */}
-       
-        {/* Divider - Hidden on mobile */}
-        <div className="hidden sm:block h-6 w-px bg-zinc-700" />
+                  {/* Controls - Stack vertically on mobile, right side on desktop */}
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                    {/* Watching button */}
 
-        {/* Watchlist and Share buttons */}
-        <div className="flex items-center justify-between gap-3">
-          <WatchlistButton
-            movieId={movie.id}
-            movie={movie}
-            isLoggedIn={isLoggedIn}
-            userId={user?.id}
-          />
-          <button onClick={handleShare} className="rounded-lg p-2 hover:bg-gray-800/50">
-            <FaShare className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-    </div>
+                    {/* Divider - Hidden on mobile */}
+                    <div className="hidden h-6 w-px bg-zinc-700 sm:block" />
+
+                    {/* Watchlist and Share buttons */}
+                    <div className="flex items-center justify-between gap-3">
+                      <WatchlistButton
+                        movieId={movie.id}
+                        movie={movie}
+                        isLoggedIn={isLoggedIn}
+                        userId={user?.id}
+                      />
+                      <button
+                        onClick={handleShare}
+                        className="rounded-lg p-2 hover:bg-gray-800/50"
+                      >
+                        <FaShare className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
                 <p className="mt-2 text-sm text-gray-500">
                   If the current server doesn't work, change the server
                 </p>
@@ -263,7 +263,7 @@ const Watch = () => {
             <div className="rounded-lg p-2 dark:text-white">
               {/* Always render SimilarMovie */}
               {mediaType === "movie" && (
-                <SimilarMovie id={movie?.id} mediaType={mediaType} />
+                <SimilarMovie id={imdbID?.toString().startsWith("t") ? movie?.id : imdbID} mediaType={mediaType} />
               )}
               {/* Conditionally render SeasonChooser */}
               {mediaType === "tv" && !isLoading && !isError && (

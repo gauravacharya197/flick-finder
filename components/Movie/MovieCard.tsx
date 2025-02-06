@@ -86,7 +86,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
       {/* Media Type Container */}
       <div className="flex items-center justify-center w-16">
         <CustomTag 
-          text={movie.mediaType.toLowerCase() === "movie" ? "Movie" : "TV"} 
+          text={movie?.mediaType} 
         />
       </div>
     </div>

@@ -69,7 +69,7 @@ export const MovieList = ({
                </span>
                <span className="rounded bg-primary px-2 py-1 text-white">
                  <CustomTag
-                   text={featuredMovie?.mediaType?.toLowerCase() === "movie" ? "Movie" : "TV"}
+                   text={featuredMovie?.mediaType}
                  />
                </span>
                <Rating voteAverage={featuredMovie?.voteAverage} />
