@@ -2,20 +2,26 @@ import React, { RefObject, useRef, useState } from "react";
 import { FilterOutlined, DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setGenres, setCountries, setYears, setSortBy, setMediaType } from "@/redux/movies/advanceSearchSlice";
+import {
+  setGenres,
+  setCountries,
+  setYears,
+  setSortBy,
+  setMediaType,
+} from "@/redux/movies/advanceSearchSlice";
 import { Segmented } from "antd";
 import useClickOutside from "@/hooks/useClickOutside";
 
 const FilterOption = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const dispatch = useDispatch();
-  const {  genres } = useSelector((state: any) => state.filters);
-  const { 
-    countries: searchCountries, 
-    genres: searchGenres, 
-    years: searchYears, 
-    sortBy ,
-    mediaType
+  const { genres } = useSelector((state: any) => state.filters);
+  const {
+    countries: searchCountries,
+    genres: searchGenres,
+    years: searchYears,
+    sortBy,
+    mediaType,
   } = useSelector((state: RootState) => state.advanceSearch);
 
   // Prepare options for countries, genres, years, and sort
@@ -47,38 +53,53 @@ const FilterOption = () => {
   }));
 
   const currentYear = new Date().getFullYear();
-  const yearOptions = Array.from({ length: 10 }, (_, index) => currentYear - index).map((year) => ({
+  const yearOptions = Array.from(
+    { length: 10 },
+    (_, index) => currentYear - index,
+  ).map((year) => ({
     value: year,
     label: String(year),
   }));
 
+  const currentDate = new Date();
+  const recentStartDate = new Date(currentDate);
+  recentStartDate.setDate(currentDate.getDate() - 40);
+  const upcomingEndDate = new Date(currentDate);
+  upcomingEndDate.setMonth(currentDate.getMonth() + 6);
+
+  const formatDate = (date) => date.toISOString().split("T")[0];
+
   const sortOptions = [
- 
-    { value: 'popularity.desc', label: 'Most Popular' },
-    { value: 'primary_release_date.desc', label: 'Most Recent' },
-    { value: 'vote_count.desc', label: 'Top Rated' },
-    { value: 'revenue.desc', label: 'Top Grossing' },
-    { value: 'upcoming', label: 'Upcoming Releases' },
-    { value: 'original_title.asc', label: 'A to Z Title' },
+    { value: "popularity.desc", label: "Most Popular" },
+    {
+      value: `popularity.desc&primary_release_date.gte=${formatDate(recentStartDate)}&primary_release_date.lte=${formatDate(currentDate)}`,
+      label: "Most Recent",
+    },
+    { value: "vote_count.desc", label: "Top Rated" },
+    { value: "revenue.desc", label: "Top Grossing" },
+    {
+      value: `popularity.desc&primary_release_date.gte=${formatDate(currentDate)}&primary_release_date.lte=${formatDate(upcomingEndDate)}`,
+      label: "Upcoming Releases",
+    },
+    { value: "original_title.asc", label: "A to Z Title" },
   ];
   const dropdownRefs = {
     genre: useRef<HTMLDivElement>(null),
     country: useRef<HTMLDivElement>(null),
     year: useRef<HTMLDivElement>(null),
-    sort: useRef<HTMLDivElement>(null)
+    sort: useRef<HTMLDivElement>(null),
   };
 
   // Use click outside hook for all dropdowns
   useClickOutside(
     Object.values(dropdownRefs) as RefObject<HTMLElement>[],
     () => setOpenDropdown(null),
-    openDropdown !== null // Only enable when any dropdown is open
+    openDropdown !== null, // Only enable when any dropdown is open
   );
   // Toggles the dropdown state when clicking on a filter
   const toggleDropdown = (dropdown) => {
     setOpenDropdown(openDropdown === dropdown ? null : dropdown);
   };
-
 
   // Toggles the selection for each filter type
   const toggleSelection = (type, value) => {
@@ -104,13 +125,14 @@ const FilterOption = () => {
         {/* Dropdown button */}
         <button
           onClick={() => toggleDropdown(type)}
-          className="py-1 text-black dark:text-white flex items-center justify-between w-full p-2 transition bg-gray-200 dark:bg-gray-800 rounded truncate"
+          className="flex w-full items-center justify-between truncate rounded bg-gray-200 p-2 py-1 text-black transition dark:bg-gray-800 dark:text-white"
         >
           <div className="flex items-center">
             <FilterOutlined className="mr-2" />
             <span className="truncate">
               {type.charAt(0).toUpperCase() + type.slice(1)}
-              {selectedValue && `: ${options.find(option => option.value === selectedValue)?.label || selectedValue}`}
+              {selectedValue &&
+                `: ${options.find((option) => option.value === selectedValue)?.label || selectedValue}`}
             </span>
           </div>
           {openDropdown === type ? <UpOutlined /> : <DownOutlined />}
@@ -119,19 +141,20 @@ const FilterOption = () => {
         {/* Dropdown content */}
         {openDropdown === type && (
           <div
-            className={`absolute z-10 mt-1 bg-gray-900 border rounded shadow-lg
-              ${isGridLayout 
-                ? 'w-full sm:w-[200%] grid sm:grid-cols-3 grid-cols-2 --2 p-2 max-h-[300px] overflow-y-auto'
-                : 'w-full max-h-60 overflow-y-auto'
+            className={`absolute z-10 mt-1 rounded border bg-gray-900 shadow-lg
+              ${
+                isGridLayout
+                  ? "--2 grid max-h-[300px] w-full grid-cols-2 overflow-y-auto p-2 sm:w-[200%] sm:grid-cols-3"
+                  : "max-h-60 w-full overflow-y-auto"
               } scrollbar-hide`}
           >
             {options.map((option) => (
               <div
                 key={option.value}
                 onClick={() => toggleSelection(type, option.value)}
-                className={`p-2 cursor-pointer  text-white text-sm
-                  ${isGridLayout ? 'text-center flex items-center justify-center' : ''}
-                  ${selectedValue === option.value ? 'bg-primary' : 'hover:bg-gray-700'}  // Highlight selected item
+                className={`cursor-pointer p-2  text-sm text-white
+                  ${isGridLayout ? "flex items-center justify-center text-center" : ""}
+                  ${selectedValue === option.value ? "bg-primary" : "hover:bg-gray-700"}  // Highlight selected item
                 `}
               >
                 {option.label}
@@ -144,22 +167,22 @@ const FilterOption = () => {
   };
 
   return (
-    <div className="flex flex-col items-start w-full mt-1 overflow-visible">
+    <div className="mt-1 flex w-full flex-col items-start overflow-visible">
       {/* Filter Options Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 w-full">
+      <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-5">
         {renderDropdown("genre", genreOptions, searchGenres)}
         {renderDropdown("country", countryOptions, searchCountries)}
         {renderDropdown("year", yearOptions, searchYears)}
         {renderDropdown("sort", sortOptions, sortBy)}
       </div>
 
-       <Segmented
-              size="large"
-              value={mediaType}
-              options={['Movie', 'TV']}
-              className="custom-segmented mb-1 mt-4"
-              onChange={(value) => dispatch(setMediaType(value))}
-            />
+      <Segmented
+        size="large"
+        value={mediaType}
+        options={["Movie", "TV"]}
+        className="custom-segmented mb-1 mt-4"
+        onChange={(value) => dispatch(setMediaType(value))}
+      />
     </div>
   );
 };
