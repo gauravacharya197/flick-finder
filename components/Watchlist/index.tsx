@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { Skeleton } from 'antd'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
-import { getUserWatchList } from '@/services/MovieService'
+import { getUserWatchList } from '@/services/WatchlistService'
 import ErrorMessage from '../Common/ErrorMessage'
 import { useAuth } from '@/app/context/AuthContext'
 

@@ -7,6 +7,9 @@ export const getRecommendation = async (text: string) => {
     }
   });
 };
+export const getMovies = async (category: string) => {
+  return await apiClient.get(`${baseUrl}Movies/${category}`)
+};
 export const getDetails = async (imdbID: string, mediaType: string) => {
   return await apiClient.get(`${baseUrl}api/Movies/Details/${imdbID}/${mediaType}`)
 };
@@ -49,19 +52,4 @@ export const discover = async (options: {
   if (options.sortBy) params.append("sortBy", options.sortBy);
 
   return await apiClient.get(`${baseUrl}api/movies/discover?${params.toString()}`);
-};
-
-export const addToWatchlist = async (id, movie, userId) => {
-  return await apiClient.post(`${baseUrl}api/watchlist`, {
-    userId,
-    tmdbId: id,
-    content: JSON.stringify(movie),
-  });
-};
-
-export const iswatchlisted = async (userId, tmdbId) => {
-  return await apiClient.get(`${baseUrl}api/watchlist/is-watchlisted?userId=${userId}&tmdbId=${tmdbId}`)
-};
-export const getUserWatchList = async (userId) => {
-  return await apiClient.get(`${baseUrl}api/watchlist?userId=${userId}`);
 };

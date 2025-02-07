@@ -2,7 +2,7 @@ import React from 'react';
 import { FaBookmark } from 'react-icons/fa';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { addToWatchlist, iswatchlisted } from '@/services/MovieService';
+import { addToWatchlist, iswatchlisted } from '@/services/WatchlistService';
 
 interface WatchlistButtonProps {
   movieId: string;

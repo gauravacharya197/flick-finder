@@ -7,23 +7,25 @@ import GenreGrid from "@/components/SearchFilter/GenreGrid";
 import { siteConfig } from "@/config/siteConfig";
 import useMetadata from "@/hooks/useMetaData";
 import { RootState } from "@/redux/store";
-import { discover, getTrending } from "@/services/MovieService";
+import { discover, getMovies, getTrending } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
-import { FaFire, FaHeart, FaTv } from "react-icons/fa";
+import { FaDollarSign, FaFire, FaHeart, FaStar, FaTv } from "react-icons/fa";
 import { MdPeople } from "react-icons/md";
 import { useSelector } from "react-redux";
 const MovieHomepage = () => {
   useMetadata(siteConfig.siteName, "");
-
   const { genres: genreFilters } = useSelector(
     (state: RootState) => state.filters,
   );
   const lastYear = new Date().getFullYear() - 1;
 
-  const { error, isError, data:trendingMovies, isLoading:trendingMoviesLoading } = useInfiniteQuery({
+  // Query for each category
+  
+
+  const { error, isError, data:trendingMovies, isLoading:trendingLoading } = useInfiniteQuery({
     queryKey: ["trending", "All"],
-    queryFn: async ({ pageParam = 1 }) => {const response = await getTrending("All", "day", pageParam.toString());
+    queryFn: async ({ pageParam = 1 }) => {const response = getMovies("Trending");
       return response;
     },
     getNextPageParam: () => null,
@@ -31,125 +33,144 @@ const MovieHomepage = () => {
     staleTime: 1000 * 60 * 60 * 24, // Cache the data for 1day 
   });
 
-  const {
-    data: popularMovies, isLoading: popularMoviesLoading, } = useQuery({
-    queryKey: ["popular-lastYear"],
-    queryFn: async () => {
-      const response = await discover({pageNumber: 1,mediaType: "All", sortBy: "vote_count.desc", year: lastYear });
-      return response;
-    },
-    staleTime: 1 * 1000 * 60 * 60 * 24,
-    retry: 1,
+  const { data: topRatedMovies, isLoading: topRatedLoading } = useQuery({
+    queryKey: ["movies", "TopRated"],
+    queryFn: () => getMovies("TopRated"),
+    staleTime: 1000 * 60 * 60 * 24,
   });
 
-  const movies = trendingMovies?.pages.flatMap((page) => page.data.results) || [];
-  const featuredMovie = movies[0];
+  const { data: lastYearMovies, isLoading: lastYearLoading } = useQuery({
+    queryKey: ["movies", "LastYearBest"],
+    queryFn: () => getMovies("LastYearBest"),
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+
+  const { data: topGrossingMovies, isLoading: topGrossingLoading } = useQuery({
+    queryKey: ["movies", "TopGrossing"],
+    queryFn: () => getMovies("TopGrossing"),
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+
+  // Filter TV shows from trending movies for Popular Shows section
+  const trending = trendingMovies?.pages.flatMap((page) => page.data.results) || [];
+  const featuredMovie = trending[0];
 
   // Split remaining movies into two groups of 10 for carousels
-  const remainingMovies = movies.slice(1);
-  const firstCarouselMovies = remainingMovies.filter(
+  const remainingMovies = trending.slice(1);
+  const trendingMovieCarousel = remainingMovies.filter(
     (x) => x.mediaType == "movie",
   );
-  const secondCarouselMovies = remainingMovies.filter(
+  const trendingTVCarousel = remainingMovies.filter(
     (x) => x.mediaType == "tv",
   );
 
-
+  
 
   if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center  text-white">
-         <div className="container mx-auto px-4  lg:px-8 ">
-        <p>Error loading movies. Please try again later.</p>
+      <div className="flex min-h-screen items-center justify-center text-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <p>Error loading movies. Please try again later.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen  text-white">
+    <div className="min-h-screen text-white">
       {/* Hero Section */}
-      
-      {trendingMoviesLoading ? (
-        <div className="container mx-auto px-4 py-8 lg:px-8 ">
+      {trendingLoading ? (
+        <div className="container mx-auto px-4 py-8 lg:px-8">
           <Skeleton active className="h-full w-full" />
         </div>
       ) : (
         <FeaturedMovie movie={featuredMovie} />
       )}
 
-      {/* Trending Section with Carousel */}
-      {trendingMoviesLoading ? (
-        <div className="container mx-auto px-4 py-8 lg:px-8 ">
-          <Skeleton active className="mb-4 h-8 w-48" />
-          <div className="flex gap-4">
-            {[...Array(5)].map((_, index) => (
-              <Skeleton
-                active
-                key={index}
-                className="h-[300px] w-[200px] rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
+      {/* Trending Movies Section */}
+      {trendingLoading ? (
+        <SkeletonCarousel />
       ) : (
         <MovieCarousel
-          key={0}
-          movies={firstCarouselMovies}
-          title={`Trending Now `}
+          key="trending"
+          movies={trendingMovieCarousel || []}
+          title="Trending Now"
           icon={FaFire}
         />
       )}
 
-      {/* New Releases Carousel */}
-      {trendingMoviesLoading ? (
-        <div className="container mx-auto px-4 py-8 lg:px-8 ">
-          <Skeleton active className="mb-4 h-8 w-48" />
-          <div className="flex gap-4">
-            {[...Array(5)].map((_, index) => (
-              <Skeleton
-                active
-                key={index}
-                className="h-[300px] w-[200px] rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
+      {/* Popular Shows Section */}
+      {trendingLoading ? (
+        <SkeletonCarousel />
       ) : (
         <MovieCarousel
-          key={1}
-          movies={secondCarouselMovies}
-          title="Popular shows"
+          key="popularshows"
+          movies={trendingTVCarousel}
+          title="Popular Shows"
           icon={FaTv}
         />
       )}
-      {/* New Releases Carousel */}
-      {popularMoviesLoading ? (
-        <div className="container mx-auto px-4 py-8 lg:px-8 ">
-          <Skeleton active className="mb-4 h-8 w-48" />
-          <div className="flex gap-4">
-            {[...Array(5)].map((_, index) => (
-              <Skeleton
-                active
-                key={index}
-                className="h-[300px] w-[200px] rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
+       {/* Last Year Section */}
+
+      {lastYearLoading ? (
+        <SkeletonCarousel />
       ) : (
         <MovieCarousel
-          key={2}
-          movies={popularMovies?.data.results || []}
+          key="lastyear"
+          movies={lastYearMovies?.data?.results || []}
           title={`Best of ${lastYear}`}
           icon={FaHeart}
         />
       )}
-      <div className="container mx-auto px-4 py-8 lg:px-8 ">
+       {/* Top Grossing Section */}
+       {topGrossingLoading ? (
+        <SkeletonCarousel />
+      ) : (
+        <MovieCarousel
+          key="topgrossing"
+          movies={topGrossingMovies?.data?.results || []}
+          title="Top Grossing"
+          icon={FaDollarSign}
+        />
+      )}
+
+      {/* Top Rated Movies Section */}
+      {topRatedLoading ? (
+        <SkeletonCarousel />
+      ) : (
+        <MovieCarousel
+          key="toprated"
+          movies={topRatedMovies?.data?.results || []}
+          title="Top Rated"
+          icon={FaStar}
+        />
+      )}
+
+
+     
+
+      {/* Genre Grid Section */}
+      <div className="container mx-auto px-4 py-8 lg:px-8">
         <GenreGrid genres={genreFilters} />
       </div>
     </div>
   );
 };
+
+// Skeleton component for carousel loading state
+const SkeletonCarousel = () => (
+  <div className="container mx-auto px-4 py-8 lg:px-8">
+    <Skeleton active className="mb-4 h-8 w-48" />
+    <div className="flex gap-4">
+      {[...Array(5)].map((_, index) => (
+        <Skeleton
+          active
+          key={index}
+          className="h-[300px] w-[200px] rounded-lg"
+        />
+      ))}
+    </div>
+  </div>
+);
 
 export default MovieHomepage;
