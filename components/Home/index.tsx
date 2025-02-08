@@ -8,6 +8,7 @@ import { Spin } from "antd";
 import { getRecommendation } from "@/services/MovieService";
 import MovieSuggestions from "../Movie/MovieSuggestions";
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path if necessary
+import ErrorMessage from "../Common/ErrorMessage";
 
 const QUERY_KEY = ["movieSearch"] as const;
 
@@ -155,9 +156,9 @@ const Home = () => {
               </button>
             </div>
           </form>
-          <div className="mx-auto mt-6 max-w-3xl px-4">
+          <div className="mx-auto mt-4 max-w-3xl ">
           <div className="flex flex-wrap justify-center gap-2">
-              {searchSuggestion.slice(15,29).map((mood) => (
+              {searchSuggestion.slice(15,25).map((mood) => (
                 <button
                   key={mood}
                  onClick={() => queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
@@ -183,7 +184,7 @@ const Home = () => {
               Finding your perfect matches...
             </p>
           </div>
-        ) : displayData.length > 0 ? (
+        ) : mutation.isError? <ErrorMessage message={mutation.error.message}/> : displayData.length > 0 ? (
           <MovieSuggestions movies={displayData} />
         ) : null}
       </div>
