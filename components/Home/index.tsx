@@ -132,7 +132,7 @@ const Home = () => {
                   value={cachedData?.searchText || ""}
                   onChange={handleInputChange}
                   placeholder={placeholder || "Search..."}
-                  className="w-full rounded-lg border-2 border-gray-200 bg-white px-6 py-3 text-lg shadow-lg transition-all duration-200 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-primary"
+                  className="w-full rounded-lg border-2 border-gray-200 bg-white px-6 py-2 text-lg shadow-lg transition-all duration-200 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-primary"
                 />
 
                 {cachedData?.searchText && (
@@ -149,7 +149,7 @@ const Home = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-13 w-13 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all duration-200 hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50"
+                className="flex h-11 w-12 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all duration-200 hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50"
               >
                 {loading ? <Spin className="h-6 w-6 animate-spin" /> : <FaSearch className="h-6 w-6" />}
               </button>
