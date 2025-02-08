@@ -6,6 +6,7 @@ import { getRecommendation } from '@/services/MovieService';
 import { Spin } from 'antd';
 import MovieSuggestions from '../Movie/MovieSuggestions';
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
+import { IoMdClose } from 'react-icons/io';
 
 const QUERY_KEY = ['movieSearch'] as const;
 
@@ -119,28 +120,44 @@ const Home = () => {
               <h4 className="mb-7 flex justify-center text-medium text-gray-700 dark:text-gray-300">
                 🍿 You can also just type emoji of your mood and let our AI suggest the perfect movie for you! 🎉
               </h4>
-            <form onSubmit={handleSubmit}>
-              <div className="flex flex-wrap justify-center">
-                <input
-                  type="text"
-                  name="search"
-                  value={cachedData?.searchText || ''}
-                  onChange={handleInputChange}
-                  placeholder={placeholder || "Describe your movie"} // Placeholder text dynamically typed
-                  className="max-w-md w-auto sm:w-full rounded border border-stroke px-3 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  aria-label="get started button"
-                  className={`flex rounded px-2.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
-                    loading ? "bg-gray-400 opacity-50" : "bg-black"
-                  }`}
-                >
-                  <FaSearch className="mt-1.5 w-8"/>
-                </button>
-              </div>
-            </form>
+              <form onSubmit={handleSubmit}>
+  <div className="flex flex-wrap justify-center">
+    <div className="relative max-w-md w-auto sm:w-full">
+      <input
+        type="text"
+        name="search"
+        value={cachedData?.searchText || ''}
+        onChange={handleInputChange}
+        placeholder={placeholder || "Describe your movie"}
+        className="w-full rounded border border-stroke px-3 py-2.5 pr-10 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+      />
+      {cachedData?.searchText && (
+        <button
+          type="button"
+          onClick={() => {
+            queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+              ...oldData,
+              searchText: "",
+            }));
+          }}
+          className="absolute right-3 top-1/2 -translate-y-1/2"
+        >
+          <IoMdClose className="text-2xl text-primary" />
+        </button>
+      )}
+    </div>
+    <button
+      type="submit"
+      disabled={loading}
+      aria-label="get started button"
+      className={`flex rounded px-2.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
+        loading ? "bg-gray-400 opacity-50" : "bg-black"
+      }`}
+    >
+      <FaSearch className="mt-1.5 w-8 text-primary" />
+    </button>
+  </div>
+</form>
           </div>
         </div>
       </div>

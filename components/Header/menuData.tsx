@@ -17,6 +17,22 @@ const menuData: Menu[] = [
 
   },
   {
+    id: 5,
+    title: "Movies",
+    newTab: false,
+    path: "/explore/movies",
+    requireLogin : false
+
+  },
+  {
+    id: 5,
+    title: "TV Shows",
+    newTab: false,
+    path: "/explore/tv",
+    requireLogin : false
+
+  },
+  {
     id: 2,
     title: "Trending",
     newTab: false,
@@ -24,14 +40,7 @@ const menuData: Menu[] = [
     requireLogin : false
 
   },
-  {
-    id: 5,
-    title: "Anime",
-    newTab: false,
-    path: "/anime",
-    requireLogin : false
-
-  },
+ 
   // {
   //   id: 2.1,
   //   title: "New",

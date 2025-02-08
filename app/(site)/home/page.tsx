@@ -3,14 +3,14 @@
 import MovieCarousel from "@/components/Common/MovieCarousel";
 import Home from "@/components/Home";
 import FeaturedMovie from "@/components/Movie/FeaturedMovie";
-import GenreGrid from "@/components/SearchFilter/GenreGrid";
+import GenreGrid from "@/components/Filter/GenreGrid";
 import { siteConfig } from "@/config/siteConfig";
 import useMetadata from "@/hooks/useMetaData";
 import { RootState } from "@/redux/store";
 import { discover, getMovies, getTrending } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
-import { FaDollarSign, FaFire, FaHeart, FaStar, FaTv } from "react-icons/fa";
+import { FaDollarSign, FaFire, FaHeart, FaImdb, FaStar, FaTv } from "react-icons/fa";
 import { MdPeople } from "react-icons/md";
 import { useSelector } from "react-redux";
 const MovieHomepage = () => {
@@ -48,6 +48,12 @@ const MovieHomepage = () => {
   const { data: topGrossingMovies, isLoading: topGrossingLoading } = useQuery({
     queryKey: ["movies", "TopGrossing"],
     queryFn: () => getMovies("TopGrossing"),
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+
+  const { data: recentMovies, isLoading: recentMoviesLoading } = useQuery({
+    queryKey: ["movies", "Recent"],
+    queryFn: () => getMovies("Default"),
     staleTime: 1000 * 60 * 60 * 24,
   });
 
@@ -96,8 +102,10 @@ const MovieHomepage = () => {
           movies={trendingMovieCarousel || []}
           title="Trending Now"
           icon={FaFire}
+          variant="trending"
         />
       )}
+      
 
       {/* Popular Shows Section */}
       {trendingLoading ? (
@@ -111,6 +119,20 @@ const MovieHomepage = () => {
         />
       )}
        {/* Last Year Section */}
+       <div className="container mx-auto px-4 py-8 lg:px-8">
+        <GenreGrid genres={genreFilters} />
+      </div>
+
+      {recentMoviesLoading ? (
+        <SkeletonCarousel />
+      ) : (
+        <MovieCarousel
+          key="recent"
+          movies={recentMovies?.data?.results || []}
+          title="Recently Updated"
+          icon={FaImdb}
+        />
+      )}
 
       {lastYearLoading ? (
         <SkeletonCarousel />
@@ -146,13 +168,13 @@ const MovieHomepage = () => {
         />
       )}
 
+      
+
 
      
 
       {/* Genre Grid Section */}
-      <div className="container mx-auto px-4 py-8 lg:px-8">
-        <GenreGrid genres={genreFilters} />
-      </div>
+      
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { CustomTag } from "../Common/CustomTag";
 import { getSourceIcon } from "@/utils/getSourceIcon";
+import { formatDate } from "@/utils/formatDate";
 const MovieDetails = ({ movie, mediaType }) => {
   return (
     <div className="flex flex-col gap-7.5 lg:flex-row xl:gap-12.5">
@@ -27,7 +28,7 @@ const MovieDetails = ({ movie, mediaType }) => {
                 <CustomTag text={movie?.mediaType} />
               </div>
               <div>{movie?.runtime}</div>
-              <div>{movie?.released}</div>
+              <div>{formatDate(movie?.released)}</div>
               <div>
               <CustomTag color="bg-white text-black" text={movie?.rated} />
 

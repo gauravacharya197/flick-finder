@@ -4,6 +4,7 @@ import React from "react";
 import { FaPlay, FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Rating } from "../Common/Rating";
+import { formatDate } from "@/utils/formatDate";
 
 interface FeaturedMovieProps {
   movie: {
@@ -52,7 +53,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
                   <Rating voteAverage={movie?.voteAverage} />
                 </span>
               </div>
-              <span>{movie?.displayReleaseDate}</span>
+              <span>{formatDate(movie?.displayReleaseDate)}</span>
               {movie?.genreIds
                 ?.map((x: string) => {
                   const genre = genresData.find((y: any) => y.externalId === x);

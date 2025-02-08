@@ -1,124 +1,32 @@
-"use client";
-import ErrorMessage from "@/components/Common/ErrorMessage";
-import { SearchResult } from "@/components/SearchResult/SearchResult";
+
 import { siteConfig } from "@/config/siteConfig";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import useMetadata from "@/hooks/useMetaData";
-import { setMediaType } from "@/redux/movies/advanceSearchSlice";
-import { RootState } from "@/redux/store";
-import { discover } from "@/services/MovieService";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { Segmented, Skeleton } from "antd";
+import SearchResult from "@/components/Result/SearchResult";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Metadata } from "next";
 
-const ResultsPage = ({
-  searchParams,
-}: {
+interface ResultsPageProps {
   searchParams: { query?: string };
-}) => {
-  useMetadata(
-    `${searchParams.query ? `${siteConfig.siteName} - Search result for ${searchParams.query}` : `${siteConfig.siteName} - Search Movies/TV`}`,
-    "",
-  );
-  const { countries, genres, years, sortBy, mediaType } = useSelector(
-    (state: RootState) => state.advanceSearch,
-  );
+}
+export async function generateMetadata(
+  { searchParams }: ResultsPageProps
+): Promise<Metadata> {
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isLoading,
-    isError,
-    error,
-  } = useInfiniteQuery({
-    queryKey: [
-      "searchResult",
-      searchParams.query,
-      sortBy,
-      genres,
-      years,
-      countries,
-      mediaType,
-    ],
-    queryFn: async ({ pageParam = 1 }) => {
-      const response = await discover({
-        pageNumber: pageParam,
-        keyword: searchParams.query,
-        country: countries,
-        genre: genres,
-        year: Number(years),
-        mediaType: mediaType,
-        sortBy: sortBy,
-      });
 
-      return response;
-    },
-    staleTime: 30 * 60 * 1000,
-    getNextPageParam: (lastPage, pages) => {
-      const totalPages = lastPage.data.totalPages;
-      const currentPage = pages.length;
-      return currentPage < totalPages ? currentPage + 1 : undefined;
-    },
-    initialPageParam: 1,
-    retry: 1,
-  });
-
-  const observerRef = useInfiniteScroll({
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  });
-
-  const movies = data?.pages.flatMap((page) => page.data.results) || [];
+  return {
+    title: searchParams.query
+      ? `${siteConfig.siteName} - Results for "${searchParams.query}"`
+      : `${siteConfig.siteName} - Search Movies & TV Shows`,
+    description: `Explore movies and TV series related to "${searchParams.query}" on ${siteConfig.siteName}. ${siteConfig.description}`,
+  };
+  
+}
+const ResultsPage = ({ searchParams }: ResultsPageProps) => {
+ 
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 dark:text-white">
-      <div className="container mx-auto px-4 py-6 md:py-10 lg:px-8">
-        <SearchResult query={searchParams.query} movies={movies} />
-
-        {isLoading ? (
-          <Skeleton
-            active
-            title={{ width: "100%" }}
-            paragraph={{
-              rows: 10,
-              width: [
-                "100%",
-                "100%",
-                "100%",
-                "100%",
-                "50%",
-                "50%",
-                "50%",
-                "50%",
-              ],
-            }}
-          />
-        ) : isError ? (
-          <ErrorMessage
-            className="mt-2 w-full"
-            message={
-              error?.message ||
-              "Something went wrong while fetching movie details."
-            }
-          />
-        ) : (
-          <>
-            {hasNextPage && (
-              <div ref={observerRef} className="loading-indicator">
-                {isFetching && <h1 className="mt-2">Loading</h1>}
-              </div>
-            )}
-            {!hasNextPage && (
-              <p className="mt-4 text-center">
-                You’ve reached the end of the list
-              </p>
-            )}
-          </>
-        )}
+    <div className="min-h-screen dark:text-white">
+      <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
+        <SearchResult query={searchParams.query} />
       </div>
     </div>
   );

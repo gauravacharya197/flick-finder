@@ -7,10 +7,11 @@ import { truncateString } from "@/utils/truncateString";
 import { CustomTag } from "../Common/CustomTag";
 import MovieCard from "./MovieCard";
 import { Rating } from "../Common/Rating";
+import { formatDate } from "@/utils/formatDate";
 
 interface MovieListProps {
   movies: any[];
-  showFeaturedMovie?: boolean; // Optional prop 
+  showFeaturedMovie?: boolean; // Optional prop
 }
 
 export const MovieList = ({
@@ -29,54 +30,56 @@ export const MovieList = ({
   return (
     <>
       {showFeaturedMovie && featuredMovie && (
-         <div className="relative mb-8 w-full aspect-[15/9] md:aspect-[25/9]">
-         <Link href={`/watch/${featuredMovie?.mediaType}/${featuredMovie.id}`}>
-           <img
-             src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
-             alt={featuredMovieTitle}
-             className="absolute w-full h-full rounded-md object-cover"
-             loading="lazy"
-             onError={(e) => {
-               e.currentTarget.src = "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg";
-               e.currentTarget.onerror = null;
-             }}
-           />
-   
-           <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-gradient-to-t from-black/90 to-black/20 p-4">
-             <h1 className="text-2xl md:text-4xl font-bold text-white">
-               {featuredMovieTitle}
-             </h1>
-             <div className="mt-4 flex flex-wrap gap-2">
-               {featuredMovie?.genreIds
-                 ?.map((x: string) => {
-                   const genre = genresData.find((y: any) => y.externalId === x);
-                   return genre ? genre.name : "";
-                 })
-                 .filter((name) => name)
-                 .map((genreName, index) => (
-                   <span
-                     key={index}
-                     className="rounded bg-gray-800/80 px-2 py-1 text-sm text-white"
-                   >
-                     {genreName}
-                   </span>
-                 ))}
-               <span className="rounded bg-gray-800/80 px-2 py-1 text-sm text-white">
-                 {new Date(featuredMovieRelease).getFullYear()}
-               </span>
-               <span className="rounded bg-gray-800/80 px-2 py-1 text-sm text-white">
-                 {"120 min"}
-               </span>
-               <span className="rounded bg-primary px-2 py-1 text-white">
-                 <CustomTag
-                   text={featuredMovie?.mediaType}
-                 />
-               </span>
-               <Rating voteAverage={featuredMovie?.voteAverage} />
-             </div>
-           </div>
-         </Link>
-       </div>
+        <div className="relative mb-8 aspect-[15/9] w-full md:aspect-[25/9]">
+          <Link href={`/watch/${featuredMovie?.mediaType}/${featuredMovie.id}`}>
+            <img
+              src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
+              alt={featuredMovieTitle}
+              className="absolute h-full w-full rounded-md object-cover"
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg";
+                e.currentTarget.onerror = null;
+              }}
+            />
+
+            <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-gradient-to-t from-black/90 to-black/20 p-4">
+              <h1 className="text-2xl font-bold text-white md:text-4xl">
+                {featuredMovieTitle}
+              </h1>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded bg-primary px-2 py-1 text-white">
+                  <CustomTag key={"type"} text={featuredMovie?.mediaType} />
+                </span>
+                {featuredMovie?.genreIds
+                  ?.map((x: string) => {
+                    const genre = genresData.find(
+                      (y: any) => y.externalId === x,
+                    );
+                    return genre ? genre.name : "";
+                  })
+                  .filter((name) => name)
+                  .map((genreName, index) => (
+                    <CustomTag
+                      key={index}
+                      text={genreName}
+                      color="bg-gray-800"
+                      small={false}
+                    />
+                  ))}
+                <CustomTag
+                  key={"date"}
+                  text={formatDate(featuredMovieRelease)}
+                  color="bg-gray-800"
+                  small={false}
+                />
+
+                <Rating voteAverage={featuredMovie?.voteAverage} />
+              </div>
+            </div>
+          </Link>
+        </div>
       )}
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
