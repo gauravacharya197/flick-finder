@@ -20,7 +20,7 @@ const UserMenu = () => {
     setIsMenuOpen(false);
   };
 
-  if (loading) return <div className="invisible w-[100px]">Loading...</div>;
+  // if (loading) return ;
 
   const menuItems = [
     { href: "/history", icon: <FaHistory className="w-4 h-4" />, label: "History" },

@@ -141,15 +141,7 @@ const Watch = () => {
               "/",
             )}
           />
-          // <VideoPlayer
-          //   sourceUrl={`https://multiembed.mov/?video_id=${imdbID} ${
-          //     imdbID.toString()?.startsWith("t") ? "" : "&tmdb=1"
-          //   } ${
-          //     mediaType == "tv"
-          //       ? `&s=${selectedSeason}&e=${selectedEpisode}`
-          //       : ""
-          //   }`}
-          // />
+          
         );
       case 4:
         return (
@@ -204,11 +196,11 @@ const Watch = () => {
                       <button
                         key={server}
                         onClick={() => setSelectedServer(server)}
-                        className={`rounded px-4 py-2 text-sm ${
+                        className={`rounded-lg px-4 py-2 text-sm transition-colors ${
                           selectedServer === server
-                            ? "bg-primary"
-                            : "bg-primary-600"
-                        } text-white`}
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                        }`}
                       >
                         Player {server}
                       </button>
@@ -240,7 +232,7 @@ const Watch = () => {
                   </div>
                 </div>
                 <p className="mt-2 text-sm text-gray-500">
-                  If the current server doesn't work, change the server
+                  If the current player doesn't work, change the player
                 </p>
                 <br />
                 <MovieDetails movie={movie} mediaType={mediaType} />

@@ -17,7 +17,7 @@ const menuData: Menu[] = [
 
   },
   {
-    id: 5,
+    id: 2,
     title: "Movies",
     newTab: false,
     path: "/explore/movies",
@@ -25,7 +25,7 @@ const menuData: Menu[] = [
 
   },
   {
-    id: 5,
+    id: 3,
     title: "TV Shows",
     newTab: false,
     path: "/explore/tv",
@@ -33,7 +33,7 @@ const menuData: Menu[] = [
 
   },
   {
-    id: 2,
+    id: 4,
     title: "Trending",
     newTab: false,
     path: "/trending",
@@ -51,7 +51,7 @@ const menuData: Menu[] = [
   // },
   
   {
-    id: 4,
+    id: 5,
     title: "Top Rated",
     newTab: false,
     path: "/top-movies-tv",

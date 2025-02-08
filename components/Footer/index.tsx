@@ -162,6 +162,7 @@ const Footer = () => {
                 </li>
                
               </ul>
+              
             </motion.div>
           </div>
           {/* <!-- Footer Bottom --> */}

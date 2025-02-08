@@ -3,7 +3,7 @@ import { StarOutlined, ClockCircleOutlined, CommentOutlined } from "@ant-design/
 import { FaHeart, FaBookmark, FaShareAlt, FaPlay } from "react-icons/fa";
 import Link from "next/link";
 
-const SingleMovieCard = ({ index, movie }) => {
+const SingleMovieCard = ({ movie }) => {
   const liked = true;
   
   return (

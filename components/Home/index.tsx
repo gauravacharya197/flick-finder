@@ -1,14 +1,15 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaSearch } from "react-icons/fa";
-import { getRecommendation } from '@/services/MovieService';
-import { Spin } from 'antd';
-import MovieSuggestions from '../Movie/MovieSuggestions';
-import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path as necessary
-import { IoMdClose } from 'react-icons/io';
+import { IoMdClose } from "react-icons/io";
+import { Spin } from "antd";
 
-const QUERY_KEY = ['movieSearch'] as const;
+import { getRecommendation } from "@/services/MovieService";
+import MovieSuggestions from "../Movie/MovieSuggestions";
+import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path if necessary
+
+const QUERY_KEY = ["movieSearch"] as const;
 
 const Home = () => {
   const queryClient = useQueryClient();
@@ -58,9 +59,7 @@ const Home = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const searchText = formData.get('search')?.toString().trim() || '';
-    
+    const searchText = cachedData.searchText    
     if (searchText) {
       // Check if we have cached results
       const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
@@ -80,106 +79,115 @@ const Home = () => {
     }
   };
   const [placeholder, setPlaceholder] = useState("");
-  useEffect(() => {
-    let typingInterval;
-    if (!cachedData?.searchText) {
-      typingInterval = setInterval(() => {
-        const randomSuggestion = searchSuggestion[Math.floor(Math.random() * searchSuggestion.length)];
-        let typedText = "";
-        let index = 0;
+  // useEffect(() => {
+  //   let typingInterval;
+  //   if (!cachedData?.searchText) {
+  //     typingInterval = setInterval(() => {
+  //       const randomSuggestion = searchSuggestion[Math.floor(Math.random() * searchSuggestion.length)];
+  //       let typedText = "";
+  //       let index = 0;
 
-        const typeEffect = setInterval(() => {
-          typedText += randomSuggestion.charAt(index);
-          setPlaceholder(typedText);
-          index++;
+  //       const typeEffect = setInterval(() => {
+  //         typedText += randomSuggestion.charAt(index);
+  //         setPlaceholder(typedText);
+  //         index++;
 
-          if (index === randomSuggestion.length) {
-            clearInterval(typeEffect); // Clear the interval once the word is fully typed
-          }
-        }, 100); // Speed of typing effect
+  //         if (index === randomSuggestion.length) {
+  //           clearInterval(typeEffect); // Clear the interval once the word is fully typed
+  //         }
+  //       }, 100); // Speed of typing effect
 
-        return () => clearInterval(typingInterval); // Cleanup the interval when component unmounts or when search is not empty
-      }, 3000); // Change suggestion every 3 seconds
-    }
+  //       return () => clearInterval(typingInterval); // Cleanup the interval when component unmounts or when search is not empty
+  //     }, 3000); // Change suggestion every 3 seconds
+  //   }
 
-    return () => clearInterval(typingInterval); // Cleanup if unmounted
-  }, [cachedData?.searchText]);
+  //   return () => clearInterval(typingInterval); // Cleanup if unmounted
+  // }, [cachedData?.searchText]);
 
 
   const loading = mutation.isPending;
   const displayData = data?.data || mutation.data?.data || [];
 
   return (
-    <>
-      <div className="dark:text-white">
-        <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10 pt-20 md:pt-40">
-          <div className="text-center md:text-left">
-          <h2 className="mb-5 flex justify-center font-bold text-black dark:text-white text-2xl xl:text-hero">
-                🎬 Let AI Suggest Your Next Movie!
-              </h2>
-              <h4 className="mb-7 flex justify-center text-medium text-gray-700 dark:text-gray-300">
-                🍿 You can also just type emoji of your mood and let our AI suggest the perfect movie for you! 🎉
-              </h4>
-              <form onSubmit={handleSubmit}>
-  <div className="flex flex-wrap justify-center">
-    <div className="relative max-w-md w-auto sm:w-full">
-      <input
-        type="text"
-        name="search"
-        value={cachedData?.searchText || ''}
-        onChange={handleInputChange}
-        placeholder={placeholder || "Describe your movie"}
-        className="w-full rounded border border-stroke px-3 py-2.5 pr-10 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-      />
-      {cachedData?.searchText && (
-        <button
-          type="button"
-          onClick={() => {
-            queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
-              ...oldData,
-              searchText: "",
-            }));
-          }}
-          className="absolute right-3 top-1/2 -translate-y-1/2"
-        >
-          <IoMdClose className="text-2xl text-primary" />
-        </button>
-      )}
-    </div>
-    <button
-      type="submit"
-      disabled={loading}
-      aria-label="get started button"
-      className={`flex rounded px-2.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho ${
-        loading ? "bg-gray-400 opacity-50" : "bg-black"
-      }`}
-    >
-      <FaSearch className="mt-1.5 w-8 text-primary" />
-    </button>
-  </div>
-</form>
-          </div>
+    <div className="min-h-screen ">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div  />
+
+        <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
+          <h2 className="animate-fade-in bg-gradient-to-r from-primary to-primary bg-clip-text font-bold text-transparent text-2xl xl:text-hero">
+            🎬 Let AI Suggest Your Next Movie!
+          </h2>
+
+          <p className="mt-6 animate-fade-in-delay text-lg text-gray-600 dark:text-gray-300">
+            🍿 Type an emoji of your mood, and AI will find the perfect movie for you! 🎉
+          </p>
+
+          {/* Search Form */}
+          <form onSubmit={handleSubmit} className="mt-10">
+            <div className="relative mx-auto flex max-w-xl items-center">
+              <div className="group relative flex-1">
+                <input
+                  type="text"
+                  value={cachedData?.searchText || ""}
+                  onChange={handleInputChange}
+                  placeholder={placeholder || "Search..."}
+                  className="w-full rounded-lg border-2 border-gray-200 bg-white px-6 py-3 text-lg shadow-lg transition-all duration-200 placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/10 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-primary"
+                />
+
+                {cachedData?.searchText && (
+                  <button
+                    type="button"
+                    onClick={() => queryClient.setQueryData(QUERY_KEY, { ...cachedData, searchText: "" })}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  >
+                    <IoMdClose className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex h-13 w-13 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all duration-200 hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50"
+              >
+                {loading ? <Spin className="h-6 w-6 animate-spin" /> : <FaSearch className="h-6 w-6" />}
+              </button>
+            </div>
+          </form>
+          <div className="mx-auto mt-6 max-w-3xl px-4">
+          <div className="flex flex-wrap justify-center gap-2">
+              {searchSuggestion.slice(15,29).map((mood) => (
+                <button
+                  key={mood}
+                 onClick={() => queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+                  ...oldData,
+                  searchText: mood,
+                }))}
+                  className="cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  {mood}
+                </button>
+              ))}
+              </div>
+            </div>
         </div>
       </div>
-      
-      <section className="flex items-center justify-center overflow-hidden dark:bg-gray-900 dark:text-white">
-        <div className="mx-auto flex max-w-c-1390 justify-center px-4 md:px-8 2xl:px-0">
-          {loading ? (
-            <div className="flex flex-col items-center">
-              <Spin size="large" className="text-6xl" />
-              <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-300">
-                Please wait
-              </h2>
-              <br />
-            </div>
-          ) : displayData.length > 0 ? (
-            <MovieSuggestions movies={displayData} />
-          ) : (
-            <></>
-          )}
-        </div>
-      </section>
-    </>
+
+      {/* Results Section */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {loading ? (
+          <div className="flex flex-col items-center space-y-4">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            <p className="text-lg font-medium text-gray-600 dark:text-gray-300">
+              Finding your perfect matches...
+            </p>
+          </div>
+        ) : displayData.length > 0 ? (
+          <MovieSuggestions movies={displayData} />
+        ) : null}
+      </div>
+    </div>
   );
 };
 
