@@ -15,20 +15,23 @@ const MovieSuggestions = ({movies, onMovieClick}) => {
   }));
   return (
     <section>
-    <div >
-      <div className="flex justify-center">
-        <div className="grid grid-cols-2 gap-4 w-full max-w-6xl" onClick={onMovieClick}>
-          {moviesMap.map((movie, index) => (
-            <SimilarMovieCard 
-              index={index} 
-              mediaType="movie" 
-              key={index} 
-              movie={movie}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+   
+    <div className="flex justify-center">
+  <div 
+    className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-6xl" 
+    onClick={onMovieClick}
+  >
+    {moviesMap.map((movie, index) => (
+      <SimilarMovieCard 
+        index={index} 
+        mediaType="movie" 
+        key={index} 
+        movie={movie}
+      />
+    ))}
+  </div>
+</div>
+  
   </section>
   );
 };

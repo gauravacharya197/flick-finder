@@ -12,8 +12,7 @@ import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import useClickOutside from "@/hooks/useClickOutside";
-import AISearchButton from "../Common/RobotSearchButton";
-import RobotSearchButton from "../Common/RobotSearchButton";
+import { RobotSearchModal } from "../Common/RobotSearchModal";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -134,7 +133,7 @@ const MyNav = () => {
                 </ul>
               </div>
             </div>
-            <div> <RobotSearchButton/> </div>
+            <div> <RobotSearchModal/> </div>
 
           </div>
             

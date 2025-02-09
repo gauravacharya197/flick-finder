@@ -111,6 +111,7 @@ pre {
 
 .custom-modal .ant-modal-content {
   @apply bg-background ; 
+  @apply px-0 py-0
 }
 
 

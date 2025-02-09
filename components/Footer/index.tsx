@@ -30,45 +30,20 @@ const Footer = () => {
               className="animate_top"
             >
               <ul className="flex items-center gap-8">
+                
+                
                 <li>
                   <a href="#" className="hover:text-primary">
-                    English
+                    Request
                   </a>
                 </li>
-                <li>
-                  <a href="#" className="hover:text-primary">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-primary">
-                    Support
-                  </a>
-                </li>
+               
               </ul>
             </motion.div>
-
-            <motion.div
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  y: -20,
-                },
-
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              transition={{ duration: 1, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="animate_top"
-            >
-              
-            </motion.div>
-
+            <div className="text-center py-4 text-sm text-gray-600 dark:text-gray-300">
+            This site does not host any files on our server; we only provide links to media hosted on third-party services.
+            </div>
+            
             <motion.div
               variants={{
                 hidden: {
