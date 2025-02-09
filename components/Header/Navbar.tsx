@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { FaSearch, FaFilter } from "react-icons/fa";
+import { FaSearch, FaFilter, FaRobot } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import LoginPartial from "../Auth/UserMenu";
 import menuData from "./menuData";
@@ -12,7 +12,8 @@ import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import useClickOutside from "@/hooks/useClickOutside";
-import ThemeToggler from "./ThemeToggler";
+import AISearchButton from "../Common/RobotSearchButton";
+import RobotSearchButton from "../Common/RobotSearchButton";
 
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -52,6 +53,8 @@ const MyNav = () => {
   
   const renderFilterButton = () => {
     return (
+      <>
+     
       <Link
         href="/results"
         onClick={() => setMenuOpen(false)}
@@ -60,6 +63,7 @@ const MyNav = () => {
         <FaFilter className="h-3.5 w-3.5" />
         Filter
       </Link>
+      </>
     );
   };
 
@@ -130,12 +134,15 @@ const MyNav = () => {
                 </ul>
               </div>
             </div>
+            <div> <RobotSearchButton/> </div>
+
           </div>
             
-
           {/* Search Bar for Larger Screens */}
-          <div className="mr-32 hidden flex-1 items-center justify-center gap-2 md:flex">
+          <div className="mr-36 hidden flex-1 items-center justify-center gap-2 md:flex">
+            
             <div className="flex items-center gap-2">
+            
               {renderFilterButton()}
 
               <form onSubmit={handleSearch} className="relative w-full">

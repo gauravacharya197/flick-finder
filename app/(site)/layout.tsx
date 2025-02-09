@@ -40,13 +40,14 @@ export default function RootLayout({
               defaultTheme="dark"
             >
               
-              <Suspense fallback={<></>}>
-                <Header />
-              </Suspense>
+              
 
               <ToasterContext />
               <NextTopLoader showSpinner={false} color="teal" />
               <QueryClientProvider client={queryClient}>
+              <Suspense fallback={<></>}>
+                <Header />
+              </Suspense>
               <MyApp />
                 <div className="min-h-screen">{children}</div>
                 {/* <ReactQueryDevtools initialIsOpen={false} /> */}

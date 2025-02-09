@@ -9,16 +9,17 @@ import { getRecommendation } from "@/services/MovieService";
 import MovieSuggestions from "../Movie/MovieSuggestions";
 import searchSuggestion from "../../data/searchSuggestion"; // Adjust the import path if necessary
 import ErrorMessage from "../Common/ErrorMessage";
+import Link from "next/link";
 
 const QUERY_KEY = ["movieSearch"] as const;
 
-const Home = () => {
+const Home = ({ showHomeLink = true }) => {
   const queryClient = useQueryClient();
   const cachedData = queryClient.getQueryData(QUERY_KEY) as any;
 
   const { data } = useQuery({
     queryKey: QUERY_KEY,
-    queryFn: () => getRecommendation(cachedData?.searchText || ''),
+    queryFn: () => getRecommendation(cachedData?.searchText || ""),
     enabled: false,
     staleTime: Infinity,
     refetchOnMount: false,
@@ -32,7 +33,10 @@ const Home = () => {
       const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
       if (existingCache?.searchHistory?.[searchText.toLowerCase()]) {
         // Return early to prevent API call
-        return { skipRequest: true, data: existingCache.searchHistory[searchText.toLowerCase()] };
+        return {
+          skipRequest: true,
+          data: existingCache.searchHistory[searchText.toLowerCase()],
+        };
       }
       return { skipRequest: false };
     },
@@ -44,10 +48,10 @@ const Home = () => {
         data: responseData.data,
         searchHistory: {
           ...(oldData?.searchHistory || {}),
-          [searchText.toLowerCase()]: responseData.data
-        }
+          [searchText.toLowerCase()]: responseData.data,
+        },
       }));
-    }
+    },
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,18 +64,19 @@ const Home = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const searchText = cachedData.searchText    
+    const searchText = cachedData.searchText;
     if (searchText) {
       // Check if we have cached results
       const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
-      const cachedResults = existingCache?.searchHistory?.[searchText.toLowerCase()];
-      
+      const cachedResults =
+        existingCache?.searchHistory?.[searchText.toLowerCase()];
+
       if (cachedResults) {
         // Use cached results instead of making API call
         queryClient.setQueryData(QUERY_KEY, {
           ...existingCache,
           searchText,
-          data: cachedResults
+          data: cachedResults,
         });
       } else {
         // Make API call if no cached results exist
@@ -105,23 +110,23 @@ const Home = () => {
   //   return () => clearInterval(typingInterval); // Cleanup if unmounted
   // }, [cachedData?.searchText]);
 
-
   const loading = mutation.isPending;
   const displayData = data?.data || mutation.data?.data || [];
 
   return (
-    <div className="min-h-screen ">
+    <div>
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div  />
+        <div />
 
-        <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
-          <h2 className="animate-fade-in bg-gradient-to-r from-primary to-primary bg-clip-text font-bold text-transparent text-2xl xl:text-hero">
+        <div className="container mx-auto px-4 py-8 text-center sm:px-6 md:py-16 lg:px-8">
+          <h2 className="animate-fade-in bg-gradient-to-r from-primary to-primary bg-clip-text text-xl font-bold text-transparent xl:text-hero">
             🎬 Let AI Suggest Your Next Movie!
           </h2>
 
-          <p className="mt-6 animate-fade-in-delay text-lg text-gray-600 dark:text-gray-300">
-            🍿 Type an emoji of your mood, and AI will find the perfect movie for you! 🎉
+          <p className="animate-fade-in-delay mt-6 text-lg text-gray-600 dark:text-gray-300">
+            🍿 Type an emoji of your mood, and AI will find the perfect movie
+            for you! 🎉
           </p>
 
           {/* Search Form */}
@@ -139,7 +144,12 @@ const Home = () => {
                 {cachedData?.searchText && (
                   <button
                     type="button"
-                    onClick={() => queryClient.setQueryData(QUERY_KEY, { ...cachedData, searchText: "" })}
+                    onClick={() =>
+                      queryClient.setQueryData(QUERY_KEY, {
+                        ...cachedData,
+                        searchText: "",
+                      })
+                    }
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
                   >
                     <IoMdClose className="h-5 w-5" />
@@ -150,28 +160,34 @@ const Home = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-11 w-12 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all duration-200 hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50"
+                className="hover:bg-primary-dark flex h-11 w-12 items-center justify-center rounded-lg bg-primary text-white shadow-lg transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:opacity-50"
               >
-                {loading ? <Spin className="h-6 w-6 animate-spin" /> : <FaSearch className="h-6 w-6" />}
+                {loading ? (
+                  <Spin className="h-6 w-6 animate-spin" />
+                ) : (
+                  <FaSearch className="h-6 w-6" />
+                )}
               </button>
             </div>
           </form>
-          <div className="mx-auto mt-4 max-w-3xl ">
-          <div className="flex flex-wrap justify-center gap-2">
-              {searchSuggestion.slice(15,25).map((mood) => (
+          <div className="mx-auto mt-4 max-w-3xl">
+            <div className="flex flex-wrap justify-center gap-2">
+              {searchSuggestion.slice(15, 25).map((mood) => (
                 <button
                   key={mood}
-                 onClick={() => queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
-                  ...oldData,
-                  searchText: mood,
-                }))}
+                  onClick={() =>
+                    queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+                      ...oldData,
+                      searchText: mood,
+                    }))
+                  }
                   className="cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-600 shadow-md transition-all hover:bg-gray-50 hover:shadow-lg dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   {mood}
                 </button>
               ))}
-              </div>
             </div>
+          </div>
         </div>
       </div>
 
@@ -184,9 +200,32 @@ const Home = () => {
               Finding your perfect matches...
             </p>
           </div>
-        ) : mutation.isError? <ErrorMessage message={mutation.error.message}/> : displayData.length > 0 ? (
-          <MovieSuggestions movies={displayData} />
-        ) : null}
+        ) : mutation.isError ? (
+          <div className="mt-8 text-center">
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              <ErrorMessage message={mutation.error.message} />
+            </p>
+          </div>
+        ) : displayData.length > 0 ? (
+          <>
+            <h3 className=" text-center text-2xl font-semibold text-gray-800 dark:text-gray-200">
+              Here are your movie suggestions! 🎯
+            </h3>
+            <MovieSuggestions movies={displayData} />
+          </>
+        ) : showHomeLink? (
+          
+          <div className="mt-2 text-center">
+            <div className="mt-8 text-center">
+              <Link
+                href="/home"
+                className="to-primary-900 hover:from-primary-700 inline-block rounded-lg bg-gradient-to-r from-primary-500 px-6 py-3  font-medium text-white transition-colors duration-300 hover:via-purple-600 hover:to-pink-600"
+              >
+                Go To Homepage
+              </Link>
+            </div>
+          </div> 
+        ) : <></>}
       </div>
     </div>
   );
