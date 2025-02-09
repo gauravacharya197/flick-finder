@@ -1,23 +1,35 @@
 import React from "react";
-import { Input, Button, Card } from "antd";
-import SingleMovieCard from "./SingleMovieCard";
 
-const MovieSuggestions = ({movies}) => {
+import { SimilarMovieCard } from "./SimilarMovieCard";
+import { Movie } from "@/types/movie";
+
+const MovieSuggestions = ({movies, onMovieClick}) => {
   
-
+  let moviesMap:Movie[] = movies.map(x => ({
+    posterPath: x.poster,
+    displayTitle: x.title,
+    displayReleaseDate: x.released,
+    voteAverage:x.imdbRating,
+    mediaType:"movie",
+    id:x.imdbID
+  }));
   return (
-    <section className="overflow-hidden pb-20  md:pt-3 xl:pb-25 xl:pt-2">
-      <div className="mx-auto max-w-screen-lg px-4 md:px-8">
-        
-        <div className="flex justify-center">
-          <div className="grid grid-cols-1  gap-2 w-screen">
-            {movies.map((movie, index) => (
-               <SingleMovieCard key={index} movie={movie}/>
-            ))}
-          </div>
+    <section>
+    <div >
+      <div className="flex justify-center">
+        <div className="grid grid-cols-2 gap-4 w-full max-w-6xl" onClick={onMovieClick}>
+          {moviesMap.map((movie, index) => (
+            <SimilarMovieCard 
+              index={index} 
+              mediaType="movie" 
+              key={index} 
+              movie={movie}
+            />
+          ))}
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
 

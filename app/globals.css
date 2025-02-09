@@ -109,3 +109,8 @@ pre {
   scrollbar-color: var(--tw-primary) #1f2937;
 }
 
+.custom-modal .ant-modal-content {
+  @apply bg-background ; 
+}
+
+

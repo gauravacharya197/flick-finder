@@ -49,6 +49,8 @@ export default function RootLayout({
                 <Header />
               </Suspense>
               <MyApp />
+                
+                
                 <div className="min-h-screen">{children}</div>
                 {/* <ReactQueryDevtools initialIsOpen={false} /> */}
               </QueryClientProvider>

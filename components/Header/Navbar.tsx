@@ -69,7 +69,7 @@ const MyNav = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background dark:text-white">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 2xl:px-1">
         <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
           {/* Hamburger Menu and Site Name */}
@@ -103,7 +103,7 @@ const MyNav = () => {
             </button>
 
             <Link
-              href="/home"
+              href="/"
               className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
             >
               <SiteName />
