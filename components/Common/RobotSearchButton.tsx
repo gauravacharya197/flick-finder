@@ -8,7 +8,7 @@ import { RobotSearchModal } from './RobotSearchModal';
 const RobotSearchButton = () => {
   return (
    
-      <RobotSearchModal getRecommendation={getRecommendation}/>
+      <RobotSearchModal />
    
   );
 };
