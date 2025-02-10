@@ -54,7 +54,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
   const movies = data?.pages.flatMap((page) => page.data.results) || [];
 
   return (
-    <div className="container mx-auto">
+    <div >
       {query && <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>}
       <FilterOption />
       <div className="mt-5">

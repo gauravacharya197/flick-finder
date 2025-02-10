@@ -86,7 +86,7 @@ const MovieHomepage = () => {
     <div className="min-h-screen text-white">
       {/* Hero Section */}
       {trendingLoading ? (
-        <div className="container mx-auto px-4 py-8 lg:px-8">
+        <div className="px-4 lg:px-12 2xl:px-48">
           <Skeleton active className="h-full w-full" />
         </div>
       ) : (
@@ -119,7 +119,7 @@ const MovieHomepage = () => {
         />
       )}
        {/* Last Year Section */}
-       <div className="container mx-auto px-4 py-8 lg:px-8">
+       <div className="px-4 lg:px-12 2xl:px-48">
         <GenreGrid genres={genreFilters} />
       </div>
 

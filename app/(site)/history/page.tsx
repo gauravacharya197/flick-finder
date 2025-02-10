@@ -1,3 +1,4 @@
+import Container from '@/components/Common/Container';
 import SectionHeader from '@/components/Common/SectionHeader';
 import WatchHistory from '@/components/WatchHistory';
 import { siteConfig } from '@/config/siteConfig';
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
 const HistoryPage = () => {
 
   return (
-    <div className="min-h-screen  ">
-      <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
-        <SectionHeader text='Watch History' className='mb-2'/>
-         <WatchHistory/>
-      </div>
-    </div>
+  
+       <Container>
+          <SectionHeader text='Watch History' className='mb-2'/>
+           <WatchHistory/>
+       </Container>
+     
   );
 }
 

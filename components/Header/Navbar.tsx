@@ -87,13 +87,12 @@ const MyNav = () => {
   };
   return (
     <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background dark:text-white">
-      <div className="container mx-auto px-4 2xl:px-1">
+      <div className="  px-4 2xl:px-48">
         <div className="flex h-13 items-center justify-between">
-          {/* Hamburger Menu and Site Name */}
-          {/* Hamburger Menu and Site Name */}
+       
+          
           <div className="relative flex items-center gap-4">
-            {" "}
-            {/* Added relative positioning */}
+           
             <button
               ref={menuButtonRef}
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
@@ -128,6 +127,8 @@ const MyNav = () => {
               <SiteName />
             </Link>
             {/* Hamburger Menu Content - Repositioned */}
+                        {/* <Menu menuContentRef={menuContentRef} menuData={menuData} setMenuOpen={setMenuOpen} menuOpen={menuOpen} /> */}
+
             <div
               ref={menuContentRef}
               className={`absolute left-0 top-full z-40 overflow-hidden rounded-md bg-black bg-opacity-95 shadow-lg backdrop-blur-sm transition-all duration-300 dark:bg-background ${
@@ -153,8 +154,8 @@ const MyNav = () => {
               </div>
             </div>
             <div>
-              {" "}
-              <RobotSearchModal />{" "}
+             
+              <RobotSearchModal />
             </div>
           </div>
 

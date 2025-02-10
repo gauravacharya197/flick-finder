@@ -3,6 +3,7 @@ import { siteConfig } from "@/config/siteConfig";
 import SearchResult from "@/components/Result/SearchResult";
 import React from "react";
 import { Metadata } from "next";
+import Container from "@/components/Common/Container";
 
 interface ResultsPageProps {
   searchParams: { query?: string };
@@ -24,11 +25,9 @@ const ResultsPage = ({ searchParams }: ResultsPageProps) => {
  
 
   return (
-    <div className="min-h-screen dark:text-white">
-      <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
-        <SearchResult query={searchParams.query} />
-      </div>
-    </div>
+   
+       <Container> <SearchResult query={searchParams.query} /></Container>
+    
   );
 };
 

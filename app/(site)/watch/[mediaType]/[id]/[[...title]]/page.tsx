@@ -1,3 +1,4 @@
+import Container from '@/components/Common/Container';
 import { Genre } from '@/components/Genre/Genre';
 import Watch from '@/components/Watch';
 import { siteConfig } from '@/config/siteConfig';
@@ -32,13 +33,9 @@ export async function generateMetadata(
 const WatchPage = ({ params }: WatchPageProps) => {
   return (
    
-    <section className="pb-10  pt-5 md:pt-5 xl:pt-11">
-    <div className="mx-auto  px-4 md:px-8 2xl:px-0">
-      <div className="flex flex-col lg:items-start lg:gap-3 xl:gap-4 container mx-auto">
-      <Watch params={params} />
-        </div>
-      </div>
-    </section>
+   
+    <Container>  <Watch params={params} /></Container>
+       
   );
 };
 

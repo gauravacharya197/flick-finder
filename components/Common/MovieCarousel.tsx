@@ -27,14 +27,14 @@ const MovieCarousel = ({
   // Define slide sizes based on variant
   const getSlideClasses = () => {
     if (variant === 'trending') {
-      return "!w-[200px] sm:!w-[280px] md:!w-[320px] lg:!w-[360px]";
+      return "!w-[190px] sm:!w-[250px] md:!w-[320px] lg:!w-[280px] 2xl:!w-[320px]";
     }
     return "!w-[170px] sm:!w-[220px] md:!w-[240px] lg:!w-[260px]";
   };
 
   // Adjust container padding for trending variant
   const getContainerClasses = () => {
-    const baseClasses = "container mx-auto px-4 lg:px-8";
+    const baseClasses = "px-4 lg:px-12 2xl:px-48";
     return variant === 'trending' 
       ? `${baseClasses} py-10` 
       : `${baseClasses} py-8`;

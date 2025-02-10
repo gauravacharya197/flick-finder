@@ -160,129 +160,129 @@ const Watch = ({ params }: WatchPageProps) => {
     }
   };
   return (
-    <div className=" ">
-    <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-3">
-      {/* Left Column */}
-      <div className="col-span-2 rounded-lg">
-        {isLoading ? (
-          <div className="flex gap-3 rounded-lg bg-gray-100 p-3 dark:bg-gray-800/50">
-            <Skeleton active className="h-24 w-16 rounded-md" />
-            <div className="flex-1 space-y-2">
-              <Skeleton active className="h-4 w-3/4" />
-              <Skeleton active className="h-3 w-1/2" />
-              <Skeleton active className="h-6 w-24" />
-            </div>
+    <div className="container">
+  <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
+    {/* Left Column - Now spans 3 columns instead of 2 */}
+    <div className="col-span-3 rounded-lg">
+      {isLoading ? (
+        <div className="container flex gap-3 rounded-lg bg-gray-100 p-3 dark:bg-gray-800/50">
+          <Skeleton active className="h-24 w-16 rounded-md" />
+          <div className="flex-1 space-y-2">
+            <Skeleton active className="h-4 w-3/4" />
+            <Skeleton active className="h-3 w-1/2" />
+            <Skeleton active className="h-6 w-24" />
           </div>
-        ) : isError ? (
-          <ErrorMessage
-            className="mt-2 w-full"
-            message={error?.message || "Something went wrong while fetching movie details."}
-          />
-        ) : (
-          <div className="relative pb-[10.25%]">
-            {renderMovieScreen()}
-            <div className="flex flex-col gap-4 bg-[rgba(20,28,49,0.95)] p-4 text-white md:flex-row md:items-center md:justify-between">
-              {/* Server selector */}
-              <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4">
-                {[1, 2, 3, 4].map((server) => (
-                  <button
-                    key={server}
-                    onClick={() => setSelectedServer(server)}
-                    className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                      selectedServer === server
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                    }`}
-                  >
-                    Player {server}
-                  </button>
-                ))}
-              </div>
-
-              {/* Controls */}
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                <div className="hidden h-6 w-px bg-zinc-700 sm:block" />
-                <div className="flex items-center justify-between gap-3">
-                  <WatchlistButton
-                    movieId={movie.id}
-                    movie={movie}
-                    isLoggedIn={isLoggedIn}
-                    userId={user?.id}
-                  />
-                  <button
-                    onClick={handleShare}
-                    className="rounded-lg p-2 hover:bg-gray-800/50"
-                  >
-                    <FaShare className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <p className="mt-2 text-sm text-gray-500">
-              If the current player doesn't work, change the player
-            </p>
-
-            {/* Mobile-only SeasonChooser for TV shows */}
-            {mediaType === "tv" && (
-              <div className="mt-4 lg:hidden">
-                <SeasonChooser
-                  mediaId={id?.toString().startsWith("t") ? movie?.id : id}
-                  seasons={movie?.seasons}
-                  onSeasonChange={setSelectedSeason}
-                  onEpisodeChange={setSelectedEpisode}
-                />
-              </div>
-            )}
-
-            <br />
-            <MovieDetails movie={movie} mediaType={mediaType} />
-            <SectionHeader className="mb-5 mt-10" text="Casts" />
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-              {movie?.casts?.map((character, index) => (
-                <CastCard
-                  key={index}
-                  imgSrc={character.profilePath}
-                  name={character.name}
-                  role={character.character}
-                />
+        </div>
+      ) : isError ? (
+        <ErrorMessage
+          className="mt-2 w-full"
+          message={error?.message || "Something went wrong while fetching movie details."}
+        />
+      ) : (
+        <div className="relative pb-[10.25%]">
+          {renderMovieScreen()}
+          <div className="flex flex-col gap-4 bg-[rgba(20,28,49,0.95)] p-4 text-white md:flex-row md:items-center md:justify-between">
+            {/* Server selector */}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4">
+              {[1, 2, 3, 4].map((server) => (
+                <button
+                  key={server}
+                  onClick={() => setSelectedServer(server)}
+                  className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                    selectedServer === server
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                  }`}
+                >
+                  Player {server}
+                </button>
               ))}
             </div>
 
-            {/* Mobile-only SimilarMovie for movies */}
-            {mediaType === "movie" && (
-              <div className="mt-10 grid grid-cols-1  lg:hidden">
-                <SimilarMovie 
-                  id={id?.toString().startsWith("t") ? movie?.id : id} 
-                  mediaType={mediaType}
+            {/* Controls */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+              <div className="hidden h-6 w-px bg-zinc-700 sm:block" />
+              <div className="flex items-center justify-between gap-3">
+                <WatchlistButton
+                  movieId={movie.id}
+                  movie={movie}
+                  isLoggedIn={isLoggedIn}
+                  userId={user?.id}
                 />
+                <button
+                  onClick={handleShare}
+                  className="rounded-lg p-2 hover:bg-gray-800/50"
+                >
+                  <FaShare className="h-5 w-5" />
+                </button>
               </div>
-            )}
+            </div>
           </div>
-        )}
-      </div>
+          
+          <p className="mt-2 text-sm text-gray-500">
+            If the current player doesn't work, change the player
+          </p>
 
-      {/* Right Column - Only visible on desktop */}
-      <div className="hidden space-y-8 lg:block">
-        <div className="rounded-lg p-2 dark:text-white">
-          {mediaType === "movie" && (
-            <SimilarMovie 
-              id={id?.toString().startsWith("t") ? movie?.id : id} 
-              mediaType={mediaType} 
-            />
+          {/* Mobile-only SeasonChooser for TV shows */}
+          {mediaType === "tv" && (
+            <div className="mt-4 lg:hidden">
+              <SeasonChooser
+                mediaId={id?.toString().startsWith("t") ? movie?.id : id}
+                seasons={movie?.seasons}
+                onSeasonChange={setSelectedSeason}
+                onEpisodeChange={setSelectedEpisode}
+              />
+            </div>
           )}
-          {mediaType === "tv" && !isLoading && !isError && (
-            <SeasonChooser
-              mediaId={id?.toString().startsWith("t") ? movie?.id : id}
-              seasons={movie?.seasons}
-              onSeasonChange={setSelectedSeason}
-              onEpisodeChange={setSelectedEpisode}
-            />
+
+          <br />
+          <MovieDetails movie={movie} mediaType={mediaType} />
+          <SectionHeader className="mb-5 mt-10" text="Casts" />
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
+            {movie?.casts?.map((character, index) => (
+              <CastCard
+                key={index}
+                imgSrc={character.profilePath}
+                name={character.name}
+                role={character.character}
+              />
+            ))}
+          </div>
+
+          {/* Mobile-only SimilarMovie for movies */}
+          {mediaType === "movie" && (
+            <div className="mt-10 grid grid-cols-1 lg:hidden">
+              <SimilarMovie 
+                id={id?.toString().startsWith("t") ? movie?.id : id} 
+                mediaType={mediaType}
+              />
+            </div>
           )}
         </div>
+      )}
+    </div>
+
+    {/* Right Column - Now spans 1 column */}
+    <div className="hidden space-y-8 lg:block">
+      <div className="rounded-lg p-2 dark:text-white">
+        {mediaType === "movie" && (
+          <SimilarMovie 
+            id={id?.toString().startsWith("t") ? movie?.id : id} 
+            mediaType={mediaType} 
+          />
+        )}
+        {mediaType === "tv" && !isLoading && !isError && (
+          <SeasonChooser
+            mediaId={id?.toString().startsWith("t") ? movie?.id : id}
+            seasons={movie?.seasons}
+            onSeasonChange={setSelectedSeason}
+            onEpisodeChange={setSelectedEpisode}
+          />
+        )}
       </div>
     </div>
   </div>
+</div>
 
   );
 

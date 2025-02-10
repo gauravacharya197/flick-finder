@@ -1,32 +1,37 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { FaFilter, FaFire, FaHome, FaVideo } from "react-icons/fa";
+import React from 'react';
 
-const Sidebar = () => {
+const MediaSidebar = () => {
+  const NavItem = ({ icon, label }) => (
+    <div className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-800 rounded-md cursor-pointer group">
+      <span className="text-white w-5 h-5">{icon}</span>
+      <span className="text-white text-sm">{label}</span>
+    </div>
+  );
+
   return (
-    <aside className="fixed left-0 top-0 h-full w-20 bg-white shadow-lg dark:bg-gray-900 flex flex-col items-center py-6">
-      {/* Logo */}
-      <div className="mb-8">
-        <Image src="/logo.svg" alt="Logo" width={40} height={40} />
-      </div>
-
-      {/* Navigation Items */}
-      <nav className="flex flex-col items-center gap-6">
-        <SidebarItem href="/" icon={<FaHome size={24} />} label="Home" />
-        <SidebarItem href="/anime" icon={<FaVideo size={24} />} label="Anime" />
-        <SidebarItem href="/trending" icon={<FaFire size={24} />} label="Trending" />
-        <SidebarItem href="/category" icon={<FaFilter size={24} />} label="Category" />
+    <div className="fixed top-0 left-0 h-full w-56 bg-black">
+      <nav className="space-y-2 pt-4">
+        <NavItem icon="🏠" label="Home" />
+        <NavItem icon="🔍" label="Search" />
+        
+        <div className="border-t border-gray-800 my-4"></div>
+        
+        <NavItem icon="🎬" label="Movies" />
+        <NavItem icon="📺" label="Tv Shows" />
+        <NavItem icon="🐱" label="Anime" />
+        <NavItem icon="📖" label="Manga" />
+        <NavItem icon="🛡️" label="K Drama" />
+        <NavItem icon="📺" label="Live Tv" />
+        <NavItem icon="💬" label="Discord" />
+        
+        <div className="border-t border-gray-800 my-4"></div>
+        
+        <NavItem icon="🕒" label="History" />
+        <NavItem icon="❤️" label="WatchList" />
+        <NavItem icon="⚙️" label="Settings" />
       </nav>
-    </aside>
+    </div>
   );
 };
 
-const SidebarItem = ({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) => (
-  <Link href={href} className="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-blue-500">
-    {icon}
-    <span className="text-sm">{label}</span>
-  </Link>
-);
-
-export default Sidebar;
+export default MediaSidebar;

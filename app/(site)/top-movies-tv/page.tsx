@@ -1,3 +1,4 @@
+import Container from '@/components/Common/Container';
 import { TopRatedList } from '@/components/TopRatedList';
 import { siteConfig } from '@/config/siteConfig';
 import { Metadata } from 'next';
@@ -10,11 +11,9 @@ export const metadata: Metadata = {
 };
  const TopRated = () => {
   return (
-    <div className="min-h-screen  dark:text-white">
-       <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
-         <TopRatedList/>
-       </div>
-     </div>
+   
+         <Container><TopRatedList/></Container>
+      
   
   )
 }
