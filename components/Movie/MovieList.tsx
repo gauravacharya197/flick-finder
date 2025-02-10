@@ -8,6 +8,7 @@ import { CustomTag } from "../Common/CustomTag";
 import MovieCard from "./MovieCard";
 import { Rating } from "../Common/Rating";
 import { formatDate } from "@/utils/formatDate";
+import { constructWatchUrl } from "@/utils/constructWatchUrl";
 
 interface MovieListProps {
   movies: any[];
@@ -31,7 +32,7 @@ export const MovieList = ({
     <>
       {showFeaturedMovie && featuredMovie && (
         <div className="relative mb-8 aspect-[15/9] w-full md:aspect-[25/9]">
-          <Link href={`/watch/${featuredMovie?.mediaType}/${featuredMovie.id}`}>
+          <Link href={constructWatchUrl(featuredMovie?.mediaType, featuredMovie?.id,featuredMovie?.displayTitle)}>
             <img
               src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
               alt={featuredMovieTitle}

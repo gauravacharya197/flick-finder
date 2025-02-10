@@ -1,5 +1,6 @@
 import { Genre } from '@/components/Genre/Genre';
 import { siteConfig } from '@/config/siteConfig';
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -18,7 +19,7 @@ export async function generateMetadata(
 
 
   return {
-    title: `${formattedGenre} - ${siteConfig.siteName} - Best Popular ${formattedGenre} Movies/TV Series`,
+    title: `${capitalizeFirstLetter(formattedGenre)} - Best Popular ${formattedGenre} Movies/TV Series`,
     description: `Browse ${formattedGenre} movies and TV series on ${siteConfig.siteName}. ${siteConfig.description}`,
   };
 }

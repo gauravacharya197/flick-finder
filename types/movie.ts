@@ -1,5 +1,5 @@
 export interface Movie {
-  id: number;
+  id: string;
   posterPath: string;
   displayTitle: string;
   displayReleaseDate: string;

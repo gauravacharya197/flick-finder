@@ -23,59 +23,77 @@ const MyNav = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("query");
   const [isPending, startTransition] = useTransition();
-
-
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
-    if(query.trim())
-    startTransition(() => {
-      router.push(`/results?query=${encodeURIComponent(query)}`);
-    });
+    if (query.trim())
+      startTransition(() => {
+        router.push(`/results?query=${encodeURIComponent(query)}`);
+      });
   };
   const handleClose = () => {
-    
-
     // Only navigate to /results if there is a query
     if (searchQuery) {
       router.push("/results");
     }
-    
+
     setShowSearch(false);
     dispatch(setQuery(""));
   };
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuContentRef = useRef<HTMLDivElement>(null);
-
   // Using our custom hook
   useClickOutside(
     [menuButtonRef as any, menuContentRef as any],
     () => setMenuOpen(false),
-    menuOpen
+    menuOpen,
   );
-  
+
   const renderFilterButton = () => {
     return (
       <>
-     
-      <Link
-        href="/results"
-        onClick={() => setMenuOpen(false)}
-        className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-      >
-        <FaFilter className="h-3.5 w-3.5" />
-        Filter
-      </Link>
+        <Link
+          href="/results"
+          onClick={() => setMenuOpen(false)}
+          className="flex items-center gap-2 rounded bg-gray-200 px-4 py-1.5 text-black hover:bg-gray-300 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+        >
+          <FaFilter className="h-3.5 w-3.5" />
+          Filter
+        </Link>
       </>
     );
   };
-
+  const renderCloseMdIcon = () => {
+    return (
+      <>
+        {" "}
+        {(query || searchQuery) && (
+          <button
+            type="button"
+            onClick={handleClose}
+            className="absolute right-2 top-1/2 mr-5 -translate-y-1/2 transform"
+          >
+            <IoMdClose className="mr-1 text-2xl text-primary" />
+          </button>
+        )}
+        <button
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
+          aria-label="Search"
+        >
+          {isPending ? <Spin /> : <FaSearch className="h-5 w-5" />}
+        </button>
+      </>
+    );
+  };
   return (
     <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background dark:text-white">
       <div className="container mx-auto px-4 2xl:px-1">
         <div className="flex h-13 items-center justify-between">
           {/* Hamburger Menu and Site Name */}
           {/* Hamburger Menu and Site Name */}
-          <div className="flex items-center gap-4 relative"> {/* Added relative positioning */}
+          <div className="relative flex items-center gap-4">
+            {" "}
+            {/* Added relative positioning */}
             <button
               ref={menuButtonRef}
               className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
@@ -100,17 +118,15 @@ const MyNav = () => {
                   />
                 </svg>
               ) : (
-                <MdClose className="w-6 h-6" />
+                <MdClose className="h-6 w-6" />
               )}
             </button>
-
             <Link
               href="/"
               className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
             >
               <SiteName />
             </Link>
-
             {/* Hamburger Menu Content - Repositioned */}
             <div
               ref={menuContentRef}
@@ -136,17 +152,16 @@ const MyNav = () => {
                 </ul>
               </div>
             </div>
-            <div> <RobotSearchModal/> </div>
-
+            <div>
+              {" "}
+              <RobotSearchModal />{" "}
+            </div>
           </div>
-            
+
           {/* Search Bar for Larger Screens */}
           <div className="mr-36 hidden flex-1 items-center justify-center gap-2 md:flex">
-            
             <div className="flex items-center gap-2">
-            
               {renderFilterButton()}
-
               <form onSubmit={handleSearch} className="relative w-full">
                 <input
                   type="text"
@@ -155,28 +170,10 @@ const MyNav = () => {
                   onChange={(e) => dispatch(setQuery(e.target.value))}
                   className="w-96 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
-                {(query || searchQuery)  && (
-                  <button
-                    type="button"
-                    onClick={handleClose}
-                    className="absolute right-2 top-1/2 mr-5 -translate-y-1/2 transform"
-                  >
-                    <IoMdClose className="mr-1 text-2xl text-primary" />
-                  </button>
-                )}
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-primary-400"
-                  aria-label="Search"
-                >
-                          {isPending ? <Spin /> :  <FaSearch className="h-4.5 w-4.5 text-2xl" />}
-
-                 
-                </button>
+                {renderCloseMdIcon()}
               </form>
             </div>
           </div>
-
           {/* Small Screen Layout: Search Icon, Theme Toggler, and Login Button */}
           <div className="flex items-center gap-3 md:hidden">
             <button
@@ -189,7 +186,6 @@ const MyNav = () => {
             {/* <ThemeToggler /> */}
             <LoginPartial />
           </div>
-
           {/* Large Screen Layout */}
           <div className="hidden items-center gap-4 md:flex">
             {/* <ThemeToggler /> */}
@@ -197,7 +193,6 @@ const MyNav = () => {
           </div>
         </div>
       </div>
-
       {/* Search Bar for Small Screens */}
       {showSearch && (
         <div className="bg-white bg-opacity-90 p-2 text-white dark:bg-background dark:text-white md:hidden">
@@ -211,20 +206,11 @@ const MyNav = () => {
                 placeholder="Search Movies/TV"
                 className="w-full rounded-md border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
               />
-
-              <button
-                type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
-                aria-label="Search"
-              >
-                {isPending ? <Spin /> :  <FaSearch className="h-5 w-5" />}
-                
-              </button>
+              {renderCloseMdIcon()}
             </form>
-
             <button
               className="rounded-md p-2 text-red-500 hover:bg-gray-700 dark:hover:bg-gray-600"
-              onClick={handleClose}
+              onClick={() => setShowSearch(false)}
               aria-label="Close Search"
             >
               <MdClose className="text-2xl" />
@@ -232,9 +218,7 @@ const MyNav = () => {
           </div>
         </div>
       )}
-      
     </header>
   );
 };
-
 export default MyNav;

@@ -24,6 +24,10 @@ const MovieDetails = ({ movie, mediaType }) => {
             {/* Title and Meta Section */}
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tight">{movie?.title}</h1>
+              
+              {movie?.tagLine && (
+                <p className="text-lg italic text-gray-400 -mt-2">{movie.tagLine}</p>
+              )}
 
               <div className="flex flex-wrap gap-4 items-center">
                 <CustomTag text={movie?.mediaType} />

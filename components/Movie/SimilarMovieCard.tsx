@@ -4,6 +4,7 @@ import React from 'react'
 import { FaClock } from 'react-icons/fa';
 import { CustomTag } from '../Common/CustomTag';
 import { Rating } from '../Common/Rating';
+import { constructWatchUrl } from '@/utils/constructWatchUrl';
 
 export const SimilarMovieCard = ({movie,index,mediaType}) => {
   return (
@@ -15,7 +16,7 @@ export const SimilarMovieCard = ({movie,index,mediaType}) => {
     className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-800 transition-all duration-300 shadow-sm hover:shadow-md"
   >
     <Link
-      href={`/watch/${mediaType}/${movie.id}`}
+      href={constructWatchUrl(mediaType,movie.id,movie.displayTitle)}
       className="flex gap-3 p-3"
     >
       <div className="relative overflow-hidden rounded-md">

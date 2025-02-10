@@ -5,6 +5,7 @@ import { FaPlay, FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Rating } from "../Common/Rating";
 import { formatDate } from "@/utils/formatDate";
+import { constructWatchUrl } from "@/utils/constructWatchUrl";
 
 interface FeaturedMovieProps {
   movie: {
@@ -77,7 +78,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4">
               <Link
-                href={`watch/${movie?.mediaType}/${movie?.id}`}
+                href={constructWatchUrl(movie?.mediaType, movie?.id,movie?.displayTitle)}
                 className="flex items-center rounded-md bg-primary px-6 py-3 transition-colors hover:bg-primary-400 md:px-8"
               >
                 <FaPlay className="mr-2 h-4 w-4" />

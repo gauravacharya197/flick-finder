@@ -5,6 +5,7 @@ import { Tooltip } from "antd";
 import { CustomTag } from "../Common/CustomTag";
 import { formatRating } from "@/utils/formatRating";
 import { Movie } from "@/types/movie";
+import { constructWatchUrl } from "@/utils/constructWatchUrl";
 
 
 
@@ -19,7 +20,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
     <div className="group relative overflow-hidden rounded-lg bg-gray-900 transition-transform">
       <Link 
-        href={`/watch/${movie.mediaType}/${movie.id}`} 
+        href={constructWatchUrl(movie?.mediaType, movie?.id,movie?.displayTitle)}
         className="block aspect-[2.2/2.8] w-full overflow-hidden"
       >
         <div className="relative h-full w-full">
