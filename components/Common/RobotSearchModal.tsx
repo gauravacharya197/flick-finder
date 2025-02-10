@@ -59,7 +59,7 @@ export const RobotSearchModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const searchText = cachedData.searchText;
+    const searchText = cachedData?.searchText;
     if (searchText) {
       const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
       const cachedResults =
@@ -94,7 +94,7 @@ export const RobotSearchModal = () => {
            <FaRobot 
         className={`h-4 w-4 transition-all duration-300 ${
           isModalOpen 
-            ? 'text-primary-400 animate-pulse shadow-lg shadow-white/50' 
+            ? 'text-primary-400 animate-pulse shadow-lg ' 
             : 'text-primary'
         } group-hover:rotate-12`}
       />

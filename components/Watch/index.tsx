@@ -260,6 +260,7 @@ const Watch = () => {
               {/* Conditionally render SeasonChooser */}
               {mediaType === "tv" && !isLoading && !isError && (
                 <SeasonChooser
+                  mediaId={imdbID?.toString().startsWith("t") ? movie?.id : imdbID}
                   seasons={movie?.seasons}
                   onSeasonChange={setSelectedSeason}
                   onEpisodeChange={setSelectedEpisode}

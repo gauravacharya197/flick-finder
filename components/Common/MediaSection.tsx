@@ -1,10 +1,7 @@
 "use client";
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
-import { Segmented, Skeleton } from "antd";
-import { setMediaType } from "@/redux/movies/advanceSearchSlice";
+import { Skeleton } from "antd";
 import { MovieList } from "../Movie/MovieList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getTrending } from "@/services/MovieService";
@@ -14,7 +11,7 @@ interface ExploreProps {
   mediaType: MediaType;
 }
 
-export const MoviesSection: React.FC<ExploreProps> = ({ mediaType }) => {
+export const MediaSection: React.FC<ExploreProps> = ({ mediaType }) => {
   const {
     error,
     isError,

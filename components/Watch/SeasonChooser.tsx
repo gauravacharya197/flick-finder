@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FaPlay } from 'react-icons/fa';
-import { FaDownload } from 'react-icons/fa6';
-import { MdArrowDropDown, MdMenu } from 'react-icons/md';
+import { FaChevronDown, FaPlay, FaTv } from 'react-icons/fa';
+import { MdMenu } from 'react-icons/md';
 
-interface Episode {
-  airDate: string;
-  episodeNumber: number;
-  id: number;
-  name: string;
-  overview: string;
-  voteAverage: number;
-}
 
 interface Season {
   airDate: string;
@@ -27,14 +18,14 @@ interface SeasonChooserProps {
   seasons: Season[];
   onSeasonChange: (seasonNumber: number) => void;
   onEpisodeChange: (episodeNumber: number) => void;
+  mediaId: string;
 }
-
-
 
 const SeasonChooser: React.FC<SeasonChooserProps> = ({
   seasons,
   onSeasonChange,
   onEpisodeChange,
+  mediaId
 }) => {
   const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -42,12 +33,30 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
 
   useEffect(() => {
     if (seasons?.length > 0) {
-      setSelectedSeason(seasons[0]);
-      setPlayingEpisode(1);
-      onSeasonChange(1);
-      onEpisodeChange(1);
+      // Load saved state from localStorage
+      const savedState = localStorage.getItem(`media-${mediaId}`);
+      if (savedState) {
+        const { seasonNumber, episodeNumber } = JSON.parse(savedState);
+        const savedSeason = seasons.find(s => s.seasonNumber === seasonNumber) || seasons[0];
+        setSelectedSeason(savedSeason);
+        setPlayingEpisode(episodeNumber);
+        onSeasonChange(seasonNumber);
+        onEpisodeChange(episodeNumber);
+      } else {
+        setSelectedSeason(seasons[0]);
+        setPlayingEpisode(1);
+        onSeasonChange(1);
+        onEpisodeChange(1);
+      }
     }
-  }, [seasons]);
+  }, [seasons, mediaId]);
+
+  const saveState = (seasonNumber: number, episodeNumber: number) => {
+    localStorage.setItem(`media-${mediaId}`, JSON.stringify({
+      seasonNumber,
+      episodeNumber
+    }));
+  };
 
   const handleSeasonChange = (season: Season) => {
     setSelectedSeason(season);
@@ -55,46 +64,46 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
     setIsOpen(false);
     onSeasonChange(season.seasonNumber);
     onEpisodeChange(1);
+    saveState(season.seasonNumber, 1);
   };
 
   const handleEpisodeClick = (episodeNumber: number) => {
     setPlayingEpisode(episodeNumber);
     onEpisodeChange(episodeNumber);
+    saveState(selectedSeason?.seasonNumber || 1, episodeNumber);
   };
 
+  if (!seasons?.length) return null;
+
   return (
-    <div className="w-full max-w-md bg-[rgba(20,28,49,0.95)] text-gray-300 rounded-lg -mt-4">
-      <div className="p-4 cursor-pointer hover:bg-gray-800/50">
-        <div 
-          className="flex items-center justify-between"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="flex items-center space-x-2">
-            <FaPlay />
-            <span>{selectedSeason?.name || 'Select Season'}</span>
-           
-          </div>
-          
-          <div className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>
-            <MdArrowDropDown className='text-2xl' />
-          </div>
+    <div className="w-full max-w-md bg-gray-900/95 text-gray-100 rounded-lg shadow-xl overflow-hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-4 flex items-center justify-between hover:bg-gray-800/50 transition-colors duration-200"
+      >
+        <div className="flex items-center space-x-3">
+          <FaPlay className="w-4 h-4" />
+          <span className="font-medium">{selectedSeason?.name || 'Select Season'}</span>
         </div>
-      </div>
+        <FaChevronDown 
+          className={`w-5 h-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
 
       {isOpen && (
         <div className="border-t border-gray-800">
-          {seasons?.map((season) => (
-            <div
+          {seasons.map((season) => (
+            <button
               key={season.id}
-              className={`p-4 cursor-pointer flex items-center space-x-2
+              className={`w-full p-4 flex items-center space-x-3 transition-colors duration-200
                 ${selectedSeason?.id === season.id 
-                  ? 'bg-primary text-white' 
+                  ? 'bg-primary-500 text-white' 
                   : 'hover:bg-gray-800/50'}`}
               onClick={() => handleSeasonChange(season)}
             >
+              <FaTv className="w-4 h-4" />
               <span>{season.name}</span>
-             
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -102,24 +111,27 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       {selectedSeason && !isOpen && (
         <div className="border-t border-gray-800">
           {Array.from({ length: selectedSeason.episodeCount }, (_, i) => i + 1).map((episodeNum) => (
-            <div
+            <button
               key={episodeNum}
-              className={`p-4 cursor-pointer flex items-center space-x-2
+              className={`w-full p-4 flex items-center space-x-3 transition-colors duration-200
                 ${playingEpisode === episodeNum 
-                  ? 'bg-primary text-white' 
+                  ? 'bg-primary-500 text-white' 
                   : 'hover:bg-gray-800/50'}`}
               onClick={() => handleEpisodeClick(episodeNum)}
             >
+              <FaPlay className="w-4 h-4" />
               <span>Episode {episodeNum}</span>
-            </div>
+            </button>
           ))}
         </div>
       )}
 
       {selectedSeason && (
-        <div className="border-t border-gray-800 p-4 flex items-center space-x-2">
-          <MdMenu />
-          <span>{selectedSeason.name} Episode {playingEpisode}</span>
+        <div className="border-t border-gray-800 p-4 flex items-center space-x-3 bg-gray-800/30">
+          <MdMenu className="w-4 h-4" />
+          <span className="font-medium">
+            {selectedSeason.name} • Episode {playingEpisode}
+          </span>
         </div>
       )}
     </div>

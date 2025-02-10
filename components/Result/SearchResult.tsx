@@ -41,7 +41,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
       });
       return response;
     },
-    staleTime: 30 * 60 * 1000,
+    staleTime: Infinity,
     getNextPageParam: (lastPage, pages) => {
       const totalPages = lastPage.data.totalPages;
       return pages.length < totalPages ? pages.length + 1 : undefined;

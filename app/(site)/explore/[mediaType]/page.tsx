@@ -1,9 +1,6 @@
-import { MoviesSection } from '@/components/Common/MediaSection';
-import { Explore } from '@/components/Explore';
-import { Genre } from '@/components/Genre/Genre';
+import {  MediaSection } from '@/components/Common/MediaSection';
 import { siteConfig } from '@/config/siteConfig';
 import { MediaType } from '@/types/mediaType';
-import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -38,7 +35,7 @@ const ExplorePage = ({ params }: ExploreProps) => {
   return (
     <div className="min-h-screen dark:text-white">
       <div className="container mx-auto px-4 lg:px-8 py-6 md:py-10">
-      <MoviesSection mediaType={mediaType}/>
+      <MediaSection mediaType={mediaType}/>
       </div>
     </div>
   );

@@ -2,7 +2,6 @@
 import React from "react";
 import SectionHeader from "../Common/SectionHeader";
 import { MediaType } from "@/types/mediaType";
-import { MoviesSection } from "../Common/MediaSection";
 
 interface ExploreProps {
   mediaType: MediaType;

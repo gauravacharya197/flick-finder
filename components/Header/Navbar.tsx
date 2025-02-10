@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter, FaRobot } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
@@ -13,7 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import useClickOutside from "@/hooks/useClickOutside";
 import { RobotSearchModal } from "../Common/RobotSearchModal";
-
+import Spin from "../Common/Spin";
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -21,19 +21,22 @@ const MyNav = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("query");
+  const [isPending, startTransition] = useTransition();
 
 
   const handleSearch = (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
-
-    router.push(`/results?query=${encodeURIComponent(query)}`);
+    if(query.trim())
+    startTransition(() => {
+      router.push(`/results?query=${encodeURIComponent(query)}`);
+    });
   };
   const handleClose = () => {
     
-    const query = searchParams.get("query");
 
     // Only navigate to /results if there is a query
-    if (query) {
+    if (searchQuery) {
       router.push("/results");
     }
     
@@ -148,11 +151,11 @@ const MyNav = () => {
                 <input
                   type="text"
                   placeholder="Search Movies/TV"
-                  value={query}
+                  value={query || searchQuery || ""}
                   onChange={(e) => dispatch(setQuery(e.target.value))}
                   className="w-96 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />
-                {query && (
+                {(query || searchQuery)  && (
                   <button
                     type="button"
                     onClick={handleClose}
@@ -166,7 +169,9 @@ const MyNav = () => {
                   className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary dark:text-primary-400"
                   aria-label="Search"
                 >
-                  <FaSearch className="h-4.5 w-4.5 text-2xl" />
+                          {isPending ? <Spin /> :  <FaSearch className="h-4.5 w-4.5 text-2xl" />}
+
+                 
                 </button>
               </form>
             </div>
@@ -212,7 +217,8 @@ const MyNav = () => {
                 className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
                 aria-label="Search"
               >
-                <FaSearch className="h-5 w-5" />
+                {isPending ? <Spin /> :  <FaSearch className="h-5 w-5" />}
+                
               </button>
             </form>
 

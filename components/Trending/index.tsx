@@ -10,42 +10,13 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getTrending } from '@/services/MovieService'
 import ErrorMessage from '../Common/ErrorMessage'
 import SectionHeader from '../Common/SectionHeader'
+import { MediaSection } from '../Common/MediaSection'
 
 export const Trending = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
 
-  const {
-    error,
-    isError,
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['trending', mediaType],
-    queryFn: async ({ pageParam = 1 }) => {
-      const response = await getTrending(mediaType, 'day', pageParam.toString())
-      return response
-    },
-    getNextPageParam: (lastPage, pages) => {
-      const totalPages = lastPage.data.totalPages
-      const currentPage = pages.length
-      return currentPage < totalPages ? currentPage + 1 : undefined
-    },
-    initialPageParam: 1,
-    staleTime: 1000 * 60 * 60 * 24, // Cache the data for 1day 
 
-  })
-
-  const observerRef = useInfiniteScroll({
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  })
-
-  const movies = data?.pages.flatMap((page) => page.data.results) || []
 
   return (
     <>
@@ -57,35 +28,8 @@ export const Trending = () => {
         className="custom-segmented mb-2"
         onChange={(value) => dispatch(setMediaType(value))}
       />
-      {isLoading ? (
-        <Skeleton
-          active   
-          className="text-gray-300 dark:text-white"
-          title={{ width: '100%' }}
-          paragraph={{
-            rows: 10,
-            width: ['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'],
-          }}
-        />
-      ) : isError ? (
-        <ErrorMessage
-          className='w-full mt-2'
-          message={error?.message || "Something went wrong while fetching movie details."}
-         
-        />
-      ) : (
-        <>
-          <MovieList movies={movies} showFeaturedMovie/>
-          {hasNextPage && (
-            <div ref={observerRef} className="loading-indicator">
-              {isFetching && <h1>Loading...</h1>}
-            </div>
-          )}
-          {!hasNextPage && (
-            <p className="text-center mt-4">You’ve reached the end of the list</p>
-          )}
-        </>
-      )}
+        <MediaSection mediaType={mediaType.toString() as any|| 'movie'}/>
+      
     </>
   )
 }

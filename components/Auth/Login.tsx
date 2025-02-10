@@ -9,10 +9,12 @@ import { googleHandler } from "@/utils/authUtils";
 import { useForm } from "react-hook-form";
 import { GetUser, UserLogin} from "@/services/AccountService";
 import { useAuth } from "@/app/context/AuthContext";
+import Spin from "../Common/Spin";
 
 const Login = ({ code }: { code?: string }) => {
   //for login
   const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
 
@@ -28,6 +30,7 @@ const Login = ({ code }: { code?: string }) => {
    
       if (code) {
         console.log("Sending request with code:", code);
+        setLoading(true);
         GetUser(code as string)
           .then((res:any) => {
             if (res) {
@@ -41,7 +44,7 @@ const Login = ({ code }: { code?: string }) => {
           .catch((err) => {
             toast.error(err?.response?.data?.message || "An error occurred. Please try again.", { position: 'bottom-center' });
             console.log(err);
-          });
+          }).finally(()=> setLoading(false));
       
     }
     
@@ -115,7 +118,7 @@ const Login = ({ code }: { code?: string }) => {
                   aria-label="sign with google"
                   className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-4 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none sm:px-6"
                 >
-                  <span className="mr-3">
+                   {loading? <Spin/> : <> <span className="mr-3">
                     <svg
                       width="20"
                       height="20"
@@ -148,7 +151,8 @@ const Login = ({ code }: { code?: string }) => {
                       </defs>
                     </svg>
                   </span>
-                  Continue with Google
+                  Continue with Google</>}
+
                 </button>
               </div>
             </div>
