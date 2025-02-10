@@ -51,7 +51,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
         {isLoading  || !id? (
           // Loading skeletons
           [...Array(2)].map((_, i) => (
-            <div key={i} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/50 p-3">
+            <div key={i} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/30 p-3">
               <Skeleton active  className="h-24 w-16 rounded-md" />
               <div className="space-y-2 flex-1">
                 <Skeleton active className="h-4 w-3/4" />
@@ -61,7 +61,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
             </div>
           ))
         ) : movies.length === 0 ? (
-          <div className="text-center py-1 text-gray-500 dark:text-gray-400">
+          <div className=" py-1 text-gray-500 dark:text-gray-400">
             <p>No similar content found</p>
           </div>
         ) : (

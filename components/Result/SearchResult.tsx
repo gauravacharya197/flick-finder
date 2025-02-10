@@ -57,16 +57,13 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
     <div >
       {query && <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>}
       <FilterOption />
-      <div className="mt-5">
-        <MovieList movies={movies} />
-      </div>
-
       {isLoading ? (
         <Skeleton
+         className="bg-gray-50 dark:bg-gray-800/30 p-4 rounded-lg mt-3"
           active
           title={{ width: "100%" }}
           paragraph={{
-            rows: 10,
+            rows: 8,
             width: ["100%", "100%", "100%", "100%", "50%", "50%", "50%", "50%"],
           }}
         />
@@ -74,10 +71,16 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
         <ErrorMessage className="mt-2 w-full" message={error?.message || "Something went wrong while fetching movie details."} />
       ) : (
         <>
+         <div className="mt-5">
+        <MovieList movies={movies} />
+      </div>
           {hasNextPage && <div ref={observerRef} className="loading-indicator">{isFetching && <h1 className="mt-2">Loading</h1>}</div>}
           {!hasNextPage && <p className="mt-4 text-center">You’ve reached the end of the list</p>}
         </>
       )}
+     
+
+      
     </div>
   );
 };

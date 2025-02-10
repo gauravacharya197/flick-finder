@@ -165,7 +165,7 @@ const Watch = ({ params }: WatchPageProps) => {
     {/* Left Column - Now spans 3 columns instead of 2 */}
     <div className="col-span-3 rounded-lg">
       {isLoading ? (
-        <div className="container flex gap-3 rounded-lg bg-gray-100 p-3 dark:bg-gray-800/50">
+        <div className="container flex gap-3 rounded-lg bg-gray-100 p-3 dark:bg-gray-800/30">
           <Skeleton active className="h-24 w-16 rounded-md" />
           <div className="flex-1 space-y-2">
             <Skeleton active className="h-4 w-3/4" />

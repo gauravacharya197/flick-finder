@@ -25,9 +25,9 @@ const ResultsPage = ({ searchParams }: ResultsPageProps) => {
  
 
   return (
-   
-       <Container> <SearchResult query={searchParams.query} /></Container>
-    
+    <Container>
+        <SearchResult query={searchParams.query} />
+    </Container>
   );
 };
 
