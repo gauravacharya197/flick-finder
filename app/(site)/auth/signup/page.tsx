@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: siteConfig.siteName +" - "+ "Signup ",
-  description: "This is Sign Up page",
+  description: "",
   // other metadata
 };
 

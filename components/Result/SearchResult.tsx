@@ -59,7 +59,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
       <FilterOption />
       {isLoading ? (
         <Skeleton
-         className="bg-gray-50 dark:bg-gray-800/30 p-4 rounded-lg mt-3"
+         className="bg-gray-50 dark:bg-gray-800/40 p-4 rounded-lg mt-3"
           active
           title={{ width: "100%" }}
           paragraph={{

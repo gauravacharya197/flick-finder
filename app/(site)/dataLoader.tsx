@@ -4,7 +4,7 @@ import { setFilters } from "@/redux/movies/filterSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
-export const MyApp = () => {
+export const DataLoader = () => {
   const dispatch = useDispatch();
 
   const { data, error } = useQuery({

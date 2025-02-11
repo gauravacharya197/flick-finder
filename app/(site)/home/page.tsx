@@ -1,17 +1,15 @@
 "use client";
 
 import MovieCarousel from "@/components/Common/MovieCarousel";
-import Home from "@/components/Home";
 import FeaturedMovie from "@/components/Movie/FeaturedMovie";
 import GenreGrid from "@/components/Filter/GenreGrid";
 import { siteConfig } from "@/config/siteConfig";
 import useMetadata from "@/hooks/useMetaData";
 import { RootState } from "@/redux/store";
-import { discover, getMovies, getTrending } from "@/services/MovieService";
+import { getMovies } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
 import { FaDollarSign, FaFire, FaHeart, FaImdb, FaStar, FaTv } from "react-icons/fa";
-import { MdPeople } from "react-icons/md";
 import { useSelector } from "react-redux";
 const MovieHomepage = () => {
   useMetadata(siteConfig.siteName, "");

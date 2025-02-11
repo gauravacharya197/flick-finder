@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { Tag, Tooltip } from "antd";
 import { FaStar } from "react-icons/fa";
 import { truncateString } from "@/utils/truncateString";
 import { CustomTag } from "../Common/CustomTag";

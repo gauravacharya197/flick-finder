@@ -1,6 +1,6 @@
 import { Metadata } from "next";
+import Home from "@/components/Home";
 import { siteConfig } from "@/config/siteConfig";
-import MovieHomepage from "./home/page";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-export default function HomePage() {
+export default function AdminPage() {
  
   return (
     <>
-      <div><MovieHomepage/></div>
+    "ADMIN PAGEE"
 
     </>
   );
