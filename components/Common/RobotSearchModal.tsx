@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Skeleton, Spin, Tooltip } from "antd";
+import { Modal, Tooltip } from "antd";
 import { IoMdClose } from "react-icons/io";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaRobot, FaSearch } from "react-icons/fa";
@@ -7,6 +7,7 @@ import searchSuggestion from "@/data/searchSuggestion";
 import ErrorMessage from "./ErrorMessage";
 import MovieSuggestions from "../Movie/MovieSuggestions";
 import { getRecommendation } from "@/services/MovieService";
+import Spin from "./Spin";
 
 const QUERY_KEY = ["movieSearch"];
 
@@ -141,7 +142,7 @@ export const RobotSearchModal = () => {
                   className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:text-white disabled:opacity-50"
                 >
                   {loading ? (
-                    <Spin className="h-4 w-4" />
+                    <Spin  />
                   ) : (
                     <FaSearch className="h-4 w-4" />
                   )}

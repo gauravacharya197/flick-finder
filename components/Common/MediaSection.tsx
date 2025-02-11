@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Skeleton } from "antd";
 import { MovieList } from "../Movie/MovieList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { getTrending } from "@/services/MovieService";
 import ErrorMessage from "./ErrorMessage";
 import { MediaType } from "@/types/mediaType";
+import Skeleton from "./Skeleton";
 interface ExploreProps {
   mediaType: MediaType;
 }
@@ -49,15 +49,15 @@ export const MediaSection: React.FC<ExploreProps> = ({ mediaType }) => {
   return (
     <>
       {isLoading ? (
-        <Skeleton
-          active
-          className="text-gray-300 dark:text-white"
-          title={{ width: "100%" }}
-          paragraph={{
-            rows: 10,
-            width: ["100%", "100%", "100%", "100%", "50%", "50%", "50%", "50%"],
-          }}
-        />
+        <Skeleton 
+        showTitle={false}
+        rows={8}
+        rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+        className="rounded-lg mt-3"
+        titleHeight="h-8"
+        rowHeight="h-5"
+        spacing="space-y-6"
+      />
       ) : isError ? (
         <ErrorMessage
           className="mt-2 w-full"

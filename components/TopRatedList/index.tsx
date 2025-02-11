@@ -3,14 +3,14 @@ import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/redux/store'
-import { Alert, Segmented, Skeleton } from 'antd'
+import { Alert, Segmented } from 'antd'
 import { setMediaType } from '@/redux/movies/advanceSearchSlice'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getTopRated, getTrending } from '@/services/MovieService'
 import SectionHeader from '../Common/SectionHeader'
 import ErrorMessage from '../Common/ErrorMessage'
-
+import Skeleton from '../Common/Skeleton'
 export const TopRatedList = () => {
   const { mediaType } = useSelector((state: RootState) => state.advanceSearch)
   const dispatch = useDispatch()
@@ -58,14 +58,15 @@ export const TopRatedList = () => {
         onChange={(value) => dispatch(setMediaType(value))}
       />
       {isLoading ? (
-        <Skeleton
-          active
-          title={{ width: '100%' }}
-          paragraph={{
-            rows: 10,
-            width: ['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'],
-          }}
-        />
+         <Skeleton 
+         showTitle={false}
+         rows={8}
+         rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+         className="rounded-lg mt-3"
+         titleHeight="h-8"
+         rowHeight="h-5"
+         spacing="space-y-6"
+       />
       ) : isError ? (
         <ErrorMessage
           className='w-full mt-2'

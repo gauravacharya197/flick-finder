@@ -3,16 +3,15 @@
 import MovieCarousel from "@/components/Common/MovieCarousel";
 import FeaturedMovie from "@/components/Movie/FeaturedMovie";
 import GenreGrid from "@/components/Filter/GenreGrid";
-import { siteConfig } from "@/config/siteConfig";
-import useMetadata from "@/hooks/useMetaData";
 import { RootState } from "@/redux/store";
 import { getMovies } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { Skeleton } from "antd";
+
 import { FaDollarSign, FaFire, FaHeart, FaImdb, FaStar, FaTv } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import Skeleton from "@/components/Common/Skeleton";
+import { CardLoadingSkeleton } from "@/components/Common/CardLoadingSkeleton";
 const MovieHomepage = () => {
-  useMetadata(siteConfig.siteName, "");
   const { genres: genreFilters } = useSelector(
     (state: RootState) => state.filters,
   );
@@ -85,15 +84,22 @@ const MovieHomepage = () => {
       {/* Hero Section */}
       {trendingLoading ? (
         <div className="px-4 lg:px-12 2xl:px-48">
-          <Skeleton active className="h-full w-full" />
-        </div>
+<Skeleton 
+        showTitle={false}
+        rows={8}
+        rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+        className="rounded-lg mt-3"
+        titleHeight="h-8"
+        rowHeight="h-5"
+        spacing="space-y-6"
+      />        </div>
       ) : (
         <FeaturedMovie movie={featuredMovie} />
       )}
 
       {/* Trending Movies Section */}
       {trendingLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="trending"
@@ -107,13 +113,14 @@ const MovieHomepage = () => {
 
       {/* Popular Shows Section */}
       {trendingLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="popularshows"
           movies={trendingTVCarousel}
           title="Popular Shows"
           icon={FaTv}
+            variant="trending"
         />
       )}
        {/* Last Year Section */}
@@ -122,7 +129,7 @@ const MovieHomepage = () => {
       </div>
 
       {recentMoviesLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="recent"
@@ -133,7 +140,7 @@ const MovieHomepage = () => {
       )}
 
       {lastYearLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="lastyear"
@@ -144,7 +151,7 @@ const MovieHomepage = () => {
       )}
        {/* Top Grossing Section */}
        {topGrossingLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="topgrossing"
@@ -156,7 +163,7 @@ const MovieHomepage = () => {
 
       {/* Top Rated Movies Section */}
       {topRatedLoading ? (
-        <SkeletonCarousel />
+        <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
           key="toprated"
@@ -178,19 +185,6 @@ const MovieHomepage = () => {
 };
 
 // Skeleton component for carousel loading state
-const SkeletonCarousel = () => (
-  <div className="container mx-auto px-4 py-8 lg:px-8">
-    <Skeleton active className="mb-4 h-8 w-48" />
-    <div className="flex gap-4">
-      {[...Array(5)].map((_, index) => (
-        <Skeleton
-          active
-          key={index}
-          className="h-[300px] w-[200px] rounded-lg"
-        />
-      ))}
-    </div>
-  </div>
-);
+
 
 export default MovieHomepage;

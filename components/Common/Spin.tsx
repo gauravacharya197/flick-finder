@@ -1,9 +1,9 @@
 import React from 'react';
 import { Spin as AntSpin } from 'antd';
 
-const Spin = () => {
+const Spin = ({className=''}) => {
   return (
-    <div className=" [&_.ant-spin-dot-item]:bg-primary">
+    <div className={`${className} [&_.ant-spin-dot-item]:bg-primary`}>
       <AntSpin />
     </div>
   );

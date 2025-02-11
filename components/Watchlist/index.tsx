@@ -1,13 +1,12 @@
 'use client'
 import React from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Skeleton } from 'antd'
 import { MovieList } from '../Movie/MovieList'
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll'
 import { getUserWatchList } from '@/services/WatchlistService'
 import ErrorMessage from '../Common/ErrorMessage'
 import { useAuth } from '@/app/context/AuthContext'
-
+import Skeleton from '../Common/Skeleton'
 export const Watchlist = () => {
   const { user } = useAuth()
 
@@ -73,14 +72,15 @@ export const Watchlist = () => {
   // Show loading skeleton during initial load
   if (isLoading) {
     return (
-      <Skeleton
-        active
-        title={{ width: '100%' }}
-        paragraph={{
-          rows: 10,
-          width: ['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'],
-        }}
-      />
+      <Skeleton 
+      showTitle={false}
+      rows={8}
+      rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+      className="rounded-lg mt-3"
+      titleHeight="h-8"
+      rowHeight="h-5"
+      spacing="space-y-6"
+    />
     )
   }
 

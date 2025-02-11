@@ -4,11 +4,11 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { RootState } from "@/redux/store";
 import { discover } from "@/services/MovieService";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Skeleton } from "antd";
 import { useSelector } from "react-redux";
 import FilterOption from "@/components/Filter/FilterOption";
 import { MovieList } from "@/components/Movie/MovieList";
 import ErrorMessage from "@/components/Common/ErrorMessage";
+import Skeleton from "../Common/Skeleton";
 
 interface SearchResultProps {
   query?: string;
@@ -58,15 +58,15 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
       {query && <h2 className="text-2xl font-bold pb-2">Results for '{query}'</h2>}
       <FilterOption />
       {isLoading ? (
-        <Skeleton
-         className="bg-gray-50 dark:bg-gray-800/40 p-4 rounded-lg mt-3"
-          active
-          title={{ width: "100%" }}
-          paragraph={{
-            rows: 8,
-            width: ["100%", "100%", "100%", "100%", "50%", "50%", "50%", "50%"],
-          }}
-        />
+        <Skeleton 
+        showTitle={false}
+        rows={8}
+        rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+        className="rounded-lg mt-3"
+        titleHeight="h-8"
+        rowHeight="h-5"
+        spacing="space-y-6"
+      />
       ) : isError ? (
         <ErrorMessage className="mt-2 w-full" message={error?.message || "Something went wrong while fetching movie details."} />
       ) : (
