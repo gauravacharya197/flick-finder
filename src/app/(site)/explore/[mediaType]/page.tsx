@@ -1,28 +1,25 @@
 import Container from '@/components/common/Container';
-import {  MediaSection } from '@/components/common/MediaSection';
+import { MediaSection } from '@/components/common/MediaSection';
 import { siteConfig } from '@/config/siteConfig';
+import { setMediaType } from '@/redux/movies/advanceSearchSlice';
 import { MediaType } from '@/types/mediaType';
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
 import { Metadata } from 'next';
 import React from 'react';
 
-interface ExploreProps {
-  params: {
-    mediaType: string; // Accept string first for validation
-  };
+// Define the MediaType type explicitly
+
+// Define the props interface for the ExplorePage component
+interface ExplorePageProps {
+  params: Promise<{
+   mediaType: MediaType;
+  }>;
 }
 
-// Helper function to validate mediaType
-const getValidMediaType = (mediaType: string): MediaType => {
-  return mediaType === "tv" || mediaType === "movie" ? mediaType : "movie";
-};
+export  async function generateMetadata({params}:   ExplorePageProps) {
+  const mediaType = (await params).mediaType;
 
-// Generate dynamic metadata
-export async function generateMetadata(
-  { params }: ExploreProps
-): Promise<Metadata> {
-  
-  const mediaType = getValidMediaType(params.mediaType);
-  const formattedMediaType = mediaType=='movie'? "Movies" : "TV Shows"
+  const formattedMediaType = capitalizeFirstLetter(mediaType)
 
   return {
     title: `${formattedMediaType} - ${siteConfig.siteName} - Explore popular ${formattedMediaType}`,
@@ -30,14 +27,14 @@ export async function generateMetadata(
   };
 }
 
-const ExplorePage = ({ params }: ExploreProps) => {
-  const mediaType: MediaType = getValidMediaType(params.mediaType);
+export default async function ExplorePage({params}:   ExplorePageProps) {
+  const mediaType = (await params).mediaType;
 
   return (
-   
-    <Container>  <MediaSection mediaType={mediaType}/></Container>
-    
+    <Container>
+      <MediaSection mediaType={mediaType} />
+    </Container>
   );
 }
 
-export default ExplorePage;
+

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, JSX } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 import {

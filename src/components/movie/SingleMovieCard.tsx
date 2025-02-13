@@ -1,6 +1,5 @@
 import React from "react";
-import { StarOutlined, ClockCircleOutlined, CommentOutlined } from "@ant-design/icons";
-import { FaHeart, FaBookmark, FaShareAlt, FaPlay } from "react-icons/fa";
+import { FaHeart, FaBookmark, FaShareAlt, FaPlay, FaStar, FaComment, FaClock } from "react-icons/fa";
 import Link from "next/link";
 
 const SingleMovieCard = ({ movie }) => {
@@ -34,15 +33,15 @@ const SingleMovieCard = ({ movie }) => {
 
             <div className="flex flex-wrap gap-2 sm:gap-4 mb-2 sm:mb-4 text-sm sm:text-base">
               <div className="flex items-center text-amber-500">
-                <StarOutlined className="mr-1" />
+                <FaStar className="mr-1" />
                 <span className="font-semibold">{movie.imdbRating}</span>
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-300">
-                <CommentOutlined className="mr-1" />
+                <FaComment className="mr-1" />
                 <span>{movie.released}</span>
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-300">
-                <ClockCircleOutlined className="mr-1" />
+                <FaClock className="mr-1" />
                 <span>{movie.runtime}</span>
               </div>
             </div>
