@@ -10,29 +10,69 @@ import Spin from "./Spin";
 import Modal from "../ui/Modal";
 import { MyTooltip } from "../ui/MyTooltip";
 
-const QUERY_KEY = ["movieSearch"];
+// Define types for better type safety
+interface Movie {
+  id: string;
+  title: string;
+  // Add other movie properties as needed
+}
 
-export const RobotSearchModal = () => {
+interface SearchCache {
+  searchText?: string;
+  data?: Movie[];
+  searchHistory: Record<string, Movie[]>;
+}
+
+interface SearchResponse {
+  data: Movie[];
+}
+
+interface MutationContext {
+  skipRequest: boolean;
+  data?: Movie[];
+}
+
+const QUERY_KEY = ["movieSearch"] as const;
+
+export const RobotSearchModal: React.FC = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
+  // Helper functions for type-safe cache operations
+  const getCachedData = (): SearchCache => {
+    return (queryClient.getQueryData(QUERY_KEY) as SearchCache) || {
+      searchHistory: {},
+    };
+  };
+
+  const updateCachedData = (
+    updater: (oldData: SearchCache) => SearchCache
+  ): void => {
+    queryClient.setQueryData(QUERY_KEY, (oldData: SearchCache | undefined) =>
+      updater(oldData || { searchHistory: {} })
+    );
+  };
+
   const { data } = useQuery({
     queryKey: QUERY_KEY,
-    queryFn: () => getRecommendation(cachedData?.searchText || ""),
+    queryFn: () => getRecommendation(getCachedData()?.searchText || ""),
     enabled: false,
     staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
 
-  const mutation = useMutation({
+  const mutation = useMutation<SearchResponse, Error, string, MutationContext>({
     mutationFn: getRecommendation,
     onMutate: (searchText) => {
-      const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
-      if (existingCache?.searchHistory?.[searchText.toLowerCase()]) {
+      const existingCache = getCachedData();
+      const lowercaseSearch = searchText.toLowerCase();
+      const cachedResults = existingCache?.searchHistory?.[lowercaseSearch];
+
+      if (cachedResults) {
         return {
           skipRequest: true,
-          data: existingCache.searchHistory[searchText.toLowerCase()],
+          data: cachedResults,
         };
       }
       return { skipRequest: false };
@@ -40,11 +80,12 @@ export const RobotSearchModal = () => {
     onSuccess: (responseData, searchText, context) => {
       if (context?.skipRequest) return;
 
-      queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+      updateCachedData((oldData) => ({
+        ...oldData,
         searchText,
         data: responseData.data,
         searchHistory: {
-          ...(oldData?.searchHistory || {}),
+          ...oldData.searchHistory,
           [searchText.toLowerCase()]: responseData.data,
         },
       }));
@@ -53,7 +94,7 @@ export const RobotSearchModal = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchText = e.target.value;
-    queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
+    updateCachedData((oldData) => ({
       ...oldData,
       searchText: newSearchText,
     }));
@@ -61,58 +102,70 @@ export const RobotSearchModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const searchText = cachedData?.searchText;
-    if (searchText) {
-      const existingCache = queryClient.getQueryData(QUERY_KEY) as any;
-      const cachedResults =
-        existingCache?.searchHistory?.[searchText.toLowerCase()];
+    const cachedData = getCachedData();
+    const searchText = cachedData?.searchText?.trim();
 
-      if (cachedResults) {
-        queryClient.setQueryData(QUERY_KEY, {
-          ...existingCache,
-          searchText,
-          data: cachedResults,
-        });
-      } else {
-        mutation.mutate(searchText);
-      }
+    if (!searchText) return;
+
+    const lowercaseSearch = searchText.toLowerCase();
+    const cachedResults = cachedData.searchHistory[lowercaseSearch];
+
+    if (cachedResults) {
+      updateCachedData((oldData) => ({
+        ...oldData,
+        searchText,
+        data: cachedResults,
+      }));
+    } else {
+      mutation.mutate(searchText);
     }
+  };
+
+  const handleClearSearch = () => {
+    updateCachedData((oldData) => ({
+      ...oldData,
+      searchText: "",
+    }));
+  };
+
+  const handleMoodSelect = (mood: string) => {
+    updateCachedData((oldData) => ({
+      ...oldData,
+      searchText: mood,
+    }));
   };
 
   const loading = mutation.isPending;
   const displayData = data?.data || mutation.data?.data || [];
-  const cachedData = queryClient.getQueryData(QUERY_KEY) as any;
+  const cachedData = getCachedData();
 
   return (
     <>
       <div className="relative flex items-center gap-4">
-      <MyTooltip content="Search With AI">
+        <MyTooltip content="Search With AI">
           <button
             onClick={() => setIsModalOpen(true)}
             className={`group flex items-center gap-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-900 px-4 py-2 text-white transition-all hover:translate-y-[-2px] hover:shadow-lg ${
-              isModalOpen ? 'bg-gray-700' : ''
+              isModalOpen ? "bg-gray-700" : ""
             }`}
           >
-           <FaRobot 
-        className={`h-4 w-4 transition-all duration-300 ${
-          isModalOpen 
-            ? 'text-primary-400 animate-pulse shadow-lg ' 
-            : 'text-primary'
-        } group-hover:rotate-12`}
-      />
+            <FaRobot
+              className={`h-4 w-4 transition-all duration-300 ${
+                isModalOpen
+                  ? "text-primary-400 animate-pulse shadow-lg"
+                  : "text-primary"
+              } group-hover:rotate-12`}
+            />
           </button>
-          </MyTooltip>
-
-       
+        </MyTooltip>
       </div>
+
       <Modal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
         width={600}
-       
         centered
-        
       >
         <div className="max-h-[min(500px,70vh)] overflow-y-auto">
           <form onSubmit={handleSubmit} className="px-4 pt-4 pb-2">
@@ -122,18 +175,13 @@ export const RobotSearchModal = () => {
                   type="text"
                   value={cachedData?.searchText || ""}
                   onChange={handleInputChange}
-                  placeholder="Whats on your mind?"
+                  placeholder="What's on your mind?"
                   className="w-full rounded-xl border border-gray-600/30 bg-gray-900 px-6 py-2.5 text-base text-white placeholder:text-gray-400 focus:border-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-600/50"
                 />
                 {cachedData?.searchText && (
                   <button
                     type="button"
-                    onClick={() =>
-                      queryClient.setQueryData(QUERY_KEY, {
-                        ...cachedData,
-                        searchText: "",
-                      })
-                    }
+                    onClick={handleClearSearch}
                     className="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400"
                   >
                     <IoMdClose className="h-5 w-5" />
@@ -144,11 +192,7 @@ export const RobotSearchModal = () => {
                   disabled={loading}
                   className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:text-white disabled:opacity-50"
                 >
-                  {loading ? (
-                    <Spin  />
-                  ) : (
-                    <FaSearch className="h-4 w-4" />
-                  )}
+                  {loading ? <Spin /> : <FaSearch className="h-4 w-4" />}
                 </button>
               </div>
             </div>
@@ -159,12 +203,7 @@ export const RobotSearchModal = () => {
               {searchSuggestion.slice(15, 25).map((mood) => (
                 <button
                   key={mood}
-                  onClick={() =>
-                    queryClient.setQueryData(QUERY_KEY, (oldData: any) => ({
-                      ...oldData,
-                      searchText: mood,
-                    }))
-                  }
+                  onClick={() => handleMoodSelect(mood)}
                   className="rounded-full bg-gray-800 px-3 py-1 text-sm text-gray-300 hover:bg-gray-700"
                 >
                   {mood}
@@ -174,20 +213,7 @@ export const RobotSearchModal = () => {
 
             <div className="space-y-2 pb-4">
               {loading ? (
-                Array(2)
-                  .fill(0)
-                  .map((_, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 mt-3"
-                    >
-                      <div className="w-16 h-13 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse" />
-                      <div className="flex-1 space-y-3">
-                        <div className="h-3 w-3/4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
-                        <div className="h-3 w-1/2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
-                      </div>
-                    </div>
-                  ))
+                <SearchSkeleton />
               ) : mutation.isError ? (
                 <div className="text-center py-4">
                   <p className="text-gray-400">
@@ -207,3 +233,23 @@ export const RobotSearchModal = () => {
     </>
   );
 };
+
+// Separate skeleton component for better organization
+const SearchSkeleton: React.FC = () => (
+  <>
+    {Array(2)
+      .fill(0)
+      .map((_, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800/50 mt-3"
+        >
+          <div className="w-16 h-13 rounded-md bg-gray-200 dark:bg-gray-700 animate-pulse" />
+          <div className="flex-1 space-y-3">
+            <div className="h-3 w-3/4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+            <div className="h-3 w-1/2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+          </div>
+        </div>
+      ))}
+  </>
+);

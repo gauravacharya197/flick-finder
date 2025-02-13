@@ -32,7 +32,8 @@ const decryptData = (cipherText: string): any => {
 // Save to watch history with encryption
 export const addToWatchHistory = (movie: LocalMovie): void => {
   if (!isBrowser()) return;
-
+  console.log('watch histor', movie);
+  
   try {
     const data = localStorage.getItem('watchHistory');
     let parsedData: WatchHistory = { movies: [], metadata: { isPaused: false } };
