@@ -1,0 +1,17 @@
+import Signup from "@/components/auth/Signup";
+import { siteConfig } from "@/config/siteConfig";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: siteConfig.siteName +" - "+ "Signup ",
+  description: "",
+  // other metadata
+};
+
+export default function Register() {
+  return (
+    <>
+      <Signup />
+    </>
+  );
+}
