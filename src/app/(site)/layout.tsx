@@ -40,7 +40,7 @@ export default function SiteLayout({
                   </Suspense>
                  
                   <main className="min-h-screen">{children}</main>
-                  {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+                  <ReactQueryDevtools initialIsOpen={false} />
                
                 <Footer />
                 <ScrollToTop />
@@ -49,7 +49,7 @@ export default function SiteLayout({
               </ThemeProvider>
             </AuthProvider>
           </Provider>
-          <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
+          {/* <GoogleAnalytics gaId={googleAnalyticsCode || ""} /> */}
        
     </>
   );

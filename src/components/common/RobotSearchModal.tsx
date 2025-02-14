@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaRobot, FaSearch } from "react-icons/fa";
-import searchSuggestion from "@/data/searchSuggestion";
+import {getRandomSuggestions} from "@/data/searchSuggestion";
 import ErrorMessage from "./ErrorMessage";
 import MovieSuggestions from "../movie/MovieSuggestions";
 import { getRecommendation } from "@/services/MovieService";
@@ -173,7 +173,7 @@ export const RobotSearchModal: React.FC = () => {
           </form>
           <div className="px-4">
             <div className="flex flex-wrap gap-2 mb-3">
-              {searchSuggestion.slice(15, 25).map((mood) => (
+              {getRandomSuggestions().map((mood) => (
                 <button
                   key={mood}
                   onClick={() =>  setSearchText(mood)}

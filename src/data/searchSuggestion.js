@@ -113,4 +113,16 @@ const searchSuggestion = [
   "🏔️",
 ];
 
-export default searchSuggestion;
+
+function getRandomSuggestions() {
+  const today = new Date().toISOString().slice(0, 10); // Get today's date as a string
+  const seed = today.split("-").join(""); // Convert date into a number-friendly seed
+  const shuffled = [...searchSuggestion].sort((a, b) => {
+    return (parseInt(seed, 10) % searchSuggestion.length) - Math.random();
+  });
+
+  return shuffled.slice(0, 10); // Get the first 10 random suggestions
+}
+
+export { getRandomSuggestions, searchSuggestion }; // Named exports
+
