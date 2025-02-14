@@ -1,7 +1,8 @@
 import React from 'react';
 import { MyTooltip } from '../ui/MyTooltip';
+import Link from 'next/link';
 
-const CastCard = ({ imgSrc, name, role }:any) => {
+const CastCard = ({ imgSrc, name, role,castId }:any) => {
   const fallBackImageUrl = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
 
   return (
@@ -9,6 +10,7 @@ const CastCard = ({ imgSrc, name, role }:any) => {
       content={role ? `${name} as ${role}` : name} 
      
     >
+      <Link href={`/movies/cast/${castId}`}>
       <div className="group relative overflow-hidden rounded-xl bg-gray-900/40 transition-all duration-300 hover:bg-gray-900/60 hover:ring-1 hover:ring-gray-700">
         {/* Image Container */}
         <div className="aspect-[3/4] overflow-hidden">
@@ -41,6 +43,7 @@ const CastCard = ({ imgSrc, name, role }:any) => {
         {/* Hover Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
+      </Link>
      </MyTooltip>
   );
 };

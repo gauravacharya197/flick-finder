@@ -153,7 +153,7 @@ const Watch = ({ params }: WatchPageProps) => {
     }
   };
   return (
-    <div className="container">
+    <div className="">
   <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
     {/* Left Column - Now spans 3 columns instead of 2 */}
     <div className="col-span-3 rounded-lg">
@@ -265,6 +265,7 @@ const Watch = ({ params }: WatchPageProps) => {
                 imgSrc={character.profilePath}
                 name={character.name}
                 role={character.character}
+                castId={character.id}
               />
             ))}
           </div>

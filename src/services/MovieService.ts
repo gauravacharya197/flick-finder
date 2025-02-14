@@ -25,6 +25,7 @@ export const getSimilarMovies = async (id: string, mediaType: string) => {
 export const getFilters = async () => {
   return await apiClient.get(`${baseUrl}api/Filters`)
 };
+
 export const discover = async (options: {
   pageNumber?: number;
   keyword?: string;
@@ -53,3 +54,8 @@ export const discover = async (options: {
 
   return await apiClient.get(`${baseUrl}api/movies/discover?${params.toString()}`);
 };
+
+export const getCastWithCredits = async(castId:string)=>{
+  return await apiClient.get(`${baseUrl}api/Cast?castId=${castId}`)
+
+}
