@@ -5,14 +5,16 @@ const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface Video {
   id: number;
+  title: string;
   tmdbId?: string;
   imdbId?: string;
   videoSource: string;
 }
 
 export default class VideoService {
-  static async getVideos(): Promise<Video[]> {
-    const { data } = (await apiClient.get(`${baseUrl}api/videos`));
+  static async getVideos(searchQuery?: string): Promise<Video[]> {
+    const url = searchQuery ? `${baseUrl}api/videos?search=${searchQuery}` : `${baseUrl}api/videos`;
+    const { data } = await apiClient.get(url);
     return data;
   }
 

@@ -4,6 +4,7 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ToasterContext from "../context/ToastContext";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
@@ -19,7 +20,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
       {/* Sidebar */}
       <Sidebar />
-
+      <ToasterContext />
       <div className="flex flex-col flex-1">
         {/* Navbar */}
         <Navbar />

@@ -23,20 +23,14 @@ interface SearchCache {
   searchHistory: Record<string, Movie[]>;
 }
 
-interface SearchResponse {
-  data: Movie[];
-}
 
-interface MutationContext {
-  skipRequest: boolean;
-  data?: Movie[];
-}
 
 const QUERY_KEY = ["movieSearch"] as const;
 
 export const RobotSearchModal: React.FC = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchText, setSearchText] = useState(""); // ✅ Store search text in local state
 
   // Helper functions for type-safe cache operations
   const getCachedData = (): SearchCache => {
@@ -44,6 +38,7 @@ export const RobotSearchModal: React.FC = () => {
       searchHistory: {},
     };
   };
+  const cachedData = getCachedData();
 
   const updateCachedData = (
     updater: (oldData: SearchCache) => SearchCache
@@ -62,7 +57,7 @@ export const RobotSearchModal: React.FC = () => {
     refetchOnWindowFocus: false,
   });
 
-  const mutation = useMutation<SearchResponse, Error, string, MutationContext>({
+  const mutation = useMutation({
     mutationFn: getRecommendation,
     onMutate: (searchText) => {
       const existingCache = getCachedData();
@@ -94,50 +89,44 @@ export const RobotSearchModal: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchText = e.target.value;
-    updateCachedData((oldData) => ({
-      ...oldData,
-      searchText: newSearchText,
-    }));
+    setSearchText(newSearchText); // ✅ Update local state
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const cachedData = getCachedData();
-    const searchText = cachedData?.searchText?.trim();
+    
 
     if (!searchText) return;
 
     const lowercaseSearch = searchText.toLowerCase();
     const cachedResults = cachedData.searchHistory[lowercaseSearch];
+    console.log('caheresult found',cachedResults);
+    
 
     if (cachedResults) {
+      console.log('updated',cachedResults);
+
       updateCachedData((oldData) => ({
         ...oldData,
         searchText,
         data: cachedResults,
       }));
+
     } else {
       mutation.mutate(searchText);
     }
   };
 
   const handleClearSearch = () => {
+    setSearchText(""); // ✅ Clear input field immediately
     updateCachedData((oldData) => ({
       ...oldData,
       searchText: "",
     }));
   };
 
-  const handleMoodSelect = (mood: string) => {
-    updateCachedData((oldData) => ({
-      ...oldData,
-      searchText: mood,
-    }));
-  };
-
   const loading = mutation.isPending;
   const displayData = data?.data || mutation.data?.data || [];
-  const cachedData = getCachedData();
 
   return (
     <>
@@ -152,7 +141,7 @@ export const RobotSearchModal: React.FC = () => {
             <FaRobot
               className={`h-4 w-4 transition-all duration-300 ${
                 isModalOpen
-                  ? "text-primary-400 animate-pulse shadow-lg"
+                  ? "text-primary-400 animate-pulsex shadow-lg"
                   : "text-primary"
               } group-hover:rotate-12`}
             />
@@ -173,12 +162,12 @@ export const RobotSearchModal: React.FC = () => {
               <div className="group relative flex-1">
                 <input
                   type="text"
-                  value={cachedData?.searchText || ""}
+                  value={searchText}
                   onChange={handleInputChange}
                   placeholder="What's on your mind?"
                   className="w-full rounded-xl border border-gray-600/30 bg-gray-900 px-6 py-2.5 text-base text-white placeholder:text-gray-400 focus:border-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-600/50"
                 />
-                {cachedData?.searchText && (
+                {searchText && (
                   <button
                     type="button"
                     onClick={handleClearSearch}
@@ -197,13 +186,12 @@ export const RobotSearchModal: React.FC = () => {
               </div>
             </div>
           </form>
-
           <div className="px-4">
             <div className="flex flex-wrap gap-2 mb-3">
               {searchSuggestion.slice(15, 25).map((mood) => (
                 <button
                   key={mood}
-                  onClick={() => handleMoodSelect(mood)}
+                  onClick={() =>  setSearchText(mood)}
                   className="rounded-full bg-gray-800 px-3 py-1 text-sm text-gray-300 hover:bg-gray-700"
                 >
                   {mood}

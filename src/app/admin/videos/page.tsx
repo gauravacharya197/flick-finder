@@ -7,17 +7,30 @@ import AdminLayout from "../layout";
 import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/input";
 import { FaPencil } from "react-icons/fa6";
-import { FaTrash } from "react-icons/fa";
-
+import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { IoAlertCircleOutline } from "react-icons/io5";
+import Spinner from "@/components/common/Spin";
 export default function Videos() {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
 
   const { data: videos, isLoading, error } = useQuery<Video[]>({
-    queryKey: ["videos"],
-    queryFn: VideoService.getVideos,
+    queryKey: ["videos", searchQuery],
+    queryFn: () => VideoService.getVideos(searchQuery),
   });
 
   const addVideoMutation = useMutation({
@@ -61,102 +74,153 @@ export default function Videos() {
     setIsEditModalOpen(true);
   };
 
-  const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 80, align: "center" },
-    { title: "TMDB ID", dataIndex: "tmdbId", key: "tmdbId", width: 150, align: "center" },
-    { title: "IMDB ID", dataIndex: "imdbId", key: "imdbId", width: 150, align: "center" },
-    { title: "Source", dataIndex: "videoSource", key: "videoSource", align: "left" },
-    {
-      title: "Actions",
-      key: "actions",
-      width: 150,
-      align: "center",
-      render: (_: any, record: Video) => (
-        <div className="flex justify-center space-x-4">
-          <button
-            onClick={() => handleEdit(record)}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            <FaPencil className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleDelete(record.id)}
-            className="text-red-600 hover:text-red-800"
-          >
-            <FaTrash className="h-5 w-5" />
-          </button>
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+ 
+
+  return (<div>
+    <div>
+      <div className="max-w-screen-2xl ">
+        <h1 className="text-3xl font-bold text-white mb-4 dark:text-gray-100">
+         Videos
+        </h1>
+        
+        <div className="relative mb-3 max-w-md">
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Input
+            className="pl-10 h-12  rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+            type="text"
+            placeholder="Search movies by title..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          
+           
         </div>
-      ),
-    },
-  ];
-
-  if (isLoading) return <p>Loading videos...</p>;
-  if (error) return <p>Error fetching videos.</p>;
-
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">Videos</h1>
-      <button
-        className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4"
-        onClick={() => setIsModalOpen(true)}
-      >
-        Add Video
-      </button>
-
-      <div className="overflow-x-auto shadow-md rounded-lg">
-        <table className="min-w-full">
-        <thead>
-  <tr className="bg-gray-100">
-    {columns.map((column) => (
-      <th
-        key={column.key}
-        className={`py-2 px-4 text-sm font-semibold text-gray-600 ${column.align === 'center' ? 'text-center' : 'text-left'}`}
-      >
-        {column.title}
-      </th>
-    ))}
-  </tr>
-</thead>
-
-<tbody>
-  {videos?.map((video) => (
-    <tr key={video.id}>
-      <td className="py-2 px-4 text-center">{video.id}</td>
-      <td className="py-2 px-4 text-center">{video.tmdbId}</td>
-      <td className="py-2 px-4 text-center">{video.imdbId}</td>
-      <td className="py-2 px-4">{video.videoSource}</td>
-      <td className="py-2 px-4 text-center">
-        <div className="flex justify-center space-x-4">
-          <button
-            onClick={() => handleEdit(video)}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            <FaPencil className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleDelete(video.id)}
-            className="text-red-600 hover:text-red-800"
-          >
-            <FaTrash className="h-5 w-5" />
-          </button>
+        <Button className="mb-3" onClick={() => setIsModalOpen(true)}> <FaPlus/> Add Video</Button>
+          
+        
         </div>
-      </td>
-    </tr>
-  ))}
-</tbody>
-        </table>
       </div>
-
+      
+      {isLoading && (
+        
+          
+          <p className="mt-4">Loading videos...</p>
+        
+      )}
+      
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-400">
+          <div className="flex items-center gap-3">
+            <IoAlertCircleOutline className="h-5 w-5" />
+            <p>Error fetching videos. Please try again later.</p>
+          </div>
+        </div>
+      )}
+      
+      {!isLoading && !error && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50 dark:bg-gray-900/50">
+                  <TableHead className="w-[80px] text-center font-medium text-gray-600 dark:text-gray-400">ID</TableHead>
+                  <TableHead className="w-[250px] font-medium text-gray-600 dark:text-gray-400">Title</TableHead>
+                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">TMDB ID</TableHead>
+                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">IMDB ID</TableHead>
+                  <TableHead className="min-w-[200px] font-medium text-gray-600 dark:text-gray-400">Source</TableHead>
+                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {videos?.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-32 text-center text-gray-500 dark:text-gray-400">
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        
+                        <p>No videos found</p>
+                        <Button 
+                          variant="link" 
+                          onClick={() => setIsModalOpen(true)}
+                          className="text-blue-500 hover:text-blue-600"
+                        >
+                          Add your first video
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  videos?.map((video) => (
+                    <TableRow 
+                      key={video.id}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors duration-150"
+                    >
+                      <TableCell className="text-center font-mono text-sm text-gray-600 dark:text-gray-400">{video.id}</TableCell>
+                      <TableCell className="font-medium">{video.title}</TableCell>
+                      <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.tmdbId || '—'}</TableCell>
+                      <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.imdbId || '—'}</TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300 max-w-xs truncate" title={video.videoSource}>
+                        {video.videoSource}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex justify-center space-x-3">
+                          
+                            <Button
+                              onClick={() => handleEdit(video)}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
+                            >
+                              <FaPencil className="h-4 w-4" />
+                            </Button>
+                        
+                       
+                            <Button
+                              onClick={() => handleDelete(video.id)}
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-gray-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+                            >
+                              <FaTrash className="h-4 w-4" />
+                            </Button>
+                          
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      )}
+  
       {/* Add Video Modal */}
-      <Modal className=" px-4 py-4" open={isModalOpen} onCancel={() => setIsModalOpen(false)} title="Add Video">
+      <Modal 
+        open={isModalOpen} 
+        onCancel={() => setIsModalOpen(false)} 
+         title=' Add Video'
+        
+        className="rounded-lg overflow-hidden p-4"
+      >
         <AddEditVideoForm
           onSubmit={addVideoMutation.mutate}
           onCancel={() => setIsModalOpen(false)}
         />
       </Modal>
-
+  
       {/* Edit Video Modal */}
-      <Modal className=" px-4 py-4" open={isEditModalOpen} onCancel={() => setIsEditModalOpen(false)} title="Edit Video">
+      <Modal 
+        open={isEditModalOpen} 
+        onCancel={() => setIsEditModalOpen(false)} 
+        title=' Edit Video'
+         
+        
+        className="rounded-lg overflow-hidden p-4"
+      >
         <AddEditVideoForm
           onSubmit={editVideoMutation.mutate}
           onCancel={() => setIsEditModalOpen(false)}
@@ -164,7 +228,8 @@ export default function Videos() {
         />
       </Modal>
     </div>
-  );
+  
+  )
 }
 
 interface AddEditVideoFormProps {
@@ -182,6 +247,7 @@ const AddEditVideoForm: React.FC<AddEditVideoFormProps> = ({ onSubmit, onCancel,
     if (initialData) {
       setValue('tmdbId', initialData.tmdbId);
       setValue('imdbId', initialData.imdbId);
+      setValue('title', initialData.title);
       setValue('videoSource', initialData.videoSource);
     }
   }, [initialData, setValue]);
@@ -201,6 +267,15 @@ const AddEditVideoForm: React.FC<AddEditVideoFormProps> = ({ onSubmit, onCancel,
           {...register("tmdbId", { required: "TMDB ID is required" })}
         />
         {errors.tmdbId && <span className="text-red-500 text-sm">{errors.tmdbId.message}</span>}
+      </div>
+      <div>
+        <label className="block text-sm font-semibold mb-2">Title</label>
+        <Input
+          className="w-full"
+          type="text"
+          {...register("title", { required: "TMDB ID is required" })}
+        />
+        {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
       </div>
 
       <div>

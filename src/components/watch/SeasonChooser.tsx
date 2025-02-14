@@ -34,9 +34,10 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
   useEffect(() => {
     if (seasons?.length > 0) {
       // Load saved state from localStorage
-      const savedState = localStorage.getItem(`media-${mediaId}`);
-      if (savedState) {
-        const { seasonNumber, episodeNumber } = JSON.parse(savedState);
+      const savedState = JSON.parse(localStorage.getItem("mediaState") || "{}");
+  
+      if (savedState[mediaId]) {
+        const { seasonNumber, episodeNumber } = savedState[mediaId];
         const savedSeason = seasons.find(s => s.seasonNumber === seasonNumber) || seasons[0];
         setSelectedSeason(savedSeason);
         setPlayingEpisode(episodeNumber);
@@ -50,13 +51,15 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       }
     }
   }, [seasons, mediaId]);
-
+  
   const saveState = (seasonNumber: number, episodeNumber: number) => {
-    localStorage.setItem(`media-${mediaId}`, JSON.stringify({
-      seasonNumber,
-      episodeNumber
-    }));
+    const savedState = JSON.parse(localStorage.getItem("mediaState") || "{}");
+    
+    savedState[mediaId] = { seasonNumber, episodeNumber };
+  
+    localStorage.setItem("mediaState", JSON.stringify(savedState));
   };
+  
 
   const handleSeasonChange = (season: Season) => {
     setSelectedSeason(season);
