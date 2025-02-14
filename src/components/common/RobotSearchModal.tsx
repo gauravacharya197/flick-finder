@@ -9,6 +9,8 @@ import { getRecommendation } from "@/services/MovieService";
 import Spin from "./Spin";
 import Modal from "../ui/Modal";
 import { MyTooltip } from "../ui/MyTooltip";
+import { RiSparkling2Line } from "react-icons/ri";
+import RobotSearchButton from "./RobotSearchButton";
 
 // Define types for better type safety
 interface Movie {
@@ -130,24 +132,7 @@ export const RobotSearchModal: React.FC = () => {
 
   return (
     <>
-      <div className="relative flex items-center gap-4">
-        <MyTooltip content="Search With AI">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className={`group flex items-center gap-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-900 px-4 py-2 text-white transition-all hover:translate-y-[-2px] hover:shadow-lg ${
-              isModalOpen ? "bg-gray-700" : ""
-            }`}
-          >
-            <FaRobot
-              className={`h-4 w-4 transition-all duration-300 ${
-                isModalOpen
-                  ? "text-primary-400 animate-pulsex shadow-lg"
-                  : "text-primary"
-              } group-hover:rotate-12`}
-            />
-          </button>
-        </MyTooltip>
-      </div>
+     <RobotSearchButton onClick={() => setIsModalOpen(true)} isModalOpen={isModalOpen}/>
 
       <Modal
         open={isModalOpen}

@@ -104,7 +104,7 @@ const WatchHistory = () => {
               <FaTrash size={14} />
               <span className="text-sm font-medium">Clear</span>
             </button>
-            <button onClick={togglePause} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary transition">
+            <button onClick={togglePause} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white transition">
               {isPaused ? <FaPlay size={14} /> : <FaPause size={14} />}
               <span className="text-sm font-medium">{isPaused ? 'Resume' : 'Pause'}</span>
             </button>
