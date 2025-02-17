@@ -4,7 +4,7 @@ import React from 'react'
 
  const SettingsPage = () => {
   return (
-    <Container>
+    <Container className='text-white'>
      <UserSettings/>
     
     </Container>

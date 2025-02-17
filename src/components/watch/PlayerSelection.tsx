@@ -106,7 +106,8 @@ const PlayerSection = ({
     case 5:
       return (
         <VideoPlayer
-          sourceUrl={constructUrl(
+          sourceUrl={
+            constructUrl(
             "https://player.autoembed.cc/embed/",
             mediaType,
             movie.imdbID,

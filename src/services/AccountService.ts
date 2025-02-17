@@ -11,6 +11,9 @@ export const GetUser = async (code: string) => {
    export const UserLogin = async (data) => {
     return apiClient.post(`${baseUrl}api/auth/Login`,  data)
    };
+   export const SavePreferences = async (data) => {
+    return apiClient.post(`${baseUrl}api/user/preferences`,  data)
+   };
 
   export const Logout = async () => {
     return apiClient.post(`${baseUrl}api/auth/Logout`)

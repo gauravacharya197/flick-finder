@@ -13,20 +13,8 @@ import useClickOutside from "@/hooks/useClickOutside";
 import { IoChevronDownOutline, IoChevronUpOutline } from "react-icons/io5";
 import { Segmented } from "../ui/Segmented";
 import { AiOutlineFilter } from "react-icons/ai";
-
+import {Option} from '../../types/option';
 // Types for options and state
-interface Option {
-  value: string;
-  label: string;
-}
-
-interface FilterOptionProps {
-  genres: Option[];
-  countries: Option[];
-  years: Option[];
-  sortBy: string | null;
-  mediaType: string | null;
-}
 
 const FilterOption = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
