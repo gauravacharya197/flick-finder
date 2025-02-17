@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/app/context/AuthContext";
 import { Register } from "@/services/AccountService";
 import { googleHandler } from "@/utils/authUtils";
 import { motion } from "framer-motion";
@@ -17,12 +18,13 @@ const Signup = () => {
   } = useForm();
   const router = useRouter();
   const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
+  const { login } = useAuth();
 
   const onSubmit = (data) => {
     console.log(data);
     Register(data)
       .then((res) => {
-        localStorage.setItem("user", JSON.stringify(res.data));
+        login(res.data); // Using the auth context login
         router.push("/");
         toast.success("Registration successful", { position: "bottom-center" });
       })

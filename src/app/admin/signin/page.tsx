@@ -1,19 +1,22 @@
-"use client";
-
+'use client'
 import { useRouter } from "next/navigation";
 import { SignInForm } from "@/components/admin/signin/SignInForm";
+import { setAuthCookie } from "@/utils/auth";
 
 export default function AdminSignIn() {
   const router = useRouter();
 
   const handleSignIn = async (credentials: { email: string; password: string }) => {
     // Simulating authentication (Replace this with actual auth logic)
-    const isAuthenticated = credentials.email === "admin@example.com" && credentials.password === "password";
+    const isAuthenticated = 
+      credentials.email === "gaurav@g.com" && 
+      credentials.password === "password";
 
     if (isAuthenticated) {
-      router.push("/admin"); // Redirect to admin dashboard
+      setAuthCookie();
+      router.push("/admin");
     } else {
-      alert("Invalid credentials!"); // Show error message
+      alert("Invalid credentials!");
     }
   };
 

@@ -2,7 +2,13 @@ import React from "react";
 import { FaHome, FaRocket } from "react-icons/fa";
 import Link from "next/link";
 import RootLayout from "./(site)/layout";
-
+import { Metadata } from "next";
+import { siteConfig } from "@/config/siteConfig";
+export const metadata: Metadata = {
+  title:  `404 - ${siteConfig.title}`,
+  description: siteConfig.description,
+  // other metadata
+};
 export default function NotFound() {
   return (
     <RootLayout>
@@ -42,7 +48,7 @@ export default function NotFound() {
           
           <p className="text-lg text-primary-800 mb-6">
             "I'm sorry, Dave. I'm afraid I can't find that page." 
-            - HAL 9000 (with a 404 twist)
+            <br/>- HAL 9000 (with a 404 twist)
           </p>
           
           <div className="flex justify-center space-x-4">

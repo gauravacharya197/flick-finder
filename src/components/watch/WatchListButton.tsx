@@ -94,11 +94,11 @@ const WatchlistButton: React.FC<WatchlistButtonProps> = ({
       disabled={mutation.isPending}
     >
       <FaBookmark
-        className={`h-4 w-4 transition-colors ${
-          isWatchlisted ? 'text-primary' : ''
+        className={`h-4 w-4 transition-colors  ${
+          isWatchlisted ? 'text-primary' : 'text-white'
         }`}
       />
-      <span>Watchlist</span>
+      <span className='text-white'>Watchlist</span>
     </button>
   );
 };

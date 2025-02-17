@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
-import { FaSearch, FaFilter, FaRobot } from "react-icons/fa";
+import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import LoginPartial from "../auth/UserMenu";
 import menuData from "./menuData";
@@ -13,9 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import useClickOutside from "@/hooks/useClickOutside";
 import { RobotSearchModal } from "../common/RobotSearchModal";
-import Spin from "../common/Spin";
 import Spinner from "../common/Spin";
-import SegmentSpinner from "../common/Spin";
 const MyNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -124,7 +122,7 @@ const MyNav = () => {
             </button>
             <Link
               href="/"
-              className="rounded-md bg-primary px-3 py-1 text-sm font-bold text-black dark:bg-primary dark:text-black md:text-xl"
+              className="rounded-md bg-primary px-3 py-1 text-md font-bold text-black dark:bg-primary dark:text-black md:text-xl"
             >
               <SiteName />
             </Link>

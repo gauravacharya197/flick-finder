@@ -1,8 +1,29 @@
 import React from 'react'
+import {
+  
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select"
 
  const TestPage = () => {
   return (
-    <button className="button">Button</button>
+    <>
+    <Select>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue placeholder="Theme" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="light">Light</SelectItem>
+    <SelectItem value="dark">Dark</SelectItem>
+    <SelectItem value="system">System</SelectItem>
+  </SelectContent>
+</Select>
+<button className="button">Button</button>
+
+    </>
 
   )
 }

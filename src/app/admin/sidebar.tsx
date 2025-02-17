@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt } from "react-icons/fa";
+import { removeAuthCookie } from "@/utils/auth";
 
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: FaHome },
@@ -14,7 +15,12 @@ const menuItems = [
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
 
+  const handleSignOut = () => {
+    removeAuthCookie();
+    router.push("/admin/signin");
+  };
   return (
     <div className={`h-screen bg-white shadow-lg flex flex-col transition-all duration-300 ${collapsed ? "w-20" : "w-64"}`}>
       {/* Sidebar Header with Toggle Button */}
@@ -42,7 +48,7 @@ export default function Sidebar() {
 
       {/* Logout Button */}
       <div className="mt-auto px-2 py-4">
-        <button className="w-full flex items-center justify-center p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+        <button onClick={handleSignOut} className="w-full flex items-center justify-center p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
           <FaSignOutAlt className="text-xl" />
           <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Logout</span>
         </button>

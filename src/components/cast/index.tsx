@@ -8,6 +8,7 @@ import { MovieList } from "../movie/MovieList";
 import Skeleton from "../common/Skeleton";
 import useMetadata from "@/hooks/useMetaData";
 import { siteConfig } from "@/config/siteConfig";
+import SectionHeader from "../common/SectionHeader";
 
 interface CastProps {
   castId: string;
@@ -104,7 +105,7 @@ export const Cast: React.FC<CastProps> = ({ castId }) => {
               {/* Basic Info */}
               <div className="md:col-span-2 flex flex-col justify-center space-y-6">
                 <div className="space-y-4">
-                  <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary via-purple-400 to-pink-400 bg-clip-text text-transparent">
                     {castInfo?.data?.name}
                   </h1>
                   
@@ -134,7 +135,7 @@ export const Cast: React.FC<CastProps> = ({ castId }) => {
                 {castInfo?.data?.biography && (
                   <Card className="bg-gray-800/30 border-0 backdrop-blur-sm">
                     <CardContent className="p-6">
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className="text-gray-300 break-words ">
                         {castInfo.data.biography}
                       </p>
                     </CardContent>
@@ -147,7 +148,7 @@ export const Cast: React.FC<CastProps> = ({ castId }) => {
           {/* Filmography Section */}
           {castInfo?.data?.combinedCredits?.cast?.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-3xl font-semibold text-blue-300">Filmography</h2>
+              <SectionHeader text="Filmography" />
               <div className=" rounded-2xl backdrop-blur-sm ">
                 <MovieList movies={castInfo?.data.combinedCredits.cast} />
               </div>

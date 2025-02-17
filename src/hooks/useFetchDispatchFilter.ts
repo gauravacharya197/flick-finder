@@ -10,7 +10,7 @@ export const useFetchAndDispatchFilters = () => {
   const dispatch = useDispatch();
 
   // Fetch filters data using React Query
-  const { data, error } = useQuery({
+  const { data, error, isError } = useQuery({
     queryKey: ["filters"],
     queryFn: async () => {
       const response = await getFilters();
@@ -19,10 +19,12 @@ export const useFetchAndDispatchFilters = () => {
     staleTime: Infinity, // Cache for a long time
   });
 
-  // Error handling
-  if (error) {
-    toast.error("Error fetching filters");
-  }
+  // Handle error in useEffect to avoid triggering during render
+  useEffect(() => {
+    if (isError && error) {
+      toast.error("Error fetching filters");
+    }
+  }, [isError, error]);
 
   // Dispatch to Redux only when data is available
   useEffect(() => {
@@ -30,4 +32,7 @@ export const useFetchAndDispatchFilters = () => {
       dispatch(setFilters(data)); // Dispatch data to Redux store
     }
   }, [data, dispatch]);
+
+  // Return nothing as this is just for side effects
+  return null;
 };

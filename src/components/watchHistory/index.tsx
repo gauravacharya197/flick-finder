@@ -26,9 +26,10 @@ const WatchHistory = () => {
   const loadWatchHistory = () => {
     const { movies, isPaused } = getWatchHistory();  // Destructure both movies and pause state
     if (movies.length > 0) {
-      setIsPaused(isPaused);  // Set the pause state
+      
       updateHistory(movies);  // Update the history in state
     }
+    setIsPaused(isPaused);  // Set the pause state
     setIsLoading(false);
   };
 
@@ -82,6 +83,7 @@ const WatchHistory = () => {
 
   return (
     <div className="mx-auto py-2">
+    
       {/* Header Section */}
       <div className="p-4 mb-8 shadow-lg">
         <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">

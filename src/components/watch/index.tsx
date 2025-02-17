@@ -1,9 +1,14 @@
 "use client";
 import { getDetails } from "@/services/MovieService";
-import { useParams } from "next/navigation";
 import { useState } from "react";
-
-import VideoPlayer from "@/components/player/VideoPlayer";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { SimilarMovie } from "@/components/movie/SimilarMovie";
 import SeasonChooser from "./SeasonChooser";
 import CastCard from "../movie/CastCard";
@@ -13,23 +18,25 @@ import { AxiosResponse } from "axios";
 import SectionHeader from "../common/SectionHeader";
 import ErrorMessage from "../common/ErrorMessage";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
-import { FaPlay, FaShare } from "react-icons/fa";
-import { constructUrl } from "@/utils/constructEmbedUrl";
+import { FaServer, FaShare } from "react-icons/fa";
 import { useAuth } from "@/app/context/AuthContext";
 import WatchlistButton from "./WatchListButton";
 import { addToWatchHistory } from "@/utils/addToWatchHistory";
 import { WatchPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
-
-
+import videoServers from "../../data/videoServers";
+import PlayerSection from "./PlayerSelection";
 const Watch = ({ params }: WatchPageProps) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { isLoggedIn, user } = useAuth();
-  
+
   // Destructure params
-  const { id, mediaType, title } = params; 
+  const { id, mediaType, title } = params;
   const [isPlaying, setIsPlaying] = useState(false);
-  const [selectedServer, setSelectedServer] = useState(1);
+  const [selectedServer, setSelectedServer] = useState(() => {
+    // Try to get the stored value from localStorage on initial render
+    const storedValue = localStorage.getItem('selectedServer');
+    return storedValue ? parseInt(storedValue) : 1;
+  });
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   if (!id || !mediaType) {
@@ -46,7 +53,7 @@ const Watch = ({ params }: WatchPageProps) => {
     staleTime: 5 * 60 * 1000,
   });
   const movie = movieData?.data;
- 
+
   const handleShare = async () => {
     try {
       await navigator.share({
@@ -60,252 +67,191 @@ const Watch = ({ params }: WatchPageProps) => {
   };
   const handlePlay = () => {
     setIsPlaying(true);
-
+  
     // Add this line to save to watch history when user plays the video
     setTimeout(() => {
       addToWatchHistory(movie);
-    }, 1); // 10 minutes in milliseconds
+    }, 10 * 60 * 1000); // 10 minutes in milliseconds (10 * 60 seconds * 1000 milliseconds)
   };
 
-  const renderMovieScreen = () => {
-    if (!isPlaying) {
-      return (
-        <div className="relative w-full h-[65vh]">
-          <img
-            className="w-full h-full rounded-md object-cover border-none"
-            src={
-              movie?.coverImage ||
-              movie?.poster ||
-              "/images/user/failedtoload.jpg"
-            }
-            alt={movie?.title || "Movie cover"}
-          />
-          {new Date(movie.released) <= new Date() && (
-            <FaPlay
-              onClick={handlePlay}
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl text-primary cursor-pointer"
-            />
-          )}
-        </div>
-      );
-    }
-    switch (selectedServer) {
-      case 1:
-        return (
-          <VideoPlayer
-            sourceUrl={
-              movie?.videoSource
-                ? movie.videoSource.startsWith("https://short.ink")
-                  ? movie.videoSource
-                  : baseUrl + "?source=" + movie.videoSource
-                : constructUrl(
-                    "https://moviesapi.club",
-                    mediaType,
-                    id,
-                    selectedSeason,
-                    selectedEpisode,
-                  )
-            }
-          />
-        );
-      case 2:
-        return (
-          <VideoPlayer
-            sourceUrl={constructUrl(
-              "https://embed.su/embed",
-              mediaType,
-              id,
-              selectedSeason,
-              selectedEpisode,
-              "/",
-            )}
-          />
-        );
-      case 3:
-        return (
-          <VideoPlayer
-            sourceUrl={constructUrl(
-              "https://vidlink.pro",
-              mediaType,
-              id,
-              selectedSeason,
-              selectedEpisode,
-              "/",
-            )}
-          />
-          
-        );
-      case 4:
-        return (
-          <VideoPlayer
-            sourceUrl={constructUrl(
-              "https://v2.vidsrc.me/embed/",
-              mediaType,
-              id,
-              selectedSeason,
-              selectedEpisode,
-              "/",
-            )}
-          />
-        );
-      default:
-        break;
-    }
-  };
+
   return (
     <div className="">
-  <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
-    {/* Left Column - Now spans 3 columns instead of 2 */}
-    <div className="col-span-3 rounded-lg">
-      {isLoading ? (
-        <>
+      <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
+        {/* Left Column - Now spans 3 columns instead of 2 */}
         <div className="col-span-3 rounded-lg">
-          {/* Main content area skeleton */}
-          <div className="relative w-full h-[65vh]">
-            <div className="w-full h-full rounded-md animate-pulse bg-gray-700/30" />
-            
-            {/* Center play button skeleton */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse bg-gray-700/30" />
-          </div>
+          {isLoading ? (
+            <>
+              <div className="col-span-3 rounded-lg">
+                {/* Main content area skeleton */}
+                <div className="relative w-full h-[40vh] sm:h-[70vh]">
 
-          {/* Additional content skeletons below the player */}
-          <div className="mt-6 space-y-4">
-            {/* Title skeleton */}
-            <Skeleton 
-              showTitle={true}
-              titleHeight="h-8"
-              rows={0}
-            />
-            
-            {/* Description skeleton */}
-            <Skeleton 
-              className="w-full"
-              showTitle={false}
-              rows={3}
-              rowHeight="h-4"
-              spacing="space-y-2"
-            />
-          </div>
-      
+                  <div className="w-full h-full rounded-md animate-pulse bg-gray-700/30" />
 
-        {/* Right sidebar skeleton */}
-       
-    
-    </div>
-        </>
-      ) : isError ? (
-        <ErrorMessage
-          className="mt-2 w-full"
-          message={error?.message || "Something went wrong while fetching movie details."}
-        />
-      ) : (
-        <div className="relative pb-[10.25%]">
-          {renderMovieScreen()}
-          <div className="flex flex-col gap-4 bg-[rgba(20,28,49,0.95)] p-4 text-white md:flex-row md:items-center md:justify-between">
-            {/* Server selector */}
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-4">
-              {[1, 2, 3, 4].map((server) => (
-                <button
-                  key={server}
-                  onClick={() => setSelectedServer(server)}
-                  className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                    selectedServer === server
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                  }`}
-                >
-                  Player {server}
-                </button>
-              ))}
-            </div>
+                  {/* Center play button skeleton */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse bg-gray-700/30" />
+                </div>
 
-            {/* Controls */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <div className="hidden h-6 w-px bg-zinc-700 sm:block" />
-              <div className="flex items-center justify-between gap-3">
-                <WatchlistButton
-                  movieId={movie.id}
-                  movie={movie}
-                  isLoggedIn={isLoggedIn}
-                  userId={user?.id}
-                />
-                <button
-                  onClick={handleShare}
-                  className="rounded-lg p-2 hover:bg-gray-800/50"
-                >
-                  <FaShare className="h-5 w-5" />
-                </button>
+                {/* Additional content skeletons below the player */}
+                <div className="mt-6 space-y-4">
+                  {/* Title skeleton */}
+                  <Skeleton showTitle={true} titleHeight="h-8" rows={0} />
+
+                  {/* Description skeleton */}
+                  <Skeleton
+                    className="w-full"
+                    showTitle={false}
+                    rows={3}
+                    rowHeight="h-4"
+                    spacing="space-y-2"
+                  />
+                </div>
+
+                {/* Right sidebar skeleton */}
               </div>
-            </div>
-          </div>
-          
-          <p className="mt-2 text-sm text-gray-500">
-            If the current player doesn't work, change the player
-          </p>
+            </>
+          ) : isError ? (
+            <ErrorMessage
+              className="mt-2 w-full"
+              message={
+                error?.message ||
+                "Something went wrong while fetching movie details."
+              }
+            />
+          ) : (
+            <div className="relative pb-[10.25%]">
+             <PlayerSection
+              movie={movie}
+              mediaType={mediaType}
+              isPlaying={isPlaying}
+              selectedServer={selectedServer}
+              selectedSeason={selectedSeason}
+              selectedEpisode={selectedEpisode}
+              onPlay={handlePlay}
+            />
+              <div className="rounded-xl bg-gradient-to-r from-gray-900 to-gray-800 p-4 shadow-lg">
+      <div className="flex items-center justify-between gap-4">
+        {/* Server Selection Section */}
+        <div className="min-w-[140px]">
+          <Select
+             value={selectedServer.toString()}
+             onValueChange={(value) => {
+              setSelectedServer(parseInt(value));
+              localStorage.setItem('selectedServer', value);
+            }}
+          >
+            <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-black lg:w-[200px] text-white">
+              <div className="flex items-center gap-3">
+                <FaServer className="h-4 w-4 text-primary" />
+                <SelectValue  placeholder="Choose Server" />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+              <SelectGroup>
+                {videoServers.map((server, index) => (
+                  <SelectItem
+                    key={index}
+                    value={(server.id).toString()}
+                    className="cursor-pointer data-[highlighted]:bg-gray-700 data-[highlighted]:text-white"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium">{server.name}</span>
+                     
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
 
-          {/* Mobile-only SeasonChooser for TV shows */}
-          {mediaType === "tv" && (
-            <div className="mt-4 lg:hidden">
+        {/* Controls Section */}
+        <div className="flex items-center justify-between space-x-4 lg:justify-end">
+          <div className="hidden h-8 w-px  lg:block" />
+          <div className="flex items-center space-x-3">
+            <WatchlistButton
+              movieId={movie.id}
+              movie={movie}
+              isLoggedIn={isLoggedIn}
+              userId={user?.id}
+            />
+            <button
+              onClick={handleShare}
+              className="group rounded-lg  p-2.5 transition-all hover:bg-gray-600"
+              aria-label="Share"
+            >
+              <FaShare className="h-5 w-5 text-white transition-all group-hover:text-white" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+              <p className="mt-2 text-sm text-gray-500">
+                If the current player doesn't work, change the player
+              </p>
+
+              {/* Mobile-only SeasonChooser for TV shows */}
+              {mediaType === "tv" && (
+                <div className="mt-4 lg:hidden">
+                  <SeasonChooser
+                    mediaId={id?.toString().startsWith("t") ? movie?.id : id}
+                    seasons={movie?.seasons}
+                    onSeasonChange={setSelectedSeason}
+                    onEpisodeChange={setSelectedEpisode}
+                  />
+                </div>
+              )}
+
+              <br />
+              <MovieDetails movie={movie} mediaType={mediaType} />
+              <SectionHeader className="mb-5 mt-10" text="Casts" />
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
+                {movie?.casts?.map((character: any, index: any) => (
+                  <CastCard
+                    key={index}
+                    imgSrc={character.profilePath}
+                    name={character.name}
+                    role={character.character}
+                    castId={character.id}
+                  />
+                ))}
+              </div>
+
+              {/* Mobile-only SimilarMovie for movies */}
+              {mediaType === "movie" && (
+                <div className="mt-10 grid grid-cols-1 lg:hidden">
+                  <SimilarMovie
+                    id={id?.toString().startsWith("t") ? movie?.id : id}
+                    mediaType={mediaType}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right Column - Now spans 1 column */}
+        <div className="hidden space-y-8 lg:block">
+          <div className="rounded-lg p-2 dark:text-white">
+            {mediaType?.toLowerCase() === "movie" && (
+              <SimilarMovie
+                id={id?.toString().startsWith("t") ? movie?.id : id}
+                mediaType={mediaType}
+              />
+            )}
+            {mediaType?.toLowerCase() === "tv" && !isLoading && !isError && (
               <SeasonChooser
                 mediaId={id?.toString().startsWith("t") ? movie?.id : id}
                 seasons={movie?.seasons}
                 onSeasonChange={setSelectedSeason}
                 onEpisodeChange={setSelectedEpisode}
               />
-            </div>
-          )}
-
-          <br />
-          <MovieDetails movie={movie} mediaType={mediaType} />
-          <SectionHeader className="mb-5 mt-10" text="Casts" />
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-            {movie?.casts?.map((character:any, index:any) => (
-              <CastCard
-                key={index}
-                imgSrc={character.profilePath}
-                name={character.name}
-                role={character.character}
-                castId={character.id}
-              />
-            ))}
+            )}
           </div>
-
-          {/* Mobile-only SimilarMovie for movies */}
-          {mediaType === "movie" && (
-            <div className="mt-10 grid grid-cols-1 lg:hidden">
-              <SimilarMovie 
-                id={id?.toString().startsWith("t") ? movie?.id : id} 
-                mediaType={mediaType}
-              />
-            </div>
-          )}
         </div>
-      )}
-    </div>
-
-    {/* Right Column - Now spans 1 column */}
-    <div className="hidden space-y-8 lg:block">
-      <div className="rounded-lg p-2 dark:text-white">
-        {mediaType === "movie" && (
-          <SimilarMovie 
-            id={id?.toString().startsWith("t") ? movie?.id : id} 
-            mediaType={mediaType} 
-          />
-        )}
-        {mediaType === "tv" && !isLoading && !isError && (
-          <SeasonChooser
-            mediaId={id?.toString().startsWith("t") ? movie?.id : id}
-            seasons={movie?.seasons}
-            onSeasonChange={setSelectedSeason}
-            onEpisodeChange={setSelectedEpisode}
-          />
-        )}
       </div>
     </div>
-  </div>
-</div>
-
   );
-
 };
 export default Watch;
