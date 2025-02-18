@@ -1,6 +1,6 @@
 export const siteConfig = {
-    siteName: "Bitgr.to",
+    siteName: "Flickmood",
     tagline: "Pick movie based on your emotion",
-    description: "Search you next movie with AI based search algorithm. Bitgr.to is the home of your favorite Movies/TV Series",
-    title: "Bitgr.to - Home of your favorite Movies/TV Series"
+    description: "Search you next movie with AI based search algorithm. Flickmood is the home of your favorite Movies/TV Series",
+    title: "Flickmood - Home of your favorite Movies/TV Series"
   };
