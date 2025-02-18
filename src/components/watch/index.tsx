@@ -233,7 +233,7 @@ const Watch = ({ params }: WatchPageProps) => {
 
         {/* Right Column - Now spans 1 column */}
         <div className="hidden space-y-8 lg:block">
-          <div className="rounded-lg p-2 dark:text-white">
+          <div className="rounded-lg  dark:text-white">
             {mediaType?.toLowerCase() === "movie" && (
               <SimilarMovie
                 id={id?.toString().startsWith("t") ? movie?.id : id}

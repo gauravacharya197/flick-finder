@@ -43,7 +43,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
   }
 
   return (
-    <aside   className=" -mt-4 ">
+    <aside  >
       {/* className="-mt-4 flex flex-col gap-4 w-full max-w-full" */}
       <SectionHeader text="You might like" />
 

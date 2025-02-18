@@ -29,7 +29,7 @@ const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
           <input
             type="text"
             placeholder="Search genres..."
-            className="pl-10 pr-4 py-2 focus:ring-primary w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white"
+            className="pl-10 pr-4 py-2  w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm  dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
