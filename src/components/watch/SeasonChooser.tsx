@@ -58,6 +58,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       mediaId, 
       seasonNumber: selectedSeason?.seasonNumber || 1 
     }),
+    staleTime:Infinity,
     enabled: !!selectedSeason,
   });
 
