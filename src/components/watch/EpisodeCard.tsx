@@ -1,3 +1,4 @@
+import { formatDate } from '@/utils/formatDate';
 import React from 'react';
 import { FaChevronDown, FaPlay, FaTv, FaCalendarAlt, FaStar } from 'react-icons/fa';
 
@@ -77,7 +78,7 @@ const EpisodeCard = ({
           
           <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
             <FaCalendarAlt className="w-3 h-3" />
-            <span>{new Date(episode.air_date).toLocaleDateString()}</span>
+            <span>{formatDate(episode.air_date)}</span>
           </div>
         </div>
       </div>

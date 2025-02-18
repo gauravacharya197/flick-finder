@@ -129,7 +129,7 @@ const Watch = ({ params }: WatchPageProps) => {
               selectedEpisode={selectedEpisode}
               onPlay={handlePlay}
             />
-              <div className="rounded-xl bg-gradient-to-r from-gray-900 to-gray-800 p-4 shadow-lg">
+              <div className="rounded-sm bg-gradient-to-r from-gray-800 to-gray-900 p-4 shadow-lg">
       <div className="flex items-center justify-between gap-4">
         {/* Server Selection Section */}
         <div className="min-w-[140px]">
