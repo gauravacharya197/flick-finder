@@ -167,7 +167,7 @@ const MyNav = () => {
                 <input
                   type="text"
                   placeholder="Search Movies/TV"
-                  value={query || searchQuery || ""}
+                  value={query}
                   onChange={(e) => dispatch(setQuery(e.target.value))}
                   className="w-96 rounded-md border border-gray-300 bg-white px-4 py-1.5 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                 />

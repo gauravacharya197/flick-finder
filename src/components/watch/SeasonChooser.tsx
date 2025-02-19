@@ -122,7 +122,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       </button>
 
       {isOpen && (
-        <div className="border-t border-gray-800 max-h-64 overflow-y-auto">
+        <div className="border-t border-gray-800 max-h-[100vh] sm:max-h-[80vh] overflow-y-auto">
           {filteredSeasons.map((season) => (
             <button
               key={season.id}

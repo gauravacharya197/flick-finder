@@ -113,7 +113,7 @@ const MovieDetails = ({ movie, mediaType }) => {
               key={keyword}
               text={keyword}
               color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
-              small={true}
+              small={false}
             />
           ))}
         </div>
