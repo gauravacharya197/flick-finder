@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Spinner from "@/components/common/Spin";
+import toast from "react-hot-toast";
 export default function Videos() {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Videos() {
       setIsEditModalOpen(false);
     },
     onError: () => {
-      alert("Failed to update video.");
+      toast.error("Failed to update video", { position: "bottom-center" });
     },
   });
 
@@ -61,7 +62,8 @@ export default function Videos() {
       queryClient.invalidateQueries({ queryKey: ['videos'] });
     },
     onError: () => {
-      alert("Failed to delete video.");
+      toast.error("Failed to delete video", { position: "bottom-center" });
+
     },
   });
 
@@ -74,15 +76,13 @@ export default function Videos() {
     setIsEditModalOpen(true);
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
+
 
  
 
   return (<div>
     <div>
-      <div className="max-w-screen-2xl ">
+      <div className="">
         <h1 className="text-3xl font-bold text-white mb-4 dark:text-gray-100">
          Videos
         </h1>
@@ -255,15 +255,6 @@ const AddEditVideoForm: React.FC<AddEditVideoFormProps> = ({ onSubmit, onCancel,
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
       <div>
-        <label className="block text-sm font-semibold mb-2">TMDB ID</label>
-        <Input
-          className="w-full"
-          type="text"
-          {...register("tmdbId", { required: "TMDB ID is required" })}
-        />
-        {errors.tmdbId && <span className="text-red-500 text-sm">{errors.tmdbId.message}</span>}
-      </div>
-      <div>
         <label className="block text-sm font-semibold mb-2">Title</label>
         <Input
           className="w-full"
@@ -272,6 +263,16 @@ const AddEditVideoForm: React.FC<AddEditVideoFormProps> = ({ onSubmit, onCancel,
         />
         {errors.title && <span className="text-red-500 text-sm">{errors.title.message}</span>}
       </div>
+      <div>
+        <label className="block text-sm font-semibold mb-2">TMDB ID</label>
+        <Input
+          className="w-full"
+          type="text"
+          {...register("tmdbId", { required: "TMDB ID is required" })}
+        />
+        {errors.tmdbId && <span className="text-red-500 text-sm">{errors.tmdbId.message}</span>}
+      </div>
+      
 
       <div>
         <label className="block text-sm font-semibold mb-2">IMDB ID</label>

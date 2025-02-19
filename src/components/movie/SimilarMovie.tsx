@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Rating } from "../common/Rating";
 import { SimilarMovieCard } from "./SimilarMovieCard";
 import Skeleton from "../common/Skeleton";
+import { Movie } from "@/types/movie";
 
 interface SimilarMovieProps {
   id: string;
@@ -32,7 +33,14 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
     retry: 2,
   });
 
-  const movies = similarMoviesData?.data?.results || [];
+  const movies: Movie[] = similarMoviesData?.data?.results.map((movie): Movie => ({
+    id: movie.id,
+    posterPath: movie.poster_path,
+    displayTitle: movie.title,
+    displayReleaseDate: movie.release_date,
+    voteAverage: movie.vote_average,
+    mediaType: movie.media_type,
+  })) || [];
 
   if (isError) {
     return (

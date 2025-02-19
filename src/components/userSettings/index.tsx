@@ -9,6 +9,7 @@ import { Option } from '../../types/option';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { SavePreferences, FetchUserPreferences } from '@/services/AccountService';
+import Skeleton from '../common/Skeleton';
 
 export const UserSettings = () => {
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
@@ -73,7 +74,9 @@ export const UserSettings = () => {
   };
 
   if (isLoading) {
-    return <div className="max-w-3xl mx-auto p-6">Loading preferences...</div>;
+    return <div className="max-w-3xl mx-auto p-6">{Array.from({ length: 3 }, (_, i) => (
+      <Skeleton key={i} />
+    ))} </div>;
   }
 
   return (

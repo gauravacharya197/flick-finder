@@ -12,7 +12,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
     // Exclude layout for the sign-in page
     if (pathname === "/admin/signin") {
-      return <>{children}</>;
+      return <> <ToasterContext />{children}</>;
     }
   return (
     <div className="flex min-h-screen bg-background">

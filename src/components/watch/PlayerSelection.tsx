@@ -16,24 +16,17 @@ import WatchlistButton from "./WatchListButton";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { useAuth } from "@/app/context/AuthContext";
 import { addToWatchHistory } from "@/utils/addToWatchHistory";
-
 interface PlayerSectionProps {
   movie: any;
   mediaType: string;
- 
-
   selectedSeason: number | null;
   selectedEpisode: number | null;
- 
-}
-
+ }
 const PlayerSection = ({
   movie,
   mediaType,
-
   selectedSeason,
   selectedEpisode,
-
 }: PlayerSectionProps) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const handleShare = async () => {
@@ -49,7 +42,6 @@ const PlayerSection = ({
   };
   const { isLoggedIn, user } = useAuth();
   const [isPlaying, setIsPlaying] = useState(false);
-
   const [selectedServer, setSelectedServer] = useState(() => {
     // Try to get the stored value from localStorage on initial render
     const storedValue = localStorage.getItem("selectedServer");
@@ -57,7 +49,6 @@ const PlayerSection = ({
   });
   const handlePlay = () => {
     setIsPlaying(true);
-
     // Add this line to save to watch history when user plays the video
     setTimeout(
       () => {
@@ -88,7 +79,6 @@ const PlayerSection = ({
         </div>
       );
     }
-
     // Directly return VideoPlayer from switch case
     switch (selectedServer) {
       case 1:
@@ -120,6 +110,7 @@ const PlayerSection = ({
               selectedEpisode,
               "/"
             )}
+            sandbox="allow-same-origin allow-scripts" // Block popups by not allowing them
           />
         );
       case 3:
@@ -159,6 +150,7 @@ const PlayerSection = ({
               selectedEpisode,
               "/"
             )}
+            
           />
         );
       default:
@@ -202,7 +194,6 @@ const PlayerSection = ({
               </SelectContent>
             </Select>
           </div>
-
           {/* Controls Section */}
           {/* Controls Section */}
           <div className="flex items-center justify-between space-x-4 lg:justify-end">
@@ -228,5 +219,4 @@ const PlayerSection = ({
     </div>
   );
 };
-
 export default PlayerSection;

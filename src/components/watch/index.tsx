@@ -1,9 +1,8 @@
 "use client";
 import { getDetails } from "@/services/MovieService";
 import { useState } from "react";
-
 import { SimilarMovie } from "@/components/movie/SimilarMovie";
-import SeasonChooser from "./SeasonChooser";
+import SeasonChooser, { EpisodeLoading } from "./SeasonChooser";
 import CastCard from "../movie/CastCard";
 import MovieDetails from "./MovieDetails";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +16,6 @@ import PlayerSection from "./PlayerSelection";
 const Watch = ({ params }: WatchPageProps) => {
   // Destructure params
   const { id, mediaType, title } = params;
-
   const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [selectedEpisode, setSelectedEpisode] = useState<number | null>(null);
   if (!id || !mediaType) {
@@ -34,11 +32,9 @@ const Watch = ({ params }: WatchPageProps) => {
     staleTime: 5 * 60 * 1000,
   });
   const movie = movieData?.data;
-
  
-
   return (
-    <div className="">
+    <div>
       <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
         {/* Left Column - Now spans 3 columns instead of 2 */}
         <div className="col-span-3 rounded-lg">
@@ -48,16 +44,13 @@ const Watch = ({ params }: WatchPageProps) => {
                 {/* Main content area skeleton */}
                 <div className="relative w-full h-[40vh] sm:h-[70vh]">
                   <div className="w-full h-full rounded-md animate-pulse bg-gray-700/30" />
-
                   {/* Center play button skeleton */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse bg-gray-700/30" />
                 </div>
-
                 {/* Additional content skeletons below the player */}
                 <div className="mt-6 space-y-4">
                   {/* Title skeleton */}
                   <Skeleton showTitle={true} titleHeight="h-8" rows={0} />
-
                   {/* Description skeleton */}
                   <Skeleton
                     className="w-full"
@@ -67,7 +60,6 @@ const Watch = ({ params }: WatchPageProps) => {
                     spacing="space-y-2"
                   />
                 </div>
-
                 {/* Right sidebar skeleton */}
               </div>
             </>
@@ -89,16 +81,14 @@ const Watch = ({ params }: WatchPageProps) => {
                 selectedEpisode={selectedEpisode}
                 
               />
-
               <p className="mt-2 text-sm text-gray-500">
                 If the current player doesn't work, change the player
               </p>
-
               {/* Mobile-only SeasonChooser for TV shows */}
-
               {mediaType === "tv" && (
                 <div className="mt-4 lg:hidden">
                   <SeasonChooser
+                 
                     mediaId={id?.toString().startsWith("t") ? movie?.id : id}
                     seasons={movie?.seasons}
                     onSeasonChange={setSelectedSeason}
@@ -106,7 +96,6 @@ const Watch = ({ params }: WatchPageProps) => {
                   />
                 </div>
               )}
-
               <br />
               <MovieDetails movie={movie} mediaType={mediaType} />
               <SectionHeader className="mb-5 mt-10" text="Casts" />
@@ -121,7 +110,6 @@ const Watch = ({ params }: WatchPageProps) => {
                   />
                 ))}
               </div>
-
               {/* Mobile-only SimilarMovie for movies */}
               {mediaType === "movie" && (
                 <div className="mt-10 grid grid-cols-1 lg:hidden">
@@ -134,7 +122,6 @@ const Watch = ({ params }: WatchPageProps) => {
             </div>
           )}
         </div>
-
         {/* Right Column - Now spans 1 column */}
         <div className="hidden space-y-8 lg:block">
           <div className="rounded-lg  dark:text-white">
@@ -144,14 +131,18 @@ const Watch = ({ params }: WatchPageProps) => {
                 mediaType={mediaType}
               />
             )}
-            {mediaType?.toLowerCase() === "tv" && !isLoading && !isError && (
+            {mediaType?.toLowerCase() === "tv"? isLoading ? (
+            Array.from({ length: 7 }).map((_, index) => (
+              <EpisodeLoading key={index} />
+            ))) : (
               <SeasonChooser
+               
                 mediaId={id?.toString().startsWith("t") ? movie?.id : id}
                 seasons={movie?.seasons}
                 onSeasonChange={setSelectedSeason}
                 onEpisodeChange={setSelectedEpisode}
               />
-            )}
+            ) : <></> }
           </div>
         </div>
       </div>

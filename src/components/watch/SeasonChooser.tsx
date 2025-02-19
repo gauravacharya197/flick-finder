@@ -25,7 +25,7 @@ interface SeasonChooserProps {
   mediaId: string;
 }
 
-const EpisodeLoading = () => (
+export const EpisodeLoading = () => (
   <div className="pt-2 animate-pulse ">
     <Skeleton 
           className="h-16 p-0"
@@ -48,7 +48,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
   const [playingEpisode, setPlayingEpisode] = useState<number>(1);
 
   // Filter out Specials only if it's the first season
-  const filteredSeasons = seasons[0]?.name === "Specials" 
+  const filteredSeasons = seasons?.[0]?.name === "Specials" 
     ? seasons.slice(1) 
     : seasons;
 
@@ -143,9 +143,9 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       )}
 
       {selectedSeason && !isOpen && (
-        <div className="border-t border-gray-800 max-h-[100vh] sm:max-h-[80vh] overflow-y-auto">
+        <div className="border-t border-gray-800   max-h-[100vh] sm:max-h-[80vh] overflow-y-auto">
           {isLoading ? (
-            Array.from({ length: 5 }).map((_, index) => (
+            Array.from({ length: 7 }).map((_, index) => (
               <EpisodeLoading key={index} />
             ))
           ) : (

@@ -95,7 +95,7 @@ const MyNav = () => {
            
             <button
               ref={menuButtonRef}
-              className="rounded-md p-2 hover:bg-gray-800 dark:hover:bg-gray-700"
+              className="rounded-md  hover:bg-gray-800 dark:hover:bg-gray-700"
               onClick={() => {
                 setMenuOpen(!menuOpen);
               }}

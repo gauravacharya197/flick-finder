@@ -55,7 +55,7 @@ export default function FeaturePage() {
 
   return (
     <div>
-      <div className="max-w-screen-2xl ">
+      <div >
         <h1 className="text-3xl font-bold text-white mb-4 dark:text-gray-100">
           Featured Movies
         </h1>
@@ -123,7 +123,7 @@ export default function FeaturePage() {
         </div>
         
         {featured?.data.results?.length === 0 && !featuredLoading && (
-          <div className="text-center py-16">
+          <div className=" text-center">
             <h3 className="text-xl font-medium text-gray-500 dark:text-gray-400">
               No movies found
             </h3>

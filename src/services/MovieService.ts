@@ -1,3 +1,4 @@
+import axios from 'axios';
 import apiClient from '../axiosConfig';
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const getRecommendation = async (text: string) => {
@@ -20,7 +21,7 @@ export const getTopRated = async (mediaType: string, pageNumber = '1') => {
   return await apiClient.get(`${baseUrl}api/Movies/TopRated?mediaType=${mediaType}&pageNumber=${pageNumber}`)
 };
 export const getSimilarMovies = async (id: string, mediaType: string) => {
-  return await apiClient.get(`${baseUrl}api/Movies/Similar/${id}/${mediaType}`)
+  return await axios.get(`/api/movies/${id}/${mediaType}`)
 };
 export const getFilters = async () => {
   return await apiClient.get(`${baseUrl}api/Filters`)

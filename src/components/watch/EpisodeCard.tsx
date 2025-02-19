@@ -21,6 +21,9 @@ const EpisodeCard = ({
   isPlaying: boolean;
   onClick: () => void;
 }) => {
+  if(episode.air_date==null) {
+    return null;
+  }
   const today = new Date();
   const airDate = new Date(episode.air_date);
   const isReleased = airDate <= today;
@@ -29,7 +32,7 @@ const EpisodeCard = ({
     <button
       onClick={isReleased ? onClick : undefined}
       disabled={!isReleased}
-      className={`w-full p-3 rounded transition-all duration-200 
+      className={`w-full p-3 rounded transition-all duration-200 text-left
         ${isReleased 
           ? `${isPlaying ? 'bg-gray-100/10' : 'bg-transparent'} hover:bg-gray-100/5` 
           : 'bg-gray-800/20 cursor-not-allowed opacity-75'}`}
@@ -67,7 +70,7 @@ const EpisodeCard = ({
             )}
           </div>
           
-          <h3 className="font-medium text-sm truncate">
+          <h3 className="font-medium text-sm truncate text-left">
             {episode.name}
           </h3>
           

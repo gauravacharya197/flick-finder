@@ -13,6 +13,7 @@ export default function RootLayout({
     <>
       <html lang="en" suppressHydrationWarning>
         <link rel="icon" href="/favicon.ico" />
+        
         <body
           className={`min-h-screen bg-background text-white ${poppins.className}`}
         >

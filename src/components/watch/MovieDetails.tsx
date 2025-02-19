@@ -3,108 +3,130 @@ import { CustomTag } from "../common/CustomTag";
 import { getSourceIcon } from "@/utils/getSourceIcon";
 import { formatDate } from "@/utils/formatDate";
 
-const MovieDetails = ({ movie, mediaType }:any) => {
+const MovieDetails = ({ movie, mediaType }) => {
+  const generateKeywords = () => {
+    const title = movie?.title || '';
+    const year = new Date(movie?.released).getFullYear();
+    const finalMediaType = mediaType === "movie" ? "Movie" : "Series";
+    return [
+      `Watch ${title} Online`,
+      `${title} ${year} Full ${finalMediaType}`,
+      `${title} Free Streaming`,
+      `${title} ${finalMediaType} Watch Free HD`,
+      `${title} ${finalMediaType} Download`,
+    ];
+  };
+
   return (
-    <div className="flex flex-col gap-7.5 lg:flex-row xl:gap-12.5 text-white">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-        {/* Image column - keeping original alignment */}
-        <div className="mx-auto w-full lg:col-span-3 lg:mx-0">
-          <div className="relative mx-auto h-64 w-48 sm:h-72 sm:w-52 md:h-80 md:w-56 lg:h-auto lg:w-[95%]">
+    <div className="bg-gray-900/40 backdrop-blur-md rounded-xl  text-white">
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Poster Section */}
+        <div className="lg:w-1/4">
+          <div className="relative group">
             <img
-              className="h-full w-full rounded-2xl object-cover shadow-lg ring-1 ring-gray-800/20"
+              className="w-full rounded-lg shadow-xl transition-transform duration-300 group-hover:scale-105"
               src={movie?.posterPath || "/images/user/failedtoload.jpg"}
               alt={movie?.title}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
           </div>
         </div>
 
-        {/* Content column */}
-        <div className="lg:col-span-9">
-          <div className="flex-grow space-y-6">
-            {/* Title and Meta Section */}
-            <div className="space-y-4">
-              <h1 className="text-3xl font-bold tracking-tight">{movie?.title}</h1>
-              
-              {movie?.tagLine && (
-                <p className="text-lg italic text-gray-400 -mt-2">{movie.tagLine}</p>
-              )}
-
-              <div className="flex flex-wrap gap-4 items-center">
-                <CustomTag text={movie?.mediaType} />
-                <span className="text-gray-300">{movie?.runtime}</span>
-                <span className="text-gray-300">{formatDate(movie?.released)}</span>
-                {movie?.rated && (
+        {/* Content Section */}
+        <div className="lg:w-3/4 space-y-6">
+          {/* Header */}
+          <div className="space-y-3">
+            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+              {movie?.title}
+            </h1>
+            {movie?.tagLine && (
+              <p className="text-lg italic text-gray-400">{movie.tagLine}</p>
+            )}
+            
+            {/* Meta Info */}
+            <div className="flex flex-wrap items-center gap-3">
+              <CustomTag text={movie?.mediaType} />
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-300">{movie?.runtime}</span>
+              <span className="text-gray-400">•</span>
+              <span className="text-gray-300">{formatDate(movie?.released)}</span>
+              {movie?.rated && (
                 <CustomTag color="bg-white/10 text-white" text={movie?.rated} />
               )}
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {movie?.genres?.map((x, index) => (
-                  <CustomTag
-                    key={index}
-                    text={x.name}
-                    color="bg-gray-800"
-                    small={false}
-                  />
-                ))}
-              </div>
             </div>
 
-            {/* Plot */}
-            <div className="text-lg text-gray-300">
-              <p>{movie?.plot}</p>
-            </div>
-
-            {/* Table Section */}
-            <div className="overflow-x-auto rounded-lg bg-gray-900/50 backdrop-blur-sm">
-              <table className="w-full">
-                <tbody className="divide-y divide-gray-800">
-                  <TableRow label="Director" value={movie?.director} />
-                  <TableRow label="Awards" value={movie?.awards} />
-                  <TableRow label="Runtime" value={movie?.runtime} />
-                  <TableRow label="Country" value={movie?.country} />
-                  <TableRow label="Language" value={movie?.language} />
-
-                  {mediaType === "movie" && (
-                    <>
-                      <TableRow label="Budget" value={movie?.budget} />
-                      <TableRow label="Box Office" value={movie?.boxOffice} />
-                    </>
-                  )}
-                  <TableRow
-                    label="Ratings"
-                    value={
-                      <div className="flex flex-wrap gap-4">
-                        {movie?.ratings?.length > 0 ? (
-                          movie.ratings.map((rating, index) => (
-                            <div key={index} className="flex items-center">
-                              <span className="text-gray-400">
-                                {getSourceIcon(rating.source)}
-                              </span>
-                              <span className="ml-2">{rating.value}</span>
-                            </div>
-                          ))
-                        ) : (
-                          <span className="text-gray-500">N/A</span>
-                        )}
-                      </div>
-                    }
-                  />
-                </tbody>
-              </table>
+            {/* Genres */}
+            <div className="flex flex-wrap gap-2">
+              {movie?.genres?.map((x, index) => (
+                <CustomTag
+                  key={index}
+                  text={x.name}
+                  color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
+                  small={false}
+                />
+              ))}
             </div>
           </div>
+
+          {/* Plot */}
+          <p className="text-lg text-gray-300 leading-relaxed">{movie?.plot}</p>
+
+          {/* Details Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-800/30 rounded-lg p-4">
+            <DetailItem label="Director" value={movie?.director} />
+            <DetailItem label="Awards" value={movie?.awards} />
+            <DetailItem label="Country" value={movie?.country} />
+            <DetailItem label="Language" value={movie?.language} />
+            {mediaType === "movie" && (
+              <>
+                <DetailItem label="Budget" value={movie?.budget} />
+                <DetailItem label="Box Office" value={movie?.boxOffice} />
+              </>
+            )}
+          </div>
+
+          {/* Ratings */}
+          <div className="bg-gray-800/30 rounded-lg p-4">
+            <h3 className="text-lg font-medium mb-3">Ratings</h3>
+            <div className="flex flex-wrap gap-6">
+              {movie?.ratings?.length > 0 ? (
+                movie.ratings.map((rating, index) => (
+                  <div key={index} className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
+                    <span className="text-gray-300">{getSourceIcon(rating.source)}</span>
+                    <span className="ml-2 font-medium">{rating.value}</span>
+                  </div>
+                ))
+              ) : (
+                <span className="text-gray-500">No ratings available</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Keywords */}
+      <div className="mt-6 space-y-3">
+        <h3 className="text-lg font-medium">Keywords</h3>
+        <div className="flex flex-wrap gap-3">
+          {generateKeywords().map((keyword) => (
+            <CustomTag
+              key={keyword}
+              text={keyword}
+              color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
+              small={true}
+            />
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-const TableRow = ({ label, value }) => (
-  <tr>
-    <td className="w-32 py-3 pl-4 pr-4 font-medium text-gray-300">{label}</td>
-    <td className="py-3 pr-4">{value || <span className="text-gray-500">N/A</span>}</td>
-  </tr>
+const DetailItem = ({ label, value }) => (
+  <div className="space-y-1">
+    <div className="text-sm text-gray-400">{label}</div>
+    <div className="text-gray-200">{value || <span className="text-gray-500">N/A</span>}</div>
+  </div>
 );
 
 export default MovieDetails;

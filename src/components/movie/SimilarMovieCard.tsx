@@ -5,6 +5,7 @@ import { FaClock } from 'react-icons/fa';
 import { CustomTag } from '../common/CustomTag';
 import { Rating } from '../common/Rating';
 import { constructWatchUrl } from '@/utils/constructWatchUrl';
+import { formatDate } from '@/utils/formatDate';
 
 export const SimilarMovieCard = ({movie,index,mediaType}:any) => {
   return (
@@ -40,7 +41,7 @@ export const SimilarMovieCard = ({movie,index,mediaType}:any) => {
         
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           <FaClock className="w-3 h-3" />
-          <span>{movie?.displayReleaseDate}</span>
+          <span>{formatDate(movie?.displayReleaseDate)}</span>
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
