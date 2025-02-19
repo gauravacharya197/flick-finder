@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
   FaUser,
 } from "react-icons/fa";
+import { IoSettings } from "react-icons/io5";
 
 const UserMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +26,7 @@ const UserMenu = () => {
   const menuItems = [
     { href: "/history", icon: <FaHistory className="w-4 h-4" />, label: "History" },
     isLoggedIn && { href: "/watchlist", icon: <FaBookmark className="w-4 h-4" />, label: "Watchlist" },
+    isLoggedIn && { href: "/settings", icon: <IoSettings className="w-4 h-4" />, label: "Settings" },
     isLoggedIn
       ? { href: "#", onClick: handleLogout, icon: <FaSignOutAlt className="w-4 h-4" />, label: "Logout" }
       : { href: "/auth/login", icon: <FaSignInAlt className="w-4 h-4" />, label: "Login" },

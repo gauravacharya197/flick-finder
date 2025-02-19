@@ -107,6 +107,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
 
   return (
     <div className="w-full max-w-3xl bg-gray-900/90 text-gray-100 rounded-lg overflow-hidden backdrop-blur-sm">
+      
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-4 py-3 flex items-center justify-between bg-gray-800/50 hover:bg-gray-800/100 transition-colors duration-200"
@@ -142,7 +143,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
       )}
 
       {selectedSeason && !isOpen && (
-        <div className="border-t border-gray-800 h-[40vh] sm:h-[70vh] overflow-y-auto">
+        <div className="border-t border-gray-800 max-h-[100vh] sm:max-h-[80vh] overflow-y-auto">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, index) => (
               <EpisodeLoading key={index} />

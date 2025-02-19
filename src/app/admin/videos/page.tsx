@@ -124,76 +124,71 @@ export default function Videos() {
       {!isLoading && !error && (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50 dark:bg-gray-900/50">
-                  <TableHead className="w-[80px] text-center font-medium text-gray-600 dark:text-gray-400">ID</TableHead>
-                  <TableHead className="w-[250px] font-medium text-gray-600 dark:text-gray-400">Title</TableHead>
-                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">TMDB ID</TableHead>
-                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">IMDB ID</TableHead>
-                  <TableHead className="min-w-[200px] font-medium text-gray-600 dark:text-gray-400">Source</TableHead>
-                  <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {videos?.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="h-32 text-center text-gray-500 dark:text-gray-400">
-                      <div className="flex flex-col items-center justify-center space-y-2">
-                        
-                        <p>No videos found</p>
-                        <Button 
-                          variant="link" 
-                          onClick={() => setIsModalOpen(true)}
-                          className="text-blue-500 hover:text-blue-600"
-                        >
-                          Add your first video
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  videos?.map((video) => (
-                    <TableRow 
-                      key={video.id}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors duration-150"
-                    >
-                      <TableCell className="text-center font-mono text-sm text-gray-600 dark:text-gray-400">{video.id}</TableCell>
-                      <TableCell className="font-medium">{video.title}</TableCell>
-                      <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.tmdbId || '—'}</TableCell>
-                      <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.imdbId || '—'}</TableCell>
-                      <TableCell className="text-gray-700 dark:text-gray-300 max-w-xs truncate" title={video.videoSource}>
-                        {video.videoSource}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex justify-center space-x-3">
-                          
-                            <Button
-                              onClick={() => handleEdit(video)}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
-                            >
-                              <FaPencil className="h-4 w-4" />
-                            </Button>
-                        
-                       
-                            <Button
-                              onClick={() => handleDelete(video.id)}
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8 text-gray-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
-                            >
-                              <FaTrash className="h-4 w-4" />
-                            </Button>
-                          
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+          <Table>
+  <TableHeader>
+    <TableRow className="bg-gray-50 dark:bg-gray-900/50">
+      <TableHead className="w-[80px] text-center font-medium text-gray-600 dark:text-gray-400">ID</TableHead>
+      <TableHead className="w-[250px] text-start font-medium text-gray-600 dark:text-gray-400">Title</TableHead>
+      <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">TMDB ID</TableHead>
+      <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">IMDB ID</TableHead>
+      <TableHead className="min-w-[200px] text-start font-medium text-gray-600 dark:text-gray-400">Source</TableHead>
+      <TableHead className="w-[120px] text-center font-medium text-gray-600 dark:text-gray-400">Actions</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {videos?.length === 0 ? (
+      <TableRow>
+        <TableCell colSpan={6} className="h-32 text-center text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <p>No videos found</p>
+            <Button 
+              variant="link" 
+              onClick={() => setIsModalOpen(true)}
+              className="text-blue-500 hover:text-blue-600"
+            >
+              Add your first video
+            </Button>
+          </div>
+        </TableCell>
+      </TableRow>
+    ) : (
+      videos?.map((video) => (
+        <TableRow 
+          key={video.id}
+          className="hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors duration-150"
+        >
+          <TableCell className="text-center font-mono text-sm text-gray-600 dark:text-gray-400">{video.id}</TableCell>
+          <TableCell className="text-start text-gray-600 dark:text-gray-400">{video.title}</TableCell>
+          <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.tmdbId || '—'}</TableCell>
+          <TableCell className="text-center text-gray-600 dark:text-gray-400">{video.imdbId || '—'}</TableCell>
+          <TableCell className="text-start text-gray-700 dark:text-gray-300 max-w-xs truncate" title={video.videoSource}>
+            {video.videoSource}
+          </TableCell>
+          <TableCell className="text-center">
+            <div className="flex justify-center space-x-3">
+              <Button
+                onClick={() => handleEdit(video)}
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
+              >
+                <FaPencil className="h-4 w-4" />
+              </Button>
+              <Button
+                onClick={() => handleDelete(video.id)}
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-gray-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+              >
+                <FaTrash className="h-4 w-4" />
+              </Button>
+            </div>
+          </TableCell>
+        </TableRow>
+      ))
+    )}
+  </TableBody>
+</Table>
           </div>
         </div>
       )}

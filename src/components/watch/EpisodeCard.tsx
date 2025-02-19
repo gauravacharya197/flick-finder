@@ -61,12 +61,7 @@ const EpisodeCard = ({
             <span className="px-2 py-1 bg-gray-800 rounded text-xs text-gray-400">
               Ep {episode.episode_number}
             </span>
-            {isReleased && (
-              <div className="flex items-center gap-1">
-                <FaStar className="w-3 h-3 text-yellow-500" />
-                <span className="text-xs text-gray-400">{episode.vote_average.toFixed(1)}</span>
-              </div>
-            )}
+           
             {!isReleased && (
               <span className="text-blue-400 text-xs font-medium">Upcoming</span>
             )}

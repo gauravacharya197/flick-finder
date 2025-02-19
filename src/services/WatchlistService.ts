@@ -12,6 +12,6 @@ export const addToWatchlist = async (id, movie, userId) => {
   export const iswatchlisted = async (userId, tmdbId) => {
     return await apiClient.get(`${baseUrl}api/watchlist/is-watchlisted?userId=${userId}&tmdbId=${tmdbId}`)
   };
-  export const getUserWatchList = async (userId) => {
-    return await apiClient.get(`${baseUrl}api/watchlist?userId=${userId}`);
+  export const getUserWatchList = async () => {
+    return await apiClient.get(`${baseUrl}api/watchlist`);
   };

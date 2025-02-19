@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { FaFacebook , FaLinkedin } from "react-icons/fa";
+import { FaDiscord, FaFacebook , FaLinkedin, FaTelegram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="flex justify-center md:justify-start mb-3 md:mb-0 md:w-[15%]"
           >
-            <a href="#" className="hover:text-primary text-sm">
+            <a  className="hover:text-primary text-sm">
               Request
             </a>
           </motion.div>
@@ -44,21 +44,17 @@ const Footer = () => {
           >
             <ul className="flex items-center gap-4">
               {/* Facebook */}
-              <li>
-                <a href="#" aria-label="Facebook" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
-                  <FaFacebook size={20} />
-                </a>
-              </li>
+             
               {/* Twitter */}
               <li>
-                <a href="#" aria-label="Twitter" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
-                  <FaXTwitter  size={20} />
+                <a  aria-label="Twitter" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
+                  <FaDiscord  size={20} />
                 </a>
               </li>
               {/* LinkedIn */}
               <li>
-                <a href="#" aria-label="LinkedIn" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
-                  <FaLinkedin size={20} />
+                <a  aria-label="LinkedIn" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
+                  <FaTelegram size={20} />
                 </a>
               </li>
             </ul>

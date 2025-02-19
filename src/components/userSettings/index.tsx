@@ -6,23 +6,39 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { useSelector } from 'react-redux';
 import { Option } from '../../types/option';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { SavePreferences } from '@/services/AccountService';
+import { SavePreferences, FetchUserPreferences } from '@/services/AccountService';
 
 export const UserSettings = () => {
-  const [selectedGenres, setSelectedGenres] = React.useState<string[]>(['Action', 'Comedy']);
-  const [watchHistory, setWatchHistory] = React.useState(true);
+  const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
   const { genres } = useSelector((state: any) => state.filters);
 
+  // Log the genres from Redux to check their format
+
   const genreOptions: Option[] = genres?.map((genre: any) => ({
-    value: genre.externalId,
+    value: genre.externalId.toString(), // Convert to string here
     label: genre.name,
   }));
 
-  // React Query mutation using the service function
+  // Fetch user preferences
+  const { data: userPreferences, isLoading } = useQuery({
+    queryKey: ['userPreferences'],
+    queryFn: FetchUserPreferences,
+  });
+
+  // Update selected genres when preferences are loaded
+  React.useEffect(() => {
+    if (userPreferences?.data?.genresList) {
+      const genreIds = userPreferences.data.genresList.map(id => id.toString());
+  
+      setSelectedGenres(genreIds);
+    }
+  }, [userPreferences, genres]); // Added genres as dependency
+
+  // Save preferences mutation
   const { mutate: savePreferencesMutation, isPending } = useMutation({
-    mutationFn: (genreIds: number[]) => SavePreferences({ genres: genreIds }),
+    mutationFn: (genreIds: number[]) => SavePreferences({ genresList: genreIds }),
     onSuccess: () => {
       toast.success('Preferences saved successfully');
     },
@@ -32,67 +48,82 @@ export const UserSettings = () => {
   });
 
   const toggleGenre = (genre: string) => {
-    setSelectedGenres(current =>
-      current.includes(genre)
-        ? current.filter(g => g !== genre)
-        : [...current, genre]
-    );
+    setSelectedGenres(current => {
+      if (current.includes(genre)) {
+        // Always allow removing genres
+        return current.filter(g => g !== genre);
+      } else {
+        // Check if adding would exceed the limit
+        if (current.length >= 3) {
+          toast.error(`You can only select up to ${3} genres`);
+          return current;
+        }
+        return [...current, genre];
+      }
+    });
   };
-
   const handleSavePreferences = () => {
-    // Convert selected genres to numbers before sending to API
     const selectedGenreIds = selectedGenres.map(genreId => parseInt(genreId, 10));
     savePreferencesMutation(selectedGenreIds);
   };
 
+  // Check if a genre is selected
+  const isGenreSelected = (genreValue: string) => {
+    return selectedGenres.includes(genreValue);
+  };
+
+  if (isLoading) {
+    return <div className="max-w-3xl mx-auto p-6">Loading preferences...</div>;
+  }
+
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold mb-8">Settings</h1>
+    <h1 className="text-3xl font-bold mb-8">Settings</h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Playback Preferences</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-medium">AutoPlay</h3>
-              <p className="text-sm text-gray-500">Automatically start playing media without any interaction</p>
-            </div>
-            <Switch disabled checked className='bg-gray-50' />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-medium">Auto Next Episode</h3>
-              <p className="text-sm text-gray-500">Jump straight into the next episode when the current one ends</p>
-            </div>
-            <Switch disabled checked className='bg-gray-50' />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Streaming Quality</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <Card>
+      <CardHeader>
+        <CardTitle>Playback Preferences</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 mb-2">Choose your preferred video resolution for the best viewing experience</p>
-            <Select defaultValue="high" disabled>
-              <SelectTrigger className="w-40 ring-black">
-                <SelectValue placeholder="Select quality" />
-              </SelectTrigger>
-              <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
-                <SelectItem value="auto">Auto</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-              </SelectContent>
-            </Select>
+            <h3 className="font-medium">AutoPlay</h3>
+            <p className="text-sm text-gray-500">Automatically start playing media without any interaction</p>
           </div>
-        </CardContent>
-      </Card>
+          <Switch disabled checked className='bg-gray-50' />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-medium">Auto Next Episode</h3>
+            <p className="text-sm text-gray-500">Jump straight into the next episode when the current one ends</p>
+          </div>
+          <Switch disabled checked className='bg-gray-50' />
+        </div>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>Streaming Quality</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div>
+          <p className="text-sm text-gray-500 mb-2">Choose your preferred video resolution for the best viewing experience</p>
+          <Select defaultValue="high" disabled>
+            <SelectTrigger className="w-40 ring-black">
+              <SelectValue placeholder="Select quality" />
+            </SelectTrigger>
+            <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+              <SelectItem value="auto">Auto</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </CardContent>
+    </Card>
 
       <Card>
         <CardHeader>
@@ -109,7 +140,7 @@ export const UserSettings = () => {
                   onClick={() => toggleGenre(genre.value)}
                   className={`
                     p-3 text-sm rounded-lg transition-all text-white
-                    ${selectedGenres.includes(genre.value)
+                    ${isGenreSelected(genre.value)
                       ? 'border-2 bg-primary bg-teal-500/10'
                       : 'border-2 border-gray-700 hover:bg-primary/50'}
                   `}

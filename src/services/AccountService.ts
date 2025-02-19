@@ -12,8 +12,11 @@ export const GetUser = async (code: string) => {
     return apiClient.post(`${baseUrl}api/auth/Login`,  data)
    };
    export const SavePreferences = async (data) => {
-    return apiClient.post(`${baseUrl}api/user/preferences`,  data)
+    return apiClient.post(`${baseUrl}api/UserPreference`,  data)
    };
+   export const FetchUserPreferences = async()=>{
+    return apiClient.get(`${baseUrl}api/UserPreference`)
+   }
 
   export const Logout = async () => {
     return apiClient.post(`${baseUrl}api/auth/Logout`)

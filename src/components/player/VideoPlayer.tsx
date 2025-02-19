@@ -8,6 +8,7 @@ const VidPlayer = ({ sourceUrl, sandbox = '' }) => {
       style={{ width: "100%", height: "100%", border: "none" }}
       {...(sandbox ? { sandbox } : {})} // Add sandbox only if it has a value
     />
+    
   </div>
   );
 };

@@ -25,7 +25,7 @@ export const Watchlist = () => {
       if (!user?.id) {
         throw new Error('User ID is required')
       }
-      const response = await getUserWatchList(user.id)
+      const response = await getUserWatchList()
       return response
     },
     getNextPageParam: (lastPage, pages) => {
