@@ -21,7 +21,7 @@ export  async function generateMetadata({params}:   WatchPageProps) {
   const capitalizedTitle = capitalizeFirstLetter(formattedTitle)
 
   const description = title 
-    ? `Watch ${capitalizedTitle} online. Explore a wide selection of ${capitalizedTitle} movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`
+    ? `Watch ${capitalizedTitle} online. Explore a wide selection of free movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`
     : `Discover and watch movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`;
 
   return {
