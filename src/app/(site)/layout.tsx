@@ -49,7 +49,7 @@ export default function SiteLayout({
               </ThemeProvider>
             </AuthProvider>
           </Provider>
-          {/* <GoogleAnalytics gaId={googleAnalyticsCode || ""} /> */}
+          <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
        
     </>
   );
