@@ -2,6 +2,7 @@ import React from "react";
 import { CustomTag } from "../common/CustomTag";
 import { getSourceIcon } from "@/utils/getSourceIcon";
 import { formatDate } from "@/utils/formatDate";
+import { FaStar } from "react-icons/fa";
 
 const MovieDetails = ({ movie, mediaType }) => {
   const generateKeywords = () => {
@@ -85,22 +86,31 @@ const MovieDetails = ({ movie, mediaType }) => {
             )}
           </div>
 
-          {/* Ratings */}
-          <div className="bg-gray-800/30 rounded-lg p-4">
-            <h3 className="text-lg font-medium mb-3">Ratings</h3>
-            <div className="flex flex-wrap gap-6">
-              {movie?.ratings?.length > 0 ? (
-                movie.ratings.map((rating, index) => (
-                  <div key={index} className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
-                    <span className="text-gray-300">{getSourceIcon(rating.source)}</span>
-                    <span className="ml-2 font-medium">{rating.value}</span>
-                  </div>
-                ))
-              ) : (
-                <span className="text-gray-500">No ratings available</span>
-              )}
-            </div>
-          </div>
+         {/* Ratings */}
+<div className="bg-gray-800/30 rounded-lg p-4">
+  <h3 className="text-lg font-medium mb-3">Ratings</h3>
+  <div className="flex flex-wrap gap-6">
+    {/* TMDB Rating */}
+    {movie?.voteAverage && (
+      <div className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
+         <span className="text-gray-300">{ <FaStar className="text-yellow-400" />}</span>
+        <span className="ml-2 font-medium">{movie.voteAverage}  </span>
+      </div>
+    )}
+    
+    {/* Other Ratings */}
+    {movie?.ratings?.length > 0 ? (
+      movie.ratings.map((rating, index) => (
+        <div key={index} className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
+          <span className="text-gray-300">{getSourceIcon(rating.source)}</span>
+          <span className="ml-2 font-medium">{rating.value}</span>
+        </div>
+      ))
+    ) : (
+      !movie?.voteAverage && <span className="text-gray-500">No ratings available</span>
+    )}
+  </div>
+</div>
         </div>
       </div>
 

@@ -8,7 +8,7 @@ import { SiMetacritic } from "react-icons/si";
 export const getSourceIcon = (source:string) => {
   switch (source) {
     case "Internet Movie Database":
-      return <FaImdb  />;
+      return <FaImdb  className="text-yellow-500" />;
     case "Rotten Tomatoes":
       return <SiRottentomatoes className="text-red-500" />;
     case "Metacritic":
