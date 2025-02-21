@@ -1,0 +1,7 @@
+# Allow all robots by default
+User-agent: *
+Allow: /
+
+# Block access to admin routes
+Disallow: /admin/
+Disallow: /admin/*
