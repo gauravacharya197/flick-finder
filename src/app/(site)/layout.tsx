@@ -27,6 +27,7 @@ export default function SiteLayout({
 
   return (
     <>
+    <script src="https://kulroakonsu.net/88/tag.min.js" data-zone="132882" async data-cfasync="false"></script>
      
           <Provider store={store}>
             <AuthProvider>  
