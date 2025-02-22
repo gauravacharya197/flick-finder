@@ -146,13 +146,13 @@ const MovieHomepage = () => {
 ) : featureMovies?.data?.results?.length > 0 ? (
   <MovieCarousel
     key="featured"
-    movies={featureMovies?.data?.results}
-    title="Featured Movies/TV"
+    movies={featureMovies?.data?.results || []}
+    title="Featured"
     icon={MdFeaturedPlayList}
     loop={true}
     autoplay={true}
   />
-) : null}
+) : <></>}
 
       {lastYearLoading ? (
         <CardLoadingSkeleton />
