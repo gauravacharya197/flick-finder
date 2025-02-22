@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between bg-white shadow-md px-6 py-4">
       {/* Left Side - Page Title */}
-      <h1 className="text-lg font-semibold text-gray-700">Admin Dashboard</h1>
+      <h1 className="text-lg font-semibold text-gray-700"> Dashboard</h1>
 
       {/* Right Side - Notifications & Profile */}
       <div className="flex items-center gap-4">

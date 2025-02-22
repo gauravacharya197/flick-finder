@@ -3,23 +3,38 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import MovieCard from '../movie/MovieCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 import { IconType } from 'react-icons';
 
 interface MovieCarouselProps {
-  movies: any[];  // Consider replacing 'any' with your movie type
+  movies: any[]; // Consider replacing 'any' with your movie type
   title: string;
-  icon?: IconType;  // Using IconType for Font Awesome icons
+  icon?: IconType; // Using IconType for Font Awesome icons
   variant?: 'default' | 'trending';
+  // New configuration options
+  autoplay?: boolean;
+  autoplayDelay?: number;
+  enableSwipe?: boolean;
+  loop?: boolean;
+  pauseOnHover?: boolean;
+  slidesGap?: number;
 }
 
-const MovieCarousel = ({ 
-  movies = [], 
-  title, 
+const MovieCarousel = ({
+  movies = [],
+  title,
   icon: Icon,
-  variant = 'default'
+  variant = 'default',
+  // Default values for new props
+  autoplay = false,
+  autoplayDelay = 3000,
+  enableSwipe = true,
+  loop = false,
+  pauseOnHover = true,
+  slidesGap,
 }: MovieCarouselProps) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);
   const swiperRef = useRef<any>(null);
@@ -35,8 +50,8 @@ const MovieCarousel = ({
   // Adjust container padding for trending variant
   const getContainerClasses = () => {
     const baseClasses = "px-4 lg:px-12 2xl:px-48";
-    return variant === 'trending' 
-      ? `${baseClasses} py-10` 
+    return variant === 'trending'
+      ? `${baseClasses} py-10`
       : `${baseClasses} py-8`;
   };
 
@@ -48,13 +63,32 @@ const MovieCarousel = ({
       : `${baseClasses} text-xl`;
   };
 
+  // Configure Swiper modules based on props
+  const getSwiperModules = () => {
+    const modules = [Navigation];
+    if (autoplay) {
+      modules.push(Autoplay);
+    }
+    return modules;
+  };
+
+  // Configure autoplay settings
+  const getAutoplaySettings = () => {
+    if (!autoplay) return false;
+    return {
+      delay: autoplayDelay,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: pauseOnHover,
+    };
+  };
+
   return (
     <div className={getContainerClasses()}>
       {title && (
         <div className="flex items-center gap-2 mb-4">
           {Icon && (
-            <Icon 
-              className={variant === 'trending' ? "w-7 h-7" : "w-6 h-6"} 
+            <Icon
+              className={variant === 'trending' ? "w-7 h-7" : "w-6 h-6"}
             />
           )}
           <h2 className={getHeadingClasses()}>{title}</h2>
@@ -63,20 +97,22 @@ const MovieCarousel = ({
 
       <div className="relative">
         <Swiper
-          modules={[Navigation]}
-          spaceBetween={variant === 'trending' ? 20 : 16}
+          modules={getSwiperModules()}
+          spaceBetween={slidesGap ?? (variant === 'trending' ? 20 : 16)}
           slidesPerView="auto"
           onSwiper={(swiper) => (swiperRef.current = swiper)}
           navigation={{
             nextEl: `.swiper-button-next-${title.replace(/\s+/g, '-')}`,
             prevEl: `.swiper-button-prev-${title.replace(/\s+/g, '-')}`,
           }}
+          allowTouchMove={enableSwipe}
+          loop={loop}
+          autoplay={getAutoplaySettings()}
         >
           {movies.map((movie, index) => (
             <SwiperSlide key={index} className={getSlideClasses()}>
-              <MovieCard 
+              <MovieCard
                 movie={movie}
-                
               />
             </SwiperSlide>
           ))}

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Rating } from "../common/Rating";
 import { formatDate } from "@/utils/formatDate";
 import { constructWatchUrl } from "@/utils/constructWatchUrl";
+import { CustomTag } from "../common/CustomTag";
 
 interface FeaturedMovieProps {
   movie: {
@@ -48,7 +49,9 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
 
             {/* Movie Info */}
             <div className="mb-4 flex flex-wrap items-center gap-4">
-              <span className="rounded bg-primary px-2 py-1 text-xs">HD</span>
+              <CustomTag 
+                        text={movie?.mediaType} 
+                      />
               <div className="flex items-center">
                 <span className="ml-1">
                   <Rating voteAverage={movie?.voteAverage} />

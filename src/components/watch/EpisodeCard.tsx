@@ -32,10 +32,11 @@ const EpisodeCard = ({
     <button
       onClick={isReleased ? onClick : undefined}
       disabled={!isReleased}
-      className={`w-full p-3 rounded transition-all duration-200 text-left
-        ${isReleased 
-          ? `${isPlaying ? 'bg-gray-100/10' : 'bg-transparent'} hover:bg-gray-100/5` 
-          : 'bg-gray-800/20 cursor-not-allowed opacity-75'}`}
+      className={`w-full p-3 transition-all duration-200 text-left
+        ${isPlaying 
+          ? 'bg-gray-500/30 text-white' 
+          : 'bg-gray-800/20 hover:bg-gray-800/90'
+        }`}
     >
       <div className="flex gap-4">
         <div className="relative w-24 h-16 flex-shrink-0 rounded overflow-hidden">
@@ -76,7 +77,7 @@ const EpisodeCard = ({
           
           <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
             <FaCalendarAlt className="w-3 h-3" />
-            <span>{formatDate(episode.air_date)}</span>
+            <span className={isPlaying? "text-white":"" }>{formatDate(episode.air_date)}</span>
           </div>
         </div>
       </div>

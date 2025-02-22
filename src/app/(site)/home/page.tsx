@@ -6,6 +6,7 @@ import GenreGrid from "@/components/filter/GenreGrid";
 import { RootState } from "@/redux/store";
 import { getMovies } from "@/services/MovieService";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { MdFeaturedPlayList } from "react-icons/md";
 
 import { FaDollarSign, FaFire, FaHeart, FaImdb, FaStar, FaTv } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -39,6 +40,11 @@ const MovieHomepage = () => {
   const { data: lastYearMovies, isLoading: lastYearLoading } = useQuery({
     queryKey: ["movies", "LastYearBest"],
     queryFn: () => getMovies("LastYearBest"),
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+  const { data: featureMovies, isLoading: featureMoviesLoading } = useQuery({
+    queryKey: ["movies", "featureMovies"],
+    queryFn: () => getMovies("Featured"),
     staleTime: 1000 * 60 * 60 * 24,
   });
 
@@ -94,11 +100,13 @@ const MovieHomepage = () => {
         <CardLoadingSkeleton />
       ) : (
         <MovieCarousel
+          autoplay={true}
           key="trending"
           movies={trendingMovieCarousel || []}
           title="Trending Now"
           icon={FaFire}
-          variant="trending"
+          loop={true}
+         
         />
       )}
       
@@ -128,8 +136,23 @@ const MovieHomepage = () => {
           movies={recentMovies?.data?.results || []}
           title="Recently Updated"
           icon={FaImdb}
+          loop={true}
+          autoplay={true}
         />
       )}
+
+{featureMoviesLoading ? (
+  <CardLoadingSkeleton />
+) : featureMovies?.data?.results?.length > 0 ? (
+  <MovieCarousel
+    key="featured"
+    movies={featureMovies?.data?.results || []}
+    title="Featured"
+    icon={MdFeaturedPlayList}
+    loop={true}
+    autoplay={true}
+  />
+) : <></>}
 
       {lastYearLoading ? (
         <CardLoadingSkeleton />
