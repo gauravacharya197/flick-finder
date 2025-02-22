@@ -1,128 +1,63 @@
-const searchSuggestion = [
-  "Horror",
-  "Thriller",
-  "💖 Romantic",
-  "Dark Tales",
-  "Leonardo",
-  "Documentary 🎥",
-  "Top Rated ⭐",
-  "Action 💥",
-  "Comedy 😂",
-  "Drama 🎭",
-  "Fantasy 🧙‍♂️",
-  "Sci-Fi 🚀",
-  "Romance ❤️",
-  "Adventure 🗺️",
-  "Mystery 🕵️‍♂️",
-  "Animated 🎨",
-  "Family 👨‍👩‍👧‍👦",
-  "Classic",
-  "Sad 🥲",
-  "Oscar Winners 🏆",
-  "Thoughtful",
-  "Bollywood 🎶",
-  "Happy 😊",
-  "Indie Films 🎞️",
-  "Superheroes 🦸",
-  "Sad",
-  "Musical 🎼",
-  "Historical",
-  "Biographies 📖",
-  "Series 📺",
-  "Movies of 2025 🎉",
-  "Based on True Stories ✅",
-  "Time Travel",
-  "Zombies",
-  "Aliens 👽",
-  "War ⚔️",
-  "Feel Good 🌈",
-  "Tearjerkers 😢",
-  "Revenge 💣",
-  "Espionage 🕶️",
-  "Mind-Bending 🌀",
-  "Post-Apocalyptic 🌪️",
-  "Dystopian",
-  "Uplifting",
-  "Heist",
-  "Underrated Gems 💎",
-  "Cult Classics 📼",
-  "Foreign Films",
-  "Award-Winning 🥇",
-  "Kids' Movies 🧸",
-  "Teen Movies",
-  "Guilty Pleasures 🍿",
-  "Martial Arts 🥋",
-  "Spies",
-  "Animated Classics 🖌️",
-  "Epic Battles ⚔️",
-  "Christmas Movies 🎄",
-  "Summer Blockbusters 🌞",
-  "Mystical Worlds ✨",
-  "Paranormal 👻",
-  "Nature Documentaries 🦁",
-  "Inspirational 🌟",
-  "Villains 😈",
-  "Love Stories 💌",
-  "Epic Journeys",
-  "Forbidden Love 💔",
-  "Courage 🦁",
-  "Suspense 🕰️",
-  "Based on Books 📚",
-  "Sports Dramas",
-  "Feel-Good Comedies 😊",
-  "Dark Humor 😈",
-  "Political Thrillers 🗳️",
-  "Coming of Age 🌱",
-  "Road Trips 🚗",
-  "Animal Adventures 🐾",
-  "Pirates 🏴‍☠️",
-  "Cyberpunk",
-  "Detective Stories",
-  "Artistic Cinema 🎨",
-  "Silent Movies 🔇",
-  "Underwater Worlds 🐠",
-  "Black and White ⚫⚪",
-  "Unsolved Mysteries 🕳️",
-  "Future Worlds 🌌",
-  "Inspirational Leaders",
-  "Haunted Houses 🏚️",
-  "Animated Series 📺",
-  "Short Films ✂️",
-  "Women's Stories 👩",
-  "Movies with a Twist 🔄",
-  "Courtroom Dramas ⚖️",
-  "Classic Love Stories 🌹",
-  "Psychological Thrillers 🧠",
-  "Epic Adventures 🏕️",
-  "Science Experiments",
-  "Human Survival 🏃‍♂️",
-  "Magical Realism 🪄",
-  "Virtual Reality 🕶️",
-  "Movies with Robots",
-  "🌟",
-  "🎸",
-  "⚔️",
-  "🦁",
-  "🍿",
-  "🎬",
-  "🔥",
-  "🌈",
-  "🎭",
-  "🪄",
-  "🚀",
-  "🏔️",
-];
+const movieCategories = {
+  mood: ["Happy 😊", "Sad 🥲", "Deep 🤔", "Feel-Good 🌈", "Uplifting ✨", "Dark 🌑", "Exciting 🎢", "Cozy ☕", "Inspiring 💡", "Chill 😌"],
+  genre: ["Horror 👻", "Thriller 🔪", "Action 💥", "Comedy 😂", "Drama 🎭", "Romance ❤️", "Adventure 🗺️", "Mystery 🕵️", "Sci-Fi 🚀", "Fantasy 🏰"],
+  social: ["Date Night ❤️", "Family Time 👨‍👩‍👧‍👦", "Friends Night 🍿", "Marathon 🎬", "Solo Watch 🎧", "Party Movie 🎉", "Sleepover Fun 🛏️"],
+  style: ["Animated 🎨", "Docs 🎥", "Foreign 🌍", "Indie 🎞️", "Classic 🕰️", "Bollywood 🎶", "Musicals 🎤", "Retro 📽️", "Silent Films 🎭"],
+  special: ["Oscar Wins 🏆", "Top Rated ⭐", "Underrated 💎", "Cult 📼", "Box Office Hits 💰", "Critics' Choice 🏅", "Based on True Events 📜"],
+  theme: ["Time Travel ⌛", "Superheroes 🦸", "Mind-Blown 🌀", "Epic 🗺️", "Love 💌", "Dystopian 🌆", "War Stories ⚔️", "Crime & Mafia 🔫", "Sports 🏆"],
+  setting: ["Fantasy 🏰", "Future 🌌", "Underwater 🌊", "Space 🚀", "Jungle 🌿", "Desert 🏜️", "Mountains ⛰️", "Small Town 🏡", "Big City 🌇"]
+};
 
-
-function getRandomSuggestions() {
-  const today = new Date().toISOString().slice(0, 10); // Get today's date as a string
-  const seed = today.split("-").join(""); // Convert date into a number-friendly seed
-  const shuffled = [...searchSuggestion].sort((a, b) => {
-    return (parseInt(seed, 10) % searchSuggestion.length) - Math.random();
-  });
-
-  return shuffled.slice(0, 10); // Get the first 10 random suggestions
+function seededRandom(seed) {
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
 }
 
-export { getRandomSuggestions, searchSuggestion }; // Named exports
+function getRandomItemFromArray(arr, seed) {
+  const index = Math.floor(seededRandom(seed) * arr.length);
+  return arr[index];
+}
 
+function getRandomSuggestions() {
+  const today = new Date().toISOString().split("T")[0]; // Get YYYY-MM-DD
+  const seedBase = parseInt(today.replace(/-/g, ""), 10); // Convert date to number for seeding
+
+  const hour = new Date().getHours();
+  const timeBasedPreferences = {
+    morning: { primaryCategories: ["mood", "style", "special"], moodPreference: ["Happy 😊", "Uplifting ✨", "Feel-Good 🌈", "Inspiring 💡"] },
+    afternoon: { primaryCategories: ["social", "style", "special"], moodPreference: ["Family Time 👨‍👩‍👧‍👦", "Docs 🎥", "Animated 🎨", "Cozy ☕"] },
+    evening: { primaryCategories: ["social", "genre", "theme"], moodPreference: ["Friends Night 🍿", "Action 💥", "Adventure 🗺️", "Comedy 😂"] },
+    lateNight: { primaryCategories: ["genre", "theme", "setting"], moodPreference: ["Thriller 🔪", "Horror 👻", "Mind-Blown 🌀", "Crime & Mafia 🔫"] }
+  };
+
+  const timePeriod =
+    hour >= 5 && hour < 12 ? "morning" :
+    hour >= 12 && hour < 17 ? "afternoon" :
+    hour >= 17 && hour < 22 ? "evening" : "lateNight";
+
+  const preferences = timeBasedPreferences[timePeriod];
+  const suggestions = new Set();
+
+  let seed = seedBase;
+
+  preferences.primaryCategories.forEach(category => {
+    if (movieCategories[category]) {
+      const preferredItems = movieCategories[category].filter(item =>
+        preferences.moodPreference.includes(item)
+      );
+      const possibleItems = preferredItems.length ? preferredItems : movieCategories[category];
+      suggestions.add(getRandomItemFromArray(possibleItems, seed++));
+    }
+  });
+
+  const allCategories = Object.keys(movieCategories);
+  while (suggestions.size < 8) {
+    const randomCategory = getRandomItemFromArray(allCategories, seed++);
+    const randomItem = getRandomItemFromArray(movieCategories[randomCategory], seed++);
+    suggestions.add(randomItem);
+  }
+
+  return Array.from(suggestions);
+}
+
+export { getRandomSuggestions };

@@ -5,15 +5,20 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { removeAuthCookie } from "@/utils/auth";
+import { FaBarsProgress } from "react-icons/fa6";
 
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: FaHome },
   { name: "Videos", href: "/admin/videos", icon: FaChartBar },
-  { name: "Settings", href: "/admin/settings", icon: FaCog },
+  { name: "Feature", href: "/admin/featured-movies", icon: FaBarsProgress },
 ];
 
-export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(true);
+interface SidebarProps {
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
+}
+
+export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -21,29 +26,56 @@ export default function Sidebar() {
     removeAuthCookie();
     router.push("/admin/signin");
   };
+
   return (
-    <div className={`h-screen bg-white shadow-lg flex flex-col transition-all duration-300 ${collapsed ? "w-20" : "w-64"}`}>
-      {/* Sidebar Header with Toggle Button */}
+    <aside 
+      className={`
+        fixed top-0 left-0 h-screen bg-white shadow-lg
+        z-40 transition-[width] duration-300 ease-in-out
+        ${collapsed ? 'w-16' : 'w-64'}
+        flex flex-col
+      `}
+    >
+      {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4 border-b">
-        {!collapsed && <span className="text-xl font-bold text-gray-700">Admin</span>}
-        <button 
-          onClick={() => setCollapsed(!collapsed)} 
-          className="p-2 text-gray-700 hover:bg-gray-200 rounded"
+        <div className={`
+          overflow-hidden transition-opacity duration-200
+          ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'}
+        `}>
+          <h1 className="text-xl font-semibold text-gray-800 whitespace-nowrap">Admin</h1>
+        </div>
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           <FaBars />
         </button>
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 px-2 py-4 space-y-2">
-        {menuItems.map((item) => (
-          <Link key={item.href} href={item.href} className={`flex items-center p-3 rounded-lg transition ${
-              pathname === item.href ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-200"
-            }`}>
-            <item.icon className="text-xl" />
-            <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>{item.name}</span>
-          </Link>
-        ))}
+      <nav className="flex-1 overflow-y-auto py-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:none]">
+        <ul className="space-y-2 px-2">
+          {menuItems.map((item) => (
+            <li key={item.name}>
+              <Link
+                href={item.href}
+                className={`
+                  flex items-center px-4 py-2 rounded-lg transition-colors
+                  ${pathname === item.href ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}
+                `}
+              >
+                <item.icon className={collapsed ? 'mx-auto' : 'mr-3'} size={20} />
+                <span className={`
+                  whitespace-nowrap transition-opacity duration-200
+                  ${collapsed ? 'opacity-0 w-0' : 'opacity-100 w-auto'}
+                `}>
+                  {item.name}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </nav>
 
       {/* Logout Button */}
@@ -53,6 +85,6 @@ export default function Sidebar() {
           <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Logout</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 }

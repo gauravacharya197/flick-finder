@@ -151,6 +151,7 @@ const SeasonChooser: React.FC<SeasonChooserProps> = ({
           ) : (
             episodes?.map((episode) => (
               <EpisodeCard
+            
                 key={episode.id}
                 episode={episode}
                 isPlaying={playingEpisode === episode.episode_number}

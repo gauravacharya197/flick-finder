@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
@@ -9,26 +9,45 @@ import ToasterContext from "../context/ToastContext";
 export default function AdminLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const queryClient = new QueryClient();
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
     // Exclude layout for the sign-in page
     if (pathname === "/admin/signin") {
-      return <> <ToasterContext />{children}</>;
+      return (
+        <>
+          <ToasterContext />
+          {children}
+        </>
+      );
     }
-  return (
-    <div className="flex min-h-screen bg-background">
-              <QueryClientProvider client={queryClient}>
 
-      {/* Sidebar */}
-      <Sidebar />
-      <ToasterContext />
-      <div className="flex flex-col flex-1">
-        {/* Navbar */}
-        <Navbar />
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="min-h-screen bg-background overflow-x-hidden">
+          {/* Sidebar */}
+          <Sidebar 
+            collapsed={sidebarCollapsed} 
+            setCollapsed={setSidebarCollapsed} 
+          />
+          
+          {/* Main Content Wrapper */}
+          <div 
+            className={`
+              min-h-screen
+              transition-[padding] duration-300 ease-in-out
+              ${sidebarCollapsed ? 'pl-16' : 'pl-64'}
+            `}
+          >
+            <ToasterContext />
+            {/* Navbar */}
+            <Navbar />
 
-        {/* Main Content */}
-        <main className="p-6">{children}</main>
-      </div>
+            {/* Main Content */}
+            <main className="p-6">
+              {children}
+            </main>
+          </div>
+        </div>
       </QueryClientProvider>
-    </div>
-  );
+    );
 }

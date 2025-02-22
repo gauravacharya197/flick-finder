@@ -10,6 +10,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { SavePreferences, FetchUserPreferences } from '@/services/AccountService';
 import Skeleton from '../common/Skeleton';
+import { FaEraser } from 'react-icons/fa';
 
 export const UserSettings = () => {
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
@@ -56,7 +57,7 @@ export const UserSettings = () => {
       } else {
         // Check if adding would exceed the limit
         if (current.length >= 3) {
-          toast.error(`You can only select up to ${3} genres`);
+          toast(<span> {`You can only select up to ${3} genres`}</span>);
           return current;
         }
         return [...current, genre];
