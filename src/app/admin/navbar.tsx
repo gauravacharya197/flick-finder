@@ -1,10 +1,12 @@
 "use client";
 
+import { useFetchAndDispatchFilters } from "@/hooks/useFetchDispatchFilter";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 
 
 
 export default function Navbar() {
+    useFetchAndDispatchFilters();
   return (
     <nav className="flex items-center justify-between bg-white shadow-md px-6 py-4">
       {/* Left Side - Page Title */}

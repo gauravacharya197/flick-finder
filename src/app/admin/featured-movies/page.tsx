@@ -2,16 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Input } from "@/components/ui/primitives/input";
 import {
   deletefeatureMovie,
   featureMovie,
@@ -19,14 +10,34 @@ import {
 } from "@/services/FeatureMovieService";
 import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
-import { truncateString } from "@/utils/truncateString";
-import { Switch } from "@/components/ui/switch";
+import FeaturedMoviesTable from "@/components/admin/Featured/FeaturedMovieTable";
+import { Segmented } from "@/components/ui/Segmented";
+import { MdClose } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { MediaCategory } from "@/types/MediaCategory";
+import { featuredMediaCategories } from "@/data/featuredMediaCategory";
+
+type FilterType = string;
+
+
 
 export default function FeaturePage() {
   const [searchInput, setSearchInput] = useState("");
+  const mediaCategories = featuredMediaCategories
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [featuredStates, setFeaturedStates] = useState<Record<string, boolean>>({});
+  const [selectedFilter, setSelectedFilter] = useState<FilterType>(
+    mediaCategories[0]?.id || ""
+  );
   const queryClient = useQueryClient();
+
+  // Create options array for Segmented component
+
+  // Get display name for the selected filter
+  const getDisplayName = (name: string) => {
+    const category = featuredMediaCategories.find((cat: MediaCategory) => cat.name === name);
+    return category?.displayName || name;
+  };
 
   // Debounce search input
   useEffect(() => {
@@ -37,28 +48,29 @@ export default function FeaturePage() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  const { data: featured, isLoading: featuredLoading } = useQuery({
-    queryKey: ["featureMovie", debouncedSearch],
-    queryFn: () => getFeaturedMovie(debouncedSearch),
+  const { data: featuredMovies, isLoading: featuredLoading } = useQuery({
+    queryKey: ["featureMovie", debouncedSearch, selectedFilter],
+    queryFn: () => getFeaturedMovie(debouncedSearch, selectedFilter),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   // Update featuredStates whenever featured data changes
   useEffect(() => {
-    if (featured?.data) {
-      const initialStates = featured.data.reduce((acc: Record<string, boolean>, movie: any) => {
+    if (featuredMovies?.data) {
+      const initialStates = featuredMovies.data.reduce((acc: Record<string, boolean>, movie: any) => {
         acc[movie.movie.id] = movie.isFeatured;
         return acc;
       }, {});
       setFeaturedStates(initialStates);
     }
-  }, [featured?.data]);
+  }, [featuredMovies?.data]);
 
   const mutation = useMutation({
     mutationFn: ({ action, movie }: { action: string; movie: any }) => {
       if (action === "add") {
-        return featureMovie(movie);
+        return featureMovie(movie, selectedFilter);
       } else if (action === "remove") {
-        return deletefeatureMovie(movie.id);
+        return deletefeatureMovie(movie.id, selectedFilter);
       }
       return Promise.reject(new Error("Invalid action"));
     },
@@ -85,10 +97,10 @@ export default function FeaturePage() {
       toast.error("Failed to update movie", { position: "bottom-center" });
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["featureMovie"] });
       toast.success("Movie updated successfully", {
         position: "bottom-center",
       });
+      queryClient.invalidateQueries({ queryKey: ["featureMovie"] });
     },
   });
 
@@ -99,91 +111,53 @@ export default function FeaturePage() {
     });
   };
 
-  // Helper function to get the current featured state
-  const getMovieFeaturedState = (movie: any) => {
-    // If we have a managed state, use it
-    if (movie.movie.id in featuredStates) {
-      return featuredStates[movie.movie.id];
-    }
-    // Otherwise fall back to the initial isFeatured value
-    return movie.isFeatured;
-  };
-
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-white mb-4 dark:text-gray-100">
-        Featured Movies
-      </h1>
+      <div className="space-y-4">
+        <h1 className="text-3xl font-bold text-white dark:text-gray-100">
+          Featured Movies
+        </h1>
+        
+        <Segmented
+  value={selectedFilter}
+  onChange={setSelectedFilter}
+  options={featuredMediaCategories.map(category => ({
+    value: category.id,
+    label: category.displayName
+  }))}
+  size="large"
+  className="w-full max-w-md"
+/>
+      </div>
       
       <div className="relative max-w-md">
         <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
         <Input
-          className="pl-10 h-12 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+          className="pl-10 pr-10 h-12 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           type="text"
           placeholder="Search movies by title..."
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
+        {searchInput && (
+          <button
+            onClick={() => setSearchInput('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+          >
+            <MdClose className="h-5 w-5" />
+          </button>
+        )}
       </div>
 
       {featuredLoading ? (
         <div>Loading...</div>
-      ) : featured?.data?.length > 0 ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Poster</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Release Date</TableHead>
-              <TableHead>Overview</TableHead>
-              <TableHead className="text-right">Featured Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {featured?.data.map((movie: any, index) => {
-              const isFeatured = getMovieFeaturedState(movie);
-              return (
-                <TableRow key={index}>
-                  <TableCell>
-                    {movie.movie.posterPath ? (
-                      <img 
-                        src={`https://image.tmdb.org/t/p/w92${movie.movie.posterPath}`}
-                        alt={movie.movie.displayTitle}
-                        className="h-16 w-12 object-cover rounded"
-                      />
-                    ) : (
-                      <div className="h-16 w-12 bg-gray-200 rounded flex items-center justify-center">
-                        No image
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {movie.movie.displayTitle}
-                  </TableCell>
-                  <TableCell>
-                    {movie.movie.displayReleaseDate || "Release date unknown"}
-                  </TableCell>
-                  <TableCell>
-                    {truncateString(movie.movie.overview, 40)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end items-center gap-2">
-                      <span className="text-sm text-gray-500">
-                        {isFeatured ? "Featured" : "Not Featured"}
-                      </span>
-                      <Switch
-                        checked={isFeatured}
-                        onCheckedChange={() => handleFeatureToggle(movie.movie, isFeatured)}
-                        disabled={mutation.isPending}
-                        className={`${isFeatured ? 'bg-blue-500' : 'bg-gray-200'} transition-colors`}
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+      ) : featuredMovies?.data?.length > 0 ? (
+        <FeaturedMoviesTable
+          movies={featuredMovies?.data}
+          featuredStates={featuredStates}
+          onFeatureToggle={handleFeatureToggle}
+          isLoading={featuredLoading}
+        />
       ) : (
         <div className="text-center">
           <h3 className="text-xl font-medium text-gray-500 dark:text-gray-400">

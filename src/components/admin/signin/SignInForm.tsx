@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/primitives/card";
+import { Input } from "@/components/ui/primitives/input";
+import { Button } from "@/components/ui/primitives/button";
 import { FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
 interface SignInFormProps {
     onSignIn: (credentials: { email: string; password: string }) => void;

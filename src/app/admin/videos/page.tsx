@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import VideoService, { Video } from "../../../services/VideoService";
 import AdminLayout from "../layout";
 import Modal from "@/components/ui/Modal";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/primitives/input";
 import { FaPencil } from "react-icons/fa6";
 import { FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import {
@@ -16,8 +16,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/primitives/table";
+import { Button } from "@/components/ui/primitives/button";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import Spinner from "@/components/common/Spin";
 import toast from "react-hot-toast";

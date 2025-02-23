@@ -19,11 +19,11 @@ const MovieDetails = ({ movie, mediaType }) => {
   };
 
   return (
-    <div className="bg-gray-900/40 backdrop-blur-md rounded-xl  text-white">
+    <div className="bg-gray-900/40 backdrop-blur-md rounded-xl text-white">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Poster Section */}
-        <div className="lg:w-1/4">
-          <div className="relative group">
+        {/* Poster Section - Modified for better mobile display */}
+        <div className="lg:w-1/4 flex justify-center lg:block">
+          <div className="relative group w-48 lg:w-full">
             <img
               className="w-full rounded-lg shadow-xl transition-transform duration-300 group-hover:scale-105"
               src={movie?.posterPath || "/images/user/failedtoload.jpg"}
@@ -86,48 +86,48 @@ const MovieDetails = ({ movie, mediaType }) => {
             )}
           </div>
 
-         {/* Ratings */}
-<div className="bg-gray-800/30 rounded-lg p-4">
-  <h3 className="text-lg font-medium mb-3">Ratings</h3>
-  <div className="flex flex-wrap gap-6">
-    {/* TMDB Rating */}
-    {movie?.voteAverage && (
-      <div className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
-         <span className="text-gray-300">{ <FaStar className="text-yellow-400" />}</span>
-        <span className="ml-2 font-medium">{movie.voteAverage}  </span>
-      </div>
-    )}
-    
-    {/* Other Ratings */}
-    {movie?.ratings?.length > 0 ? (
-      movie.ratings.map((rating, index) => (
-        <div key={index} className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
-          <span className="text-gray-300">{getSourceIcon(rating.source)}</span>
-          <span className="ml-2 font-medium">{rating.value}</span>
-        </div>
-      ))
-    ) : (
-      !movie?.voteAverage && <span className="text-gray-500">No ratings available</span>
-    )}
-  </div>
-</div>
+          {/* Ratings */}
+          <div className="bg-gray-800/30 rounded-lg p-4">
+            <h3 className="text-lg font-medium mb-3">Ratings</h3>
+            <div className="flex flex-wrap gap-6">
+              {/* TMDB Rating */}
+              {movie?.voteAverage && (
+                <div className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
+                  <span className="text-gray-300">{<FaStar className="text-yellow-400" />}</span>
+                  <span className="ml-2 font-medium">{movie.voteAverage}</span>
+                </div>
+              )}
+              
+              {/* Other Ratings */}
+              {movie?.ratings?.length > 0 ? (
+                movie.ratings.map((rating, index) => (
+                  <div key={index} className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
+                    <span className="text-gray-300">{getSourceIcon(rating.source)}</span>
+                    <span className="ml-2 font-medium">{rating.value}</span>
+                  </div>
+                ))
+              ) : (
+                !movie?.voteAverage && <span className="text-gray-500">No ratings available</span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Keywords */}
       <div className="mt-6 space-y-3">
-        <h3 className="text-lg font-medium">Keywords</h3>
-        <div className="flex flex-wrap gap-3">
-          {generateKeywords().map((keyword) => (
-            <CustomTag
-              key={keyword}
-              text={keyword}
-              color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
-              small={false}
-            />
-          ))}
-        </div>
+      <h3 className="text-lg font-medium">Keywords</h3>
+      <div className="grid grid-cols-2 md:flex md:flex-wrap gap-3">
+        {generateKeywords().map((keyword) => (
+          <CustomTag
+            key={keyword}
+            text={keyword}
+            color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
+            small={false}
+          />
+        ))}
       </div>
+    </div>
     </div>
   );
 };

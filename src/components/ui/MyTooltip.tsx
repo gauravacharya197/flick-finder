@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
   TooltipArrow,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/primitives/tooltip"
 import { cn } from "@/lib/utils"
 
 interface MyTooltipProps {

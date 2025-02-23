@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/primitives/card";
 import { FaCalendar, FaMap, FaStar, FaImdb } from "react-icons/fa";
 import { useQuery } from "@tanstack/react-query";
 import { getCastWithCredits } from "@/services/MovieService";

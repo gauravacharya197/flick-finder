@@ -1,6 +1,6 @@
 export const siteConfig = {
-    siteName: "Flickday",
-    tagline: "Pick movie based on your emotion",
-    description: "Search you next movie with AI based search algorithm. Flickday is the home of your favorite Movies/TV Series",
-    title: "Flickday - Home of your favorite Movies/TV Series"
-  };
+  siteName: "Flickday",
+  tagline: "Pick movies based on your mood and emotions",
+  description: "Discover your next perfect movie with Flickday's AI-powered search. Browse thousands of curated Movies and TV Series, get personalized recommendations, and find entertainment that matches your mood. Your ultimate destination for movie discovery.",
+  title: "Flickday - Home of your favorite Movies/TV Series"
+};
