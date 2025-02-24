@@ -25,7 +25,7 @@ export const MediaSection: React.FC<ExploreProps> = ({ mediaType }) => {
     queryFn: async ({ pageParam = 1 }) => {
       const response = await getTrending(
         mediaType,
-        "day",
+        "week",
         pageParam.toString(),
       );
       return response;

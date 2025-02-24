@@ -31,13 +31,7 @@ export default function FeaturePage() {
   );
   const queryClient = useQueryClient();
 
-  // Create options array for Segmented component
 
-  // Get display name for the selected filter
-  const getDisplayName = (name: string) => {
-    const category = featuredMediaCategories.find((cat: MediaCategory) => cat.name === name);
-    return category?.displayName || name;
-  };
 
   // Debounce search input
   useEffect(() => {

@@ -28,7 +28,7 @@ const MovieHomepage = () => {
     data: trendingMovies,
     isLoading: trendingLoading,
   } = useInfiniteQuery({
-    queryKey: ["trending", "All"],
+    queryKey: ["trending", "AllTrending"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = getMovies("Trending");
       return response;
