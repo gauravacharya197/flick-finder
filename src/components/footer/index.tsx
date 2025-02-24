@@ -47,15 +47,20 @@ const Footer = () => {
              
               {/* Twitter */}
               <li>
-                <a href="https://discord.gg/pUUYuvpw"  aria-label="Twitter" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
-                  <FaDiscord  size={20} />
-                </a>
-              </li>
+  <a
+    href="https://discord.gg/pUUYuvpw"
+    aria-label="Discord"
+    className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300"
+  >
+    <FaDiscord size={23} />
+    <span className="ml-2">Discord</span>
+  </a>
+</li>
               {/* LinkedIn */}
               <li>
-                <a  aria-label="LinkedIn" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
+                {/* <a  aria-label="LinkedIn" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
                   <FaTelegram size={20} />
-                </a>
+                </a> */}
               </li>
             </ul>
           </motion.div>

@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle
-} from '@/components/ui/dialog';
+} from '@/components/ui/primitives/dialog';
 import { cn } from '@/lib/utils';
 
 interface ModalProps {

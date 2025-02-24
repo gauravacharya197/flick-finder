@@ -1,11 +1,16 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/primitives/toggle-group"
+
+interface SegmentedOption {
+  value: string;
+  label: string;
+}
 
 interface SegmentedProps {
   size?: "small" | "medium" | "large"
   value: string
-  options: string[]
+  options: (string | SegmentedOption)[]
   onChange?: (value: string) => void
   className?: string
 }
@@ -18,6 +23,28 @@ const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
       large: "h-9 text-sm"
     }
 
+    const renderOption = (option: string | SegmentedOption) => {
+      const value = typeof option === 'string' ? option : option.value;
+      const label = typeof option === 'string' ? option : option.label;
+
+      return (
+        <ToggleGroupItem
+          key={value}
+          value={value}
+          className={cn(
+            "flex-1 px-4",
+            "data-[state=on]:bg-primary data-[state=on]:text-white",
+            "data-[state=off]:text-white",
+            "transition-colors duration-200",
+            "rounded-none",
+            sizeClasses[size]
+          )}
+        >
+          {label}
+        </ToggleGroupItem>
+      );
+    };
+
     return (
       <ToggleGroup
         ref={ref}
@@ -29,22 +56,7 @@ const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
           className
         )}
       >
-        {options.map((option) => (
-          <ToggleGroupItem
-            key={option}
-            value={option}
-            className={cn(
-              "flex-1 px-4",
-              "data-[state=on]:bg-primary data-[state=on]:text-white",
-              "data-[state=off]:text-white",
-              "transition-colors duration-200",
-              "rounded-none",
-              sizeClasses[size]
-            )}
-          >
-            {option}
-          </ToggleGroupItem>
-        ))}
+        {options.map(renderOption)}
       </ToggleGroup>
     )
   }
@@ -53,4 +65,4 @@ const Segmented = React.forwardRef<HTMLDivElement, SegmentedProps>(
 Segmented.displayName = "Segmented"
 
 export { Segmented }
-export type { SegmentedProps }
+export type { SegmentedProps, SegmentedOption }

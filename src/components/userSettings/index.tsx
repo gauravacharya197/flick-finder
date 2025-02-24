@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
-import { Switch } from '@/components/ui/switch';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Switch } from '@/components/ui/primitives/switch';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/primitives/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/primitives/button';
 import { useSelector } from 'react-redux';
 import { Option } from '../../types/option';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -14,7 +14,7 @@ import { FaEraser } from 'react-icons/fa';
 
 export const UserSettings = () => {
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
-  const { genres } = useSelector((state: any) => state.filters);
+  const { genres,featuredMediaCategories } = useSelector((state: any) => state.filters);
 
   // Log the genres from Redux to check their format
 
@@ -87,6 +87,7 @@ export const UserSettings = () => {
     <Card>
       <CardHeader>
         <CardTitle>Playback Preferences</CardTitle>
+        {JSON.stringify(featuredMediaCategories)}
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between">
