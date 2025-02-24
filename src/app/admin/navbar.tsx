@@ -1,12 +1,12 @@
 "use client";
 
-import { useFetchAndDispatchFilters } from "@/hooks/useFetchDispatchFilter";
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 
 
 
 export default function Navbar() {
-    useFetchAndDispatchFilters();
+  const {user} = useAuth();
   return (
     <nav className="flex items-center justify-between bg-white shadow-md px-6 py-4">
       {/* Left Side - Page Title */}
@@ -20,7 +20,7 @@ export default function Navbar() {
         {/* Profile Icon */}
         <div className="flex items-center gap-2 cursor-pointer">
           <FaUserCircle className="text-2xl text-gray-600" />
-          <span className="text-gray-700 font-medium">Admin</span>
+          <span className="text-gray-700 font-medium">{user?.name}</span>
         </div>
       </div>
     </nav>

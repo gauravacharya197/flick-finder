@@ -21,3 +21,6 @@ export const GetUser = async (code: string) => {
   export const Logout = async () => {
     return apiClient.post(`${baseUrl}api/auth/Logout`)
    };
+   export const AdminLogin = async (data) => {
+    return apiClient.post(`${baseUrl}api/auth/Admin-Login`,  data)
+   };

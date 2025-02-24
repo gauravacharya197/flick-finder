@@ -88,7 +88,7 @@ const PlayerSection = ({
               movie?.videoSource
                 ? movie.videoSource.startsWith("https://short")
                   ? movie.videoSource
-                  : `${baseUrl}?source=${movie.videoSource}`
+                  : `${movie.videoSource}`
                 : constructUrl(
                     "https://moviesapi.club",
                     mediaType,

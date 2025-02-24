@@ -16,6 +16,7 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   const truncateString = (str: string, num: number) =>
     str?.length > num ? `${str.slice(0, num)}...` : str;
+  const rating = formatRating(movie.voteAverage);
 
   return (
     <div className="group relative overflow-hidden rounded-lg bg-gray-900 transition-transform">
@@ -69,13 +70,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
      
 
       {/* Rating Container */}
-      {formatRating(movie.voteAverage) !== 0 &&
+      {rating !== 0 &&
       <>
        <span className="h-4 w-px bg-gray-700" />
       <div className="flex items-center justify-center w-16 space-x-1">
         <FaStar className="text-yellow-500 drop-shadow-md" />
         <span className="drop-shadow-md">
-         {formatRating(movie.voteAverage)}
+         {rating}
 
 
         </span>

@@ -5,12 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/primit
 import { Input } from "@/components/ui/primitives/input";
 import { Button } from "@/components/ui/primitives/button";
 import { FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
-interface SignInFormProps {
-    onSignIn: (credentials: { email: string; password: string }) => void;
-  }
-export function SignInForm({ onSignIn }: SignInFormProps) {
+type SignInFormProps = {
+  onSignIn: (credentials: { email: string; password: string }) => void;
+  isLoading?: boolean;
+};
+
+export const SignInForm = ({ onSignIn, isLoading = false }: SignInFormProps) => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");  const [isLoading, setIsLoading] = useState(false);
+    const [password, setPassword] = useState("");  
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
