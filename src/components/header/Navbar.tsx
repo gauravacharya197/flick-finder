@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { FaSearch, FaFilter } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
@@ -39,6 +39,17 @@ const MyNav = () => {
     setShowSearch(false);
     dispatch(setQuery(""));
   };
+  const initializedFromUrl = useRef(false);
+  
+  // Effect to sync URL query parameter with Redux state ONLY on initial load
+  useEffect(() => {
+    // Only update Redux state once when the component mounts
+    // and only if there's a query parameter and Redux state is empty or different
+    if (!initializedFromUrl.current && searchQuery && searchQuery !== query) {
+      dispatch(setQuery(searchQuery));
+      initializedFromUrl.current = true;
+    }
+  }, [searchQuery, dispatch]); 
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const menuContentRef = useRef<HTMLDivElement>(null);
   // Using our custom hook
