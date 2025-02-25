@@ -19,9 +19,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="flex justify-center md:justify-start mb-3 md:mb-0 md:w-[15%]"
           >
-            <a  className="hover:text-primary text-sm">
-              Request
-            </a>
+           
           </motion.div>
           
           {/* Info Text - Always Centered with 70% Width on Desktop */}

@@ -26,7 +26,7 @@ interface SeasonChooserProps {
 }
 
 export const EpisodeLoading = () => (
-  <div className="pt-2 animate-pulse ">
+  <div className="pt-1 animate-pulse ">
     <Skeleton 
           className="h-16 p-0"
           rows={1}

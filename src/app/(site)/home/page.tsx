@@ -190,6 +190,7 @@ const MovieHomepage = () => {
           movies={lastYearMovies?.data?.results || []}
           title={`Best of ${lastYear}`}
           icon={FaHeart}
+          
         />
       )}
       {/* Top Grossing Section */}

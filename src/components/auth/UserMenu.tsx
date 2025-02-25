@@ -33,13 +33,16 @@ const UserMenu = () => {
   ].filter((item): item is { href: string; icon: JSX.Element; label: string; onClick?: () => void } => Boolean(item));
 
   return (
-    <div className="relative" ref={menuRef}  onClick={handleToggleMenu}
+    <div className="relative" ref={menuRef} 
     onMouseEnter={()=>setIsMenuOpen(true)}
     onMouseLeave={()=>setIsMenuOpen(false)}>
       <button
         className="flex items-center gap-3 text-primary transition-colors hover:text-primary-400"
         aria-expanded={isMenuOpen}
         aria-haspopup="true"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+
+
         
       >
         <FaUser className="text-lg" />
