@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, FreeMode } from 'swiper/modules';
-import Link from 'next/link';
+import React, { useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode } from "swiper/modules";
+import Link from "next/link";
 
 interface Genre {
   id: number;
@@ -15,9 +15,9 @@ interface GenreGridProps {
 }
 
 const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredGenres = genres.filter(genre =>
+  const filteredGenres = genres.filter((genre) =>
     genre.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -29,7 +29,7 @@ const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
           <input
             type="text"
             placeholder="Search genres..."
-            className="pl-10 pr-4 py-2  w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm  dark:text-white"
+            className="pl-10 pr-4 py-3  w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm  dark:text-white"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -46,17 +46,15 @@ const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
           autoplay={{
             delay: 2000,
             disableOnInteraction: false,
-            pauseOnMouseEnter: true
+            pauseOnMouseEnter: true,
           }}
           className="w-full"
         >
           {filteredGenres.map((genre) => (
-            <SwiperSlide 
-              key={genre.id}
-              className="!w-auto"
-            >
-<Link href={`genre/${encodeURIComponent(genre?.name?.toLowerCase().replace(/\s+/g, '-') || '')}`}>
-
+            <SwiperSlide key={genre.id} className="!w-auto">
+              <Link
+                href={`genre/${encodeURIComponent(genre?.name?.toLowerCase().replace(/\s+/g, "-") || "")}`}
+              >
                 <div
                   className="px-4 py-2 border-2 border-black rounded-lg bg-transparent
                     text-black hover:bg-white/10 transition-colors duration-200 cursor-pointer dark:text-white dark:border-white"

@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt } from "react-icons/fa";
+import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt, FaBackward } from "react-icons/fa";
 import { removeAuthCookie } from "@/utils/auth";
 import { FaBarsProgress } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
+import { PiKeyReturnLight } from "react-icons/pi";
 
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: FaHome },
@@ -21,9 +23,12 @@ interface SidebarProps {
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-
+  const {logout} = useAuth();
   const handleSignOut = () => {
     removeAuthCookie();
+    logout()
+  
+
     router.push("/admin/signin");
   };
 
@@ -80,10 +85,15 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
       {/* Logout Button */}
       <div className="mt-auto px-2 py-4">
+      <Link href="/" className="w-full flex items-center mb-2 justify-center p-3 bg-primary-400  text-white rounded-lg ">
+          <PiKeyReturnLight className="text-xl" />
+          <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Main</span>
+        </Link>
         <button onClick={handleSignOut} className="w-full flex items-center justify-center p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
           <FaSignOutAlt className="text-xl" />
           <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Logout</span>
         </button>
+        
       </div>
     </aside>
   );

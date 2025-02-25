@@ -42,7 +42,7 @@ const MovieCarousel = ({
   // Define slide sizes based on variant
   const getSlideClasses = () => {
     if (variant === 'trending') {
-      return "!w-[190px] sm:!w-[250px] md:!w-[320px] lg:!w-[280px] 2xl:!w-[390px]";
+      return "!w-[225px] sm:!w-[250px] md:!w-[320px] lg:!w-[280px] 2xl:!w-[390px]";
     }
     return "!w-[170px] sm:!w-[220px] md:!w-[240px] lg:!w-[260px]";
   };
@@ -118,15 +118,17 @@ const MovieCarousel = ({
           ))}
         </Swiper>
 
-        {/* Custom Navigation Buttons */}
+        {/* Improved Navigation Buttons */}
         <button
-          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 p-2 md:p-4 rounded-r-lg transition-opacity swiper-button-prev-${title.replace(/\s+/g, '-')}`}
+          className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/60 backdrop-blur-sm hover:bg-black/90 rounded-lg p-2 md:p-3 shadow-md transition swiper-button-prev-${title.replace(/\s+/g, '-')}`}
+          aria-label="Previous"
           style={{ color: 'white' }}
         >
           <FaChevronLeft className={variant === 'trending' ? "w-4 h-4 md:w-5 md:h-5" : "w-3 h-3 md:w-4 md:h-4"} />
         </button>
         <button
-          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 p-2 md:p-4 rounded-l-lg transition-opacity swiper-button-next-${title.replace(/\s+/g, '-')}`}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/60 backdrop-blur-sm hover:bg-black/90 rounded-lg p-2 md:p-3 shadow-md transition swiper-button-next-${title.replace(/\s+/g, '-')}`}
+          aria-label="Next"
           style={{ color: 'white' }}
         >
           <FaChevronRight className={variant === 'trending' ? "w-4 h-4 md:w-5 md:h-5" : "w-3 h-3 md:w-4 md:h-4"} />

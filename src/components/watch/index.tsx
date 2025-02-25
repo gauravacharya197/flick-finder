@@ -32,7 +32,7 @@ const Watch = ({ params }: WatchPageProps) => {
     staleTime: 5 * 60 * 1000,
   });
   const movie = movieData?.data;
- 
+
   return (
     <div>
       <div className="grid min-h-[200px] grid-cols-1 gap-8 lg:grid-cols-4">
@@ -76,10 +76,8 @@ const Watch = ({ params }: WatchPageProps) => {
               <PlayerSection
                 movie={movie}
                 mediaType={mediaType}
-               
                 selectedSeason={selectedSeason}
                 selectedEpisode={selectedEpisode}
-                
               />
               <p className="mt-2 text-sm text-gray-500">
                 If the current player doesn't work, change the player
@@ -88,7 +86,6 @@ const Watch = ({ params }: WatchPageProps) => {
               {mediaType === "tv" && (
                 <div className="mt-4 lg:hidden">
                   <SeasonChooser
-                 
                     mediaId={id?.toString().startsWith("t") ? movie?.id : id}
                     seasons={movie?.seasons}
                     onSeasonChange={setSelectedSeason}
@@ -99,8 +96,8 @@ const Watch = ({ params }: WatchPageProps) => {
               <br />
               <MovieDetails movie={movie} mediaType={mediaType} />
               <SectionHeader className="mb-5 mt-10" text="Casts" />
-              <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-5 lg:grid-cols-4 xl:grid-cols-5">
-                {movie?.casts?.map((character: any, index: any) => (
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+                {movie?.casts?.map((character, index) => (
                   <CastCard
                     key={index}
                     imgSrc={character.profilePath}
@@ -131,18 +128,22 @@ const Watch = ({ params }: WatchPageProps) => {
                 mediaType={mediaType}
               />
             )}
-            {mediaType?.toLowerCase() === "tv"? isLoading ? (
-            Array.from({ length: 7 }).map((_, index) => (
-              <EpisodeLoading key={index} />
-            ))) : (
-              <SeasonChooser
-               
-                mediaId={id?.toString().startsWith("t") ? movie?.id : id}
-                seasons={movie?.seasons}
-                onSeasonChange={setSelectedSeason}
-                onEpisodeChange={setSelectedEpisode}
-              />
-            ) : <></> }
+            {mediaType?.toLowerCase() === "tv" ? (
+              isLoading ? (
+                Array.from({ length: 7 }).map((_, index) => (
+                  <EpisodeLoading key={index} />
+                ))
+              ) : (
+                <SeasonChooser
+                  mediaId={id?.toString().startsWith("t") ? movie?.id : id}
+                  seasons={movie?.seasons}
+                  onSeasonChange={setSelectedSeason}
+                  onEpisodeChange={setSelectedEpisode}
+                />
+              )
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

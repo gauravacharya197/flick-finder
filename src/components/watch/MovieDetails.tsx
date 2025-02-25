@@ -3,6 +3,7 @@ import { CustomTag } from "../common/CustomTag";
 import { getSourceIcon } from "@/utils/getSourceIcon";
 import { formatDate } from "@/utils/formatDate";
 import { FaStar } from "react-icons/fa";
+import { formatRating } from "@/utils/formatRating";
 
 const MovieDetails = ({ movie, mediaType }) => {
   const generateKeywords = () => {
@@ -17,6 +18,7 @@ const MovieDetails = ({ movie, mediaType }) => {
       `${title} ${finalMediaType} Download`,
     ];
   };
+  const rating = formatRating(movie.voteAverage);
 
   return (
     <div className="bg-gray-900/40 backdrop-blur-md rounded-xl text-white">
@@ -91,10 +93,10 @@ const MovieDetails = ({ movie, mediaType }) => {
             <h3 className="text-lg font-medium mb-3">Ratings</h3>
             <div className="flex flex-wrap gap-6">
               {/* TMDB Rating */}
-              {movie?.voteAverage && (
+              {rating !== 0 && (
                 <div className="flex items-center bg-gray-700/30 rounded-lg px-4 py-2">
                   <span className="text-gray-300">{<FaStar className="text-yellow-400" />}</span>
-                  <span className="ml-2 font-medium">{movie.voteAverage}</span>
+                  <span className="ml-2 font-medium">{rating}</span>
                 </div>
               )}
               

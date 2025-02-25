@@ -3,14 +3,12 @@ import { ReactNode, useState } from "react";
 import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ToasterContext from "../context/ToastContext";
 import store from "@/redux/store";
 import { Provider } from "react-redux";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-    const queryClient = new QueryClient();
     const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
     // Exclude layout for the sign-in page
@@ -25,7 +23,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
     return (
       <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+      
         <div className="min-h-screen bg-background overflow-x-hidden">
           {/* Sidebar */}
           <Sidebar 
@@ -51,7 +49,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             </main>
           </div>
         </div>
-      </QueryClientProvider>
+     
       </Provider>
     );
 }

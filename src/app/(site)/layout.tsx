@@ -21,7 +21,6 @@ export default function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
 
   let googleAnalyticsCode = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
 
@@ -29,9 +28,9 @@ export default function SiteLayout({
     <>
      
           <Provider store={store}>
-            <AuthProvider>  
+            
               <ThemeProvider enableSystem={false} attribute="class" defaultTheme="dark">
-              <QueryClientProvider client={queryClient}>
+            
                 <ToasterContext />
                 <NextTopLoader showSpinner={false} color="teal" />
                
@@ -45,9 +44,9 @@ export default function SiteLayout({
                 <Footer />
                 <ScrollToTop />
                
-                 </QueryClientProvider>
+                
               </ThemeProvider>
-            </AuthProvider>
+            
           </Provider>
           <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
        

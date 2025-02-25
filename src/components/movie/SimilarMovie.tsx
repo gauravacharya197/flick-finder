@@ -1,17 +1,14 @@
 "use client";
 
 import { getSimilarMovies } from "@/services/MovieService";
-import Link from "next/link";
-import { FaStar, FaClock } from "react-icons/fa";
-import { CustomTag } from "../common/CustomTag";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import SectionHeader from "../common/SectionHeader";
-import { motion } from "framer-motion";
-import { Rating } from "../common/Rating";
 import { SimilarMovieCard } from "./SimilarMovieCard";
 import Skeleton from "../common/Skeleton";
 import { Movie } from "@/types/movie";
+import { useEffect, useRef, useState } from "react";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 
 interface SimilarMovieProps {
   id: string;
@@ -19,16 +16,29 @@ interface SimilarMovieProps {
 }
 
 export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  // Create a mock fetchNextPage function that sets isVisible to true
+  const triggerFetch = () => {
+    setIsVisible(true);
+  };
+  
+  // Use the existing hook with our trigger function
+  const observerRef = useInfiniteScroll({
+    fetchNextPage: triggerFetch,
+    hasNextPage: !isVisible, // Only trigger once
+    isFetching: false
+  });
+
   const {
     data: similarMoviesData,
     isLoading,
-    isFetching,
     isError,
     error,
   } = useQuery<AxiosResponse<any>>({
     queryKey: ["similarMovies", id, mediaType],
     queryFn: () => getSimilarMovies(id, mediaType),
-    enabled: !!id,
+    enabled: !!id && isVisible, // Only enable query when component is visible
     staleTime: Infinity,
     retry: 2,
   });
@@ -51,29 +61,34 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
   }
 
   return (
-    <aside  >
-      {/* className="-mt-4 flex flex-col gap-4 w-full max-w-full" */}
+    <aside>
       <SectionHeader text="You might like" />
 
-      <div className="space-y-4 mt-4">
-        {isLoading  || !id? (
+      <div className="space-y-4 mt-4 mb-">
+        {(!isVisible || isLoading || !id) ? (
           // Loading skeletons
           [...Array(3)].map((_, i) => (
             <div key={i} className="flex gap-3 rounded-lg bg-gray-100 dark:bg-gray-800/30 p-3">
-              <Skeleton   className="h-40 w-16 mt-3 rounded-md" />
-              
+              <Skeleton className="h-40 w-16 mt-3 rounded-md" />
             </div>
           ))
         ) : movies.length === 0 ? (
-          <div className=" py-1 text-gray-500 dark:text-gray-400">
+          <div className="py-1 text-gray-500 dark:text-gray-400">
             <p>No similar content found</p>
           </div>
         ) : (
-          movies.map((movie:any, index:any) => (
-            <SimilarMovieCard key={index} movie={movie}  mediaType={mediaType} index={index}/>
+          movies.map((movie, index) => (
+            <SimilarMovieCard key={index} movie={movie} mediaType={mediaType} index={index} />
           ))
         )}
       </div>
+      
+      {/* Observer element positioned at the top of the component */}
+      <div 
+        ref={observerRef} 
+        className="h-1 w-full "
+        aria-hidden="true"
+      />
     </aside>
   );
 };
