@@ -52,7 +52,7 @@ export const addToWatchHistory = (movie: LocalMovie): void => {
       displayTitle: movie.displayTitle,
       displayReleaseDate: movie.displayReleaseDate,
       posterPath: movie.posterPath,
-      mediaType: movie.mediaType,
+      mediaType: movie.mediaType.toLowerCase(),
       voteAverage: movie.voteAverage,
       watchedAt: new Date().toISOString()
     };

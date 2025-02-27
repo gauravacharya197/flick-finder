@@ -32,7 +32,7 @@ const Skeleton = ({
       )}
       
       {/* Content rows */}
-      <div className={`${spacing} pt-2`}>
+      <div className={`${spacing} `}>
         {[...Array(rows)].map((_, index) => (
           <div
             key={index}

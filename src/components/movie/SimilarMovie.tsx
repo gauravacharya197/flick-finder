@@ -18,15 +18,13 @@ interface SimilarMovieProps {
 export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => {
   const [isVisible, setIsVisible] = useState(false);
   
-  // Create a mock fetchNextPage function that sets isVisible to true
   const triggerFetch = () => {
     setIsVisible(true);
   };
   
-  // Use the existing hook with our trigger function
   const observerRef = useInfiniteScroll({
     fetchNextPage: triggerFetch,
-    hasNextPage: !isVisible, // Only trigger once
+    hasNextPage: !isVisible,
     isFetching: false
   });
 
@@ -63,7 +61,10 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
   return (
     <aside>
       <SectionHeader text="You might like" />
-
+      <div 
+        ref={observerRef} 
+        aria-hidden="true"
+      />
       <div className="space-y-4 mt-4 mb-">
         {(!isVisible || isLoading || !id) ? (
           // Loading skeletons
@@ -84,11 +85,7 @@ export const SimilarMovie: React.FC<SimilarMovieProps> = ({ id, mediaType }) => 
       </div>
       
       {/* Observer element positioned at the top of the component */}
-      <div 
-        ref={observerRef} 
-        className="h-1 w-full "
-        aria-hidden="true"
-      />
+      
     </aside>
   );
 };
