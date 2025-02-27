@@ -75,7 +75,7 @@ const Watch = ({ params }: WatchPageProps) => {
             <div className="relative pb-[10.25%]">
               <PlayerSection
                 movie={movie}
-                mediaType={mediaType}
+                mediaType={mediaType?.toLowerCase()}
                 selectedSeason={selectedSeason}
                 selectedEpisode={selectedEpisode}
               />
@@ -83,7 +83,7 @@ const Watch = ({ params }: WatchPageProps) => {
                 If the current player doesn't work, change the player
               </p>
               {/* Mobile-only SeasonChooser for TV shows */}
-              {mediaType === "tv" && (
+              {mediaType?.toLowerCase() === "tv" && (
                 <div className="mt-4 lg:hidden">
                   <SeasonChooser
                     mediaId={id?.toString().startsWith("t") ? movie?.id : id}
@@ -108,11 +108,11 @@ const Watch = ({ params }: WatchPageProps) => {
                 ))}
               </div>
               {/* Mobile-only SimilarMovie for movies */}
-              {mediaType === "movie" && (
+              {mediaType?.toLowerCase() === "movie" && (
                 <div className="mt-10 grid grid-cols-1 lg:hidden">
                   <SimilarMovie
                     id={id?.toString().startsWith("t") ? movie?.id : id}
-                    mediaType={mediaType}
+                    mediaType={mediaType?.toLowerCase()}
                   />
                 </div>
               )}
@@ -125,7 +125,7 @@ const Watch = ({ params }: WatchPageProps) => {
             {mediaType?.toLowerCase() === "movie" && (
               <SimilarMovie
                 id={id?.toString().startsWith("t") ? movie?.id : id}
-                mediaType={mediaType}
+                mediaType={mediaType?.toLowerCase()}
               />
             )}
             {mediaType?.toLowerCase() === "tv" ? (
