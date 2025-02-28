@@ -45,7 +45,7 @@ const Footer = () => {
               {/* Twitter */}
               <li>
   <a
-    href="https://discord.gg/pUUYuvpw"
+    href="https://discord.gg/kg7SX8RK"
     aria-label="Discord"
     className="flex items-center  text-[#D1D8E0] hover:text-primary transition-colors duration-300"
   >
