@@ -14,7 +14,7 @@ import { FaEraser } from 'react-icons/fa';
 
 export const UserSettings = () => {
   const [selectedGenres, setSelectedGenres] = React.useState<string[]>([]);
-  const { genres,featuredMediaCategories } = useSelector((state: any) => state.filters);
+  const { genres } = useSelector((state: any) => state.filters);
 
   // Log the genres from Redux to check their format
 
@@ -87,7 +87,6 @@ export const UserSettings = () => {
     <Card>
       <CardHeader>
         <CardTitle>Playback Preferences</CardTitle>
-        {JSON.stringify(featuredMediaCategories)}
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between">
