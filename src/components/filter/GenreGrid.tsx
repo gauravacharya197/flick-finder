@@ -67,11 +67,11 @@ const GenreGrid: React.FC<GenreGridProps> = ({ genres }) => {
             </SwiperSlide>
           ))}
         </Swiper>
-      ) : (
-        <div className="text-center py-10 text-gray-400">
+      ) : searchTerm ? (
+        <div className=" text-gray-400">
           No genres found matching your search.
-        </div>
-      )}
+        </div>) : <></>
+      }
     </div>
   );
 };

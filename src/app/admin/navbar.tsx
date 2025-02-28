@@ -1,27 +1,12 @@
-"use client";
-
-import { FaUserCircle } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
-
-
+import NavbarClient from "./NavbarClient";
 
 export default function Navbar() {
-  const {user} = useAuth();
   return (
     <nav className="flex items-center justify-between bg-white shadow-md px-6 py-4">
-      {/* Left Side - Page Title */}
-      <h1 className="text-lg font-semibold text-gray-700"> Dashboard</h1>
+      <h1 className="text-lg font-semibold text-gray-700">Dashboard</h1>
 
-      {/* Right Side - Notifications & Profile */}
       <div className="flex items-center gap-4">
-        {/* Notification Icon */}
-      
-
-        {/* Profile Icon */}
-        <div className="flex items-center gap-2 cursor-pointer">
-          <FaUserCircle className="text-2xl text-gray-600" />
-          <span className="text-gray-700 font-medium">{user?.name}</span>
-        </div>
+        <NavbarClient /> {/* Only this part is client-side */}
       </div>
     </nav>
   );
