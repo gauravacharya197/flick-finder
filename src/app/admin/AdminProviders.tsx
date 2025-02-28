@@ -5,8 +5,7 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import ToasterContext from "../context/ToastContext";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
+
 
 export default function AdminProviders({ children }: { children: ReactNode }) {
   const pathname = usePathname();
