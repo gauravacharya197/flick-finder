@@ -219,7 +219,8 @@ const MyNav = () => {
               </div>
             </div>
             
-            <div className="hidden sm:block">
+            {/* AI Search - visible on all screen sizes */}
+            <div>
               <RobotSearchModal />
             </div>
           </div>
