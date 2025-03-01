@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/siteConfig";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: siteConfig.siteName +" - "+ "Login Page",
+  title: siteConfig.siteName +" - "+ "Login",
   description: "",
   // other metadata
 };
