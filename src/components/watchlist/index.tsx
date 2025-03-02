@@ -22,9 +22,7 @@ export const Watchlist = () => {
   } = useInfiniteQuery({
     queryKey: ['watchlist', user?.id],
     queryFn: async ({ pageParam = 1 }) => {
-      if (!user?.id) {
-        throw new Error('User ID is required')
-      }
+     
       const response = await getUserWatchList()
       return response
     },
@@ -33,7 +31,6 @@ export const Watchlist = () => {
       const currentPage = pages.length
       return currentPage < totalPages ? currentPage + 1 : undefined
     },
-    enabled: Boolean(user?.id),
     initialPageParam: 1,
     staleTime: Infinity,
     retry: 0,
