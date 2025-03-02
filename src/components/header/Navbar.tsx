@@ -98,7 +98,7 @@ const MyNav = () => {
   
   return (
     <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background dark:text-white">
-      <div className="px-3 sm:px-4 lg:px-8 xl:px-16 2xl:px-48">
+      <div className="px-3 sm:px-4 lg:px-8 xl:px-12 2xl:px-48">
         <div className="flex h-13 items-center justify-between">
           <div className="relative flex items-center gap-2 sm:gap-4">
             <button

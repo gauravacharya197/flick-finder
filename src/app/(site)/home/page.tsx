@@ -6,7 +6,6 @@ import GenreGrid from "@/components/filter/GenreGrid";
 import { RootState } from "@/redux/store";
 import { getMovies } from "@/services/MovieService";
 import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
-import { MdFeaturedPlayList } from "react-icons/md";
 import {
   FaDollarSign,
   FaFire,
