@@ -124,7 +124,7 @@ const MovieHomepage = () => {
           movies={trendingMovieCarousel || []}
           title="Trending Now"
           icon={FaFire}
-          loop={true}
+          //loop={true}
         />
       )}
 
@@ -153,7 +153,7 @@ const MovieHomepage = () => {
           movies={recentMovies?.data?.results || []}
           title="Recently Updated"
           icon={FaImdb}
-          loop={true}
+          //loop={true}
           autoplay={true}
         />
       )}
@@ -173,7 +173,7 @@ const MovieHomepage = () => {
               movies={movieData.data.results}
               title={category.displayName}
               icon={category.icon}
-              loop={true}
+              //loop={true}
               autoplay={true}
             />
           );

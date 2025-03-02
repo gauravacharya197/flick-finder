@@ -30,12 +30,12 @@ export const MovieList = ({
   return (
     <>
       {showFeaturedMovie && featuredMovie && (
-        <div className="relative mb-8 aspect-[15/9] w-full md:aspect-[25/9]">
+        <div className="relative mb-6 aspect-[15/9] w-full overflow-hidden rounded-md md:aspect-[25/9]">
           <Link href={constructWatchUrl(featuredMovie?.mediaType, featuredMovie?.id,featuredMovie?.displayTitle)}>
             <img
               src={`http://image.tmdb.org/t/p/original/${featuredMovie?.backdropPath}`}
               alt={featuredMovieTitle}
-              className="absolute h-full w-full rounded-md object-cover"
+              className="absolute h-full w-full object-cover"
               loading="lazy"
               onError={(e) => {
                 e.currentTarget.src =
@@ -44,7 +44,7 @@ export const MovieList = ({
               }}
             />
 
-            <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-gradient-to-t from-black/90 to-black/20 p-4">
+            <div className="absolute inset-0 flex flex-col justify-end rounded-md bg-gradient-to-t from-black/90 via-black/60 to-black/20 p-4">
               <h1 className="text-2xl font-bold text-white md:text-4xl">
                 {featuredMovieTitle}
               </h1>
@@ -82,7 +82,7 @@ export const MovieList = ({
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
         {movieList?.map((movie,index) => <MovieCard key={index} movie={movie} />)}
       </div>
     </>
