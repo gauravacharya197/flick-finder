@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt, FaBackward } from "react-icons/fa";
+import { FaChartBar, FaCog, FaHome, FaBars, FaSignOutAlt, FaBackward, FaUsers } from "react-icons/fa";
 import { removeAuthCookie } from "@/utils/auth";
 import { FaBarsProgress } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
@@ -13,6 +13,7 @@ const menuItems = [
   { name: "Dashboard", href: "/admin", icon: FaHome },
   { name: "Videos", href: "/admin/videos", icon: FaChartBar },
   { name: "Feature", href: "/admin/featured-movies", icon: FaBarsProgress },
+  { name: "Users", href: "/admin/users", icon: FaUsers },
 ];
 
 interface SidebarProps {

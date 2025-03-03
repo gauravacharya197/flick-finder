@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/primit
 import { Input } from "@/components/ui/primitives/input";
 import { Button } from "@/components/ui/primitives/button";
 import { FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
+import { siteConfig } from "@/config/siteConfig";
 type SignInFormProps = {
   onSignIn: (credentials: { email: string; password: string }) => void;
   isLoading?: boolean;
@@ -22,7 +23,7 @@ export const SignInForm = ({ onSignIn, isLoading = false }: SignInFormProps) => 
   return (
     <Card className="w-full">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl text-center">Admin Portal</CardTitle>
+        <CardTitle className="text-2xl text-center">{siteConfig.siteName} Admin</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

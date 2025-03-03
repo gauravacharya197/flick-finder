@@ -60,7 +60,7 @@ const PlayerSection = ({
   const renderPlayer = () => {
     if (!isPlaying) {
       return (
-        <div className="relative w-full h-[40vh] sm:h-[70vh]">
+        <div className="relative w-full h-[40vh] sm:h-[70vh]  xl:h-[65vh]">
           <img
             className="w-full h-full rounded-md object-cover border-none"
             src={
