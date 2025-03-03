@@ -169,7 +169,7 @@ const MovieHomepage = () => {
           return (
             <MovieCarousel
               key={category.name}
-              movies={movieData.data.results}
+              movies={[...movieData.data.results].reverse()}
               title={category.displayName}
               icon={category.icon}
               //loop={true}

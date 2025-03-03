@@ -89,21 +89,21 @@ export const UserSettings = () => {
         <CardTitle>Playback Preferences</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-medium">AutoPlay</h3>
-            <p className="text-sm text-gray-500">Automatically start playing media without any interaction</p>
-          </div>
-          <Switch disabled checked className='bg-gray-50' />
-        </div>
+      <div className="flex items-center justify-between">
+  <div>
+    <h3 className="font-medium">AutoPlay</h3>
+    <p className="text-sm text-gray-500">Start media automatically</p>
+  </div>
+  <Switch disabled checked className='bg-gray-50' />
+</div>
 
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-medium">Auto Next Episode</h3>
-            <p className="text-sm text-gray-500">Jump straight into the next episode when the current one ends</p>
-          </div>
-          <Switch disabled checked className='bg-gray-50' />
-        </div>
+<div className="flex items-center justify-between">
+  <div>
+    <h3 className="font-medium">Auto Next Episode</h3>
+    <p className="text-sm text-gray-500">Skip to the next episode automatically</p>
+  </div>
+  <Switch disabled checked className='bg-gray-50' />
+</div>
       </CardContent>
     </Card>
 
@@ -113,8 +113,8 @@ export const UserSettings = () => {
       </CardHeader>
       <CardContent>
         <div>
-          <p className="text-sm text-gray-500 mb-2">Choose your preferred video resolution for the best viewing experience</p>
-          <Select defaultValue="high" disabled>
+        <p className="text-sm text-gray-500 mb-2">Select your preferred video resolution</p>
+        <Select defaultValue="high" disabled>
             <SelectTrigger className="w-40 ring-black">
               <SelectValue placeholder="Select quality" />
             </SelectTrigger>
@@ -135,7 +135,13 @@ export const UserSettings = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <p className="text-sm text-gray-500">Select your preferred genres to get better recommendations</p>
+          <p className="text-sm text-gray-500">Pick genres for better recommendations</p>
+
+
+
+
+
+
             
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {genreOptions.map((genre) => (
