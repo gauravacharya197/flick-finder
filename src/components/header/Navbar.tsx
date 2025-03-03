@@ -37,7 +37,7 @@ const MyNav = () => {
     if (searchQuery) {
       router.push("/results");
     }
-    setShowSearch(false);
+    //setShowSearch(false);
     dispatch(setQuery(""));
   };
   
