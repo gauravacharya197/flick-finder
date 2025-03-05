@@ -19,8 +19,7 @@ export function formatDateTime(utcDate: string): string {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
-      fractionalSecondDigits: 3, // for milliseconds
+   
       hour12: false,
       timeZone: 'Asia/Kathmandu'
   };
