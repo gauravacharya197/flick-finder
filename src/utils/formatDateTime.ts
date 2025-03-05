@@ -27,4 +27,4 @@ export function formatDateTime(utcDate: string): string {
   return nepalDateTime.toLocaleString('en-US', options);
 }
 
-// Example usage with your specific date
+//Example usage with your specific date
