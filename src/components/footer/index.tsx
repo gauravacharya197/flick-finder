@@ -55,9 +55,11 @@ const Footer = () => {
 </li>
               {/* LinkedIn */}
               <li>
-                {/* <a  aria-label="LinkedIn" className="text-[#D1D8E0] hover:text-primary transition-colors duration-300">
-                  <FaTelegram size={20} />
-                </a> */}
+                <a href="https://t.me/flickday"  aria-label="LinkedIn" className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300">
+                  <FaTelegram size={22} />
+                  <span className="ml-2 text-md">TG</span>
+
+                </a>
               </li>
             </ul>
           </motion.div>

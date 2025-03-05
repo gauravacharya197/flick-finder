@@ -8,6 +8,8 @@ import { removeAuthCookie } from "@/utils/auth";
 import { FaBarsProgress } from "react-icons/fa6";
 import { useAuth } from "../context/AuthContext";
 import { PiKeyReturnLight } from "react-icons/pi";
+import { useFetchAndDispatchFilters } from "@/hooks/useFetchDispatchFilter";
+
 
 const menuItems = [
   { name: "Dashboard", href: "/admin", icon: FaHome },
@@ -22,6 +24,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
+  useFetchAndDispatchFilters();
   const pathname = usePathname();
   const router = useRouter();
   const {logout} = useAuth();

@@ -64,7 +64,7 @@ export const Dashboard = () => {
           </div> */}
         </div>
         </Link>
-        <Link href="/admin/movie-details-caches">
+        <Link href="/admin/movie-detail-caches">
 
         {/* Movie Details Caches Card */}
         <div className="bg-gray-800 rounded-lg shadow-md p-6 transform transition-all hover:scale-105">
