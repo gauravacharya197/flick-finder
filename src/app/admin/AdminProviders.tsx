@@ -5,6 +5,8 @@ import Sidebar from "./sidebar";
 import Navbar from "./navbar";
 import { usePathname } from "next/navigation";
 import ToasterContext from "../context/ToastContext";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 
 export default function AdminProviders({ children }: { children: ReactNode }) {
@@ -22,6 +24,7 @@ export default function AdminProviders({ children }: { children: ReactNode }) {
   }
 
   return (
+    <Provider store={store}>
       <div className="min-h-screen bg-background overflow-x-hidden">
         {/* Sidebar */}
         <Sidebar collapsed={sidebarCollapsed} setCollapsed={setSidebarCollapsed} />
@@ -41,5 +44,6 @@ export default function AdminProviders({ children }: { children: ReactNode }) {
           <main className="p-6">{children}</main>
         </div>
       </div>
+      </Provider>
   );
 }
