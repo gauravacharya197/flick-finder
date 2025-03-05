@@ -19,7 +19,8 @@ export function formatDateTime(utcDate: string): string {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-   
+      second: '2-digit',
+      fractionalSecondDigits: 3, // for milliseconds
       hour12: false,
       timeZone: 'Asia/Kathmandu'
   };
@@ -27,4 +28,4 @@ export function formatDateTime(utcDate: string): string {
   return nepalDateTime.toLocaleString('en-US', options);
 }
 
-//Example usage with your specific date
+// Example usage with your specific date
