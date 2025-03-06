@@ -1,6 +1,6 @@
 const VidPlayer = ({ sourceUrl, sandbox = '' }) => {
   return (
-<div className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[65vh]">
+      <div className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[72vh] 2xl:h-[65vh] bg-black">
 <iframe
       src={sourceUrl as string} // Ensure sourceUrl is a string
       referrerPolicy="origin"
