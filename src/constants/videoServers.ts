@@ -17,15 +17,15 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 2,
     name: "Secondary",
-    baseUrl: "https://vidlink.pro",
-    urlSeparator: "/",
-     idType: 'id'
+    baseUrl: "https://player.autoembed.cc/embed/",
+    urlSeparator: "/"
   },
   {
     id: 3,
-    name: "Default",
-    baseUrl: "https://player.autoembed.cc/embed/",
-    urlSeparator: "/"
+    name: "VideoLink",
+    baseUrl: "https://vidlink.pro",
+    urlSeparator: "/",
+     idType: 'id'
    
   },
   {
