@@ -10,19 +10,19 @@ export interface VideoServer {
 export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 1,
-    name: "Default",
+    name: "Primary",
     baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   },
   {
     id: 2,
-    name: "Primary",
+    name: "Secondary",
     baseUrl: "https://player.autoembed.cc/embed/",
     urlSeparator: "/"
   },
   {
     id: 3,
-    name: "Secondary",
+    name: "Default",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
     idType: 'id'

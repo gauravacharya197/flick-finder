@@ -29,5 +29,5 @@ export function getVideoSourceUrl(
     return `${server.baseUrl}/${mediaType}/${movieId}${separator}${selectedSeason}${separator}${selectedEpisode}`;
   }
   
-  return `${server.baseUrl}${separator}${mediaType}${separator}${movieId}`;
+  return `${server.baseUrl}/${mediaType}/${movieId}`;
 }
