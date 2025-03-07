@@ -17,7 +17,7 @@ import {
 import { useSelector } from "react-redux";
 import Skeleton from "@/components/common/Skeleton";
 import { CardLoadingSkeleton } from "@/components/common/CardLoadingSkeleton";
-import { featuredMediaCategories } from "@/data/featuredMediaCategory";
+import { featuredMediaCategories } from "@/constants/featuredMediaCategory";
 const MovieHomepage = () => {
   const { genres: genreFilters } = useSelector(
     (state: RootState) => state.filters

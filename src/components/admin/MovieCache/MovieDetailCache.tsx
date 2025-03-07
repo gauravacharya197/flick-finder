@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/primitives/input";
 import { FaSearch } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { featuredMediaCategories } from "@/data/featuredMediaCategory";
 import { GetMovieDetailCache } from "@/services/AdminService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/primitives/table";
 import { CustomTag } from "@/components/common/CustomTag";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaRobot, FaSearch } from "react-icons/fa";
-import {getRandomSuggestions} from "@/data/searchSuggestion";
+import {getRandomSuggestions} from "@/constants/searchSuggestion";
 import ErrorMessage from "./ErrorMessage";
 import MovieSuggestions from "../movie/MovieSuggestions";
 import { getRecommendation } from "@/services/MovieService";
