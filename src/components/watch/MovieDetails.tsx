@@ -39,7 +39,7 @@ const MovieDetails = ({ movie, mediaType }) => {
         <div className="lg:w-3/4 space-y-6">
           {/* Header */}
           <div className="space-y-3">
-            <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
               {movie?.title}
             </h1>
             {movie?.tagLine && (
@@ -72,7 +72,7 @@ const MovieDetails = ({ movie, mediaType }) => {
           </div>
 
           {/* Plot */}
-          <p className="text-lg text-gray-300 leading-relaxed">{movie?.plot}</p>
+          <p className="text-md md:text-lg text-gray-300 leading-relaxed">{movie?.plot}</p>
 
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-800/30 rounded-lg p-4">

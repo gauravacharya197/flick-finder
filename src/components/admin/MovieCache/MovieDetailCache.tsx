@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/primitives/input";
 import { FaSearch } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import { featuredMediaCategories } from "@/data/featuredMediaCategory";
 import { GetMovieDetailCache } from "@/services/AdminService";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/primitives/table";
 import { CustomTag } from "@/components/common/CustomTag";
@@ -69,7 +68,18 @@ export default function MovieDetailCache() {
         <h1 className="text-3xl font-bold text-white dark:text-gray-100">
           Movie Details Caches
         </h1>
-        {movieData?.data.totalCount}
+       {/* Improved Total Count Display */}
+      <div className="flex items-center space-x-3">
+        
+        <div>
+         
+          <p className="text-2xl font-bold text-teal-500 dark:text-teal-300">
+            {movieData?.data.totalCount.toLocaleString()}
+          </p>
+        </div>
+     
+      
+    </div>
       </div>
       
       <div className="relative max-w-md">

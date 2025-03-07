@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import SectionHeader from "../common/SectionHeader";
 import ErrorMessage from "../common/ErrorMessage";
-import { addToWatchHistory } from "@/utils/addToWatchHistory";
 import { WatchPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
 import PlayerSection from "./PlayerSelection";
@@ -80,7 +79,7 @@ const Watch = ({ params }: WatchPageProps) => {
                 selectedEpisode={selectedEpisode}
               />
               <p className="mt-2 text-sm text-gray-500">
-                If the current player doesn't work, change the player
+              If the current server doesn't work, try switching to a different one.
               </p>
               {/* Mobile-only SeasonChooser for TV shows */}
               {mediaType?.toLowerCase() === "tv" && (

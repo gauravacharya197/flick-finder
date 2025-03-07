@@ -15,7 +15,7 @@ import { Segmented } from "@/components/ui/Segmented";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { MediaCategory } from "@/types/MediaCategory";
-import { featuredMediaCategories } from "@/data/featuredMediaCategory";
+import { featuredMediaCategories } from "@/constants/featuredMediaCategory";
 
 type FilterType = string;
 
