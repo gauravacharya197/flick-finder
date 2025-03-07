@@ -96,7 +96,6 @@ const PlayerSection = ({
             selectedSeason,
             selectedEpisode
           )}
-          sandbox={selectedServer === 2 ? "allow-same-origin allow-scripts" : undefined}
         />
       )}
       
