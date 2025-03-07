@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import MovieCard from '../movie/MovieCard';
@@ -38,7 +38,11 @@ const MovieCarousel = ({
 }: MovieCarouselProps) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);
   const swiperRef = useRef<any>(null);
-
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Don't initialize autoplay at all
+  const shouldUseAutoplay = autoplay;
+  
   // Define slide sizes based on variant
   const getSlideClasses = () => {
     if (variant === 'trending') {
@@ -66,24 +70,47 @@ const MovieCarousel = ({
   // Configure Swiper modules based on props
   const getSwiperModules = () => {
     const modules = [Navigation];
-    if (autoplay) {
+    if (shouldUseAutoplay) {
       modules.push(Autoplay);
     }
     return modules;
   };
 
-  // Configure autoplay settings
-  const getAutoplaySettings = () => {
-    if (!autoplay) return false;
-    return {
-      delay: autoplayDelay,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: pauseOnHover,
+  // Set up intersection observer after component mounts
+  useEffect(() => {
+    if (!shouldUseAutoplay || !swiperRef.current || !containerRef.current) return;
+    
+    // Initially pause autoplay
+    if (swiperRef.current.autoplay) {
+      swiperRef.current.autoplay.stop();
+    }
+    
+    const handleIntersection = (entries) => {
+      const [entry] = entries;
+      
+      if (entry.isIntersecting && swiperRef.current?.autoplay) {
+        swiperRef.current.autoplay.start();
+      } else if (swiperRef.current?.autoplay) {
+        swiperRef.current.autoplay.stop();
+      }
     };
-  };
-
+    
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.1,
+      rootMargin: '50px 0px',
+    });
+    
+    observer.observe(containerRef.current);
+    
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, [shouldUseAutoplay]);
+  
   return (
-    <div className={getContainerClasses()}>
+    <div className={getContainerClasses()} ref={containerRef}>
       {title && (
         <div className="flex items-center gap-2 mb-4">
           {Icon && (
@@ -107,7 +134,11 @@ const MovieCarousel = ({
           }}
           allowTouchMove={enableSwipe}
           loop={loop}
-          autoplay={getAutoplaySettings()}
+          autoplay={shouldUseAutoplay ? {
+            delay: autoplayDelay,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: pauseOnHover,
+          } : false}
         >
           {movies.map((movie, index) => (
             <SwiperSlide key={index} className={getSlideClasses()}>
