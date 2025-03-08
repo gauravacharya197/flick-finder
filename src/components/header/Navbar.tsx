@@ -99,9 +99,9 @@ const MyNav = () => {
   return (
     <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background">
       <div className="px-3 sm:px-4 lg:px-8 xl:px-12 2xl:px-48">
-        <div className="flex h-13 items-center justify-between">
+        <div className="flex h-12 items-center justify-between">
           {/* Left section: Menu, Logo, Dropdown */}
-          <div className="relative flex items-center gap-2 sm:gap-4">
+          <div className="relative flex items-center gap-2 sm:gap-3">
             <button
               ref={menuButtonRef}
               className="rounded-md p-1 hover:bg-gray-800 dark:hover:bg-gray-700"
