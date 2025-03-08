@@ -4,6 +4,7 @@ import { getSourceIcon } from "@/utils/getSourceIcon";
 import { formatDate } from "@/utils/formatDate";
 import { FaStar } from "react-icons/fa";
 import { formatRating } from "@/utils/formatRating";
+import { formatAmount } from "@/utils/formatAmount";
 
 const MovieDetails = ({ movie, mediaType }) => {
   const generateKeywords = () => {
@@ -19,6 +20,25 @@ const MovieDetails = ({ movie, mediaType }) => {
     ];
   };
   const rating = formatRating(movie.voteAverage);
+
+  // Parse production companies into an array
+  const getProductionCompanies = () => {
+    if (!movie?.production) return [];
+    
+    // If it's already a string, split by commas
+    if (typeof movie.production === 'string') {
+      return movie.production.split(',').map(item => item.trim()).filter(Boolean);
+    }
+    
+    // If it's an array, return it directly
+    if (Array.isArray(movie.production)) {
+      return movie.production;
+    }
+    
+    return [];
+  };
+
+  const productionCompanies = getProductionCompanies();
 
   return (
     <div className="bg-gray-900/40 backdrop-blur-md rounded-xl text-white">
@@ -80,10 +100,29 @@ const MovieDetails = ({ movie, mediaType }) => {
             <DetailItem label="Awards" value={movie?.awards} />
             <DetailItem label="Country" value={movie?.country} />
             <DetailItem label="Language" value={movie?.language} />
+            
+            {/* Production Companies - Now with improved visual treatment but inside the details grid */}
+            <div className="space-y-1 md:col-span-2">
+              <div className="text-sm text-gray-400">Production</div>
+              {productionCompanies.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {productionCompanies.map((company, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block bg-gray-700/40 text-gray-200 px-3 py-1 rounded-md text-sm"
+                    >
+                      {company}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-gray-500">N/A</div>
+              )}
+            </div>
+            
             {mediaType === "movie" && (
               <>
-                <DetailItem label="Budget" value={movie?.budget} />
-                <DetailItem label="Box Office" value={movie?.boxOffice} />
+                <DetailItem label="Budget" value={formatAmount(movie?.budget)} />
               </>
             )}
           </div>
@@ -118,18 +157,18 @@ const MovieDetails = ({ movie, mediaType }) => {
 
       {/* Keywords */}
       <div className="mt-6 space-y-3">
-      <h3 className="text-lg font-medium">Keywords</h3>
-      <div className="grid grid-cols-2 md:flex md:flex-wrap gap-3">
-        {generateKeywords().map((keyword) => (
-          <CustomTag
-            key={keyword}
-            text={keyword}
-            color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
-            small={false}
-          />
-        ))}
+        <h3 className="text-lg font-medium">Keywords</h3>
+        <div className="grid grid-cols-2 md:flex md:flex-wrap gap-3">
+          {generateKeywords().map((keyword) => (
+            <CustomTag
+              key={keyword}
+              text={keyword}
+              color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
+              small={false}
+            />
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };
