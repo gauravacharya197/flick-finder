@@ -53,36 +53,36 @@ const MyNav = () => {
     if (searchQuery) router.push("/results");
     dispatch(setQuery(""));
   };
+  const SearchInput = (className='') =>  {
+    return <form onSubmit={handleSearch} className="relative flex-1">
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => dispatch(setQuery(e.target.value))}
+      placeholder="Search Movies/TV"
+      className={`w-full rounded-md px-4 py-1.5 text-black dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
+    />
+    {(query || searchQuery) && (
+      <button
+        type="button"
+        onClick={handleClose}
+        className="absolute right-8 top-1/2 -translate-y-1/2 transform"
+      >
+        <IoMdClose className="text-xl text-primary md:text-2xl" />
+      </button>
+    )}
+    <button
+      type="submit"
+      className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
+      aria-label="Search"
+    >
+      {isPending ? <Spinner /> : <FaSearch className="h-4 w-4 md:h-5 md:w-5" />}
+    </button>
+  </form>
+  }
 
   // Component for search input with close and search buttons
-  const SearchInput = ({ className = "", autoFocus = false }) => (
-    <form onSubmit={handleSearch} className="relative flex-1">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => dispatch(setQuery(e.target.value))}
-        placeholder="Search Movies/TV"
-        className={`w-full rounded-md px-4 py-1.5 text-black dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
-        autoFocus={autoFocus}
-      />
-      {(query || searchQuery) && (
-        <button
-          type="button"
-          onClick={handleClose}
-          className="absolute right-8 top-1/2 -translate-y-1/2 transform"
-        >
-          <IoMdClose className="text-xl text-primary md:text-2xl" />
-        </button>
-      )}
-      <button
-        type="submit"
-        className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
-        aria-label="Search"
-      >
-        {isPending ? <Spinner /> : <FaSearch className="h-4 w-4 md:h-5 md:w-5" />}
-      </button>
-    </form>
-  );
+  
   
   // Filter button component
   const FilterButton = () => (
@@ -149,10 +149,10 @@ const MyNav = () => {
 
           {/* Center: Desktop search bar */}
           <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:block">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 ml-8">
               <FilterButton />
               <div className="relative">
-                <SearchInput className="w-64 lg:w-80 xl:w-96" autoFocus />
+                {SearchInput("w-64 lg:w-80 xl:w-96")} 
               </div>
             </div>
           </div>
@@ -188,7 +188,8 @@ const MyNav = () => {
       >
         <div className="p-2 flex items-center gap-2">
           <FilterButton />
-          <SearchInput autoFocus={showSearch} />
+          {SearchInput()} 
+
           <button
             className="rounded-md p-1.5 text-red-500 hover:bg-gray-700"
             onClick={() => setShowSearch(false)}
