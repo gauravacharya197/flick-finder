@@ -152,7 +152,7 @@ const MyNav = () => {
             <div className="flex items-center gap-2">
               <FilterButton />
               <div className="relative">
-                <SearchInput className="w-64 lg:w-80 xl:w-96" />
+                <SearchInput className="w-64 lg:w-80 xl:w-96" autoFocus />
               </div>
             </div>
           </div>
