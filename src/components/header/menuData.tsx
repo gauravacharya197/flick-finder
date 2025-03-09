@@ -1,6 +1,14 @@
 import { Menu } from "@/types/menu";
 import { AiOutlineHeart } from "react-icons/ai";
-
+import { 
+  FaFilm, 
+  FaTv, 
+  FaFire, 
+  FaStar, 
+  FaPlus, 
+  FaHome
+} from 'react-icons/fa';
+import { FaFilter } from "react-icons/fa6";
 const menuData: Menu[] = [
   // {
   //   id: 1,
@@ -8,30 +16,45 @@ const menuData: Menu[] = [
   //   newTab: false,
   //   path: "/",
   // },
-  
   {
     id: 2,
-    title: "Movies",
+    title: "Home",
     newTab: false,
-    path: "/explore/movies",
-    requireLogin : false
-
+    path: "/",
+    requireLogin: false,
+    icon: FaHome
   },
   {
     id: 3,
-    title: "TV Shows",
+    title: "Movies",
     newTab: false,
-    path: "/explore/tv",
-    requireLogin : false
-
+    path: "/explore/movies",
+    requireLogin: false,
+    icon: FaFilm
   },
   {
     id: 4,
+    title: "TV Shows",
+    newTab: false,
+    path: "/explore/tv",
+    requireLogin: false,
+    icon: FaTv
+  },
+  {
+    id: 5,
     title: "Trending",
     newTab: false,
     path: "/trending",
-    requireLogin : false
-
+    requireLogin: false,
+    icon: FaFire
+  },
+  {
+    id: 6,
+    title: "Filter",
+    newTab: false,
+    path: "/results",
+    requireLogin: false,
+    icon: FaFilter
   },
  
   // {
@@ -39,17 +62,17 @@ const menuData: Menu[] = [
   //   title: "New",
   //   newTab: false,
   //   path: "/new",
-  //   requireLogin : false
-
+  //   requireLogin: false,
+  //   icon: FaPlus
   // },
   
   {
-    id: 5,
+    id: 7,
     title: "Top Rated",
     newTab: false,
     path: "/top-movies-tv",
-    requireLogin : false
-
+    requireLogin: false,
+    icon: FaStar
   },
   // {
   //   id: 5,

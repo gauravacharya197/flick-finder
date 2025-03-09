@@ -34,7 +34,7 @@ export default async function WatchPage({params}:   WatchPageProps) {
   const genre = (await params);
 
   return (
-    <Container>
+    <Container >
       <Watch params={genre}/>
     </Container>
   );

@@ -24,7 +24,7 @@ const UserMenu = () => {
   // if (loading) return ;
 
   const menuItems = [
-    { href: "/history", icon: <FaHistory className="w-4 h-4" />, label: "History" },
+
     isLoggedIn && { href: "/watchlist", icon: <FaBookmark className="w-4 h-4" />, label: "Watchlist" },
     isLoggedIn && { href: "/settings", icon: <IoSettings className="w-4 h-4" />, label: "Settings" },
     isLoggedIn

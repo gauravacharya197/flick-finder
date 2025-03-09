@@ -1,8 +1,9 @@
 export type Menu = {
   id: number;
   title: any;
-  path?: string;
+  path: string;
   newTab: boolean;
   requireLogin : boolean;
   submenu?: Menu[];
+  icon:any
 };

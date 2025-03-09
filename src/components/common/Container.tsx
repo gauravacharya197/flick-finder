@@ -7,7 +7,7 @@ interface ContainerProps {
 
 const Container = ({ children, className = "" }: ContainerProps) => {
   return (
-    <section className="pb-10">
+    <section className="mt-16">
     
     <div>
     <div className={`px-4  ${className}`}>
