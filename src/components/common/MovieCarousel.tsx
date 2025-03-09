@@ -53,7 +53,7 @@ const MovieCarousel = ({
 
   // Adjust container padding for trending variant
   const getContainerClasses = () => {
-    const baseClasses = "px-4 lg:px-12 2xl:px-48";
+    const baseClasses = "px-4 ";
     return variant === 'trending'
       ? `${baseClasses} py-10`
       : `${baseClasses} py-8`;

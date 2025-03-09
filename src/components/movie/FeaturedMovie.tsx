@@ -25,7 +25,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
   const { genres: genresData } = useSelector((state: any) => state.filters);
 
   return (
-    <div className="relative mb-5">
+    <div className="relative">
       {/* Background Image */}
       <div
         className="absolute inset-0 w-full bg-cover bg-center bg-no-repeat"
@@ -41,8 +41,8 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
 
       {/* Content */}
       <div className="relative z-20 h-full">
-        <div className="px-4 lg:px-12 2xl:px-48">
-          <div className="max-w-4xl pt-50 "> {/* Changed pt-32 to pt-40 and added pb-24 */}
+        <div className="px-4">
+          <div className="max-w-4xl pt-40 "> {/* Changed pt-32 to pt-40 and added pb-24 */}
             <h1 className="mb-4 text-4xl font-bold md:text-6xl">
               {movie?.displayTitle}
             </h1>

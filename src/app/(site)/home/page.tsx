@@ -87,7 +87,7 @@ const MovieHomepage = () => {
     <div className="min-h-screen text-white">
       {/* Hero Section */}
       {trendingLoading ? (
-        <div className="px-4 lg:px-12 2xl:px-48">
+        <div className="">
           <Skeleton
             showTitle={false}
             rows={8}
@@ -103,7 +103,7 @@ const MovieHomepage = () => {
                 "50%",
               ] as any
             }
-            className="rounded-lg mt-3"
+            className="rounded-lg mt-3 mb-4"
             titleHeight="h-8"
             rowHeight="h-5"
             spacing="space-y-6"
@@ -140,7 +140,7 @@ const MovieHomepage = () => {
         />
       )}
       {/* Last Year Section */}
-      <div className="px-4 lg:px-12 2xl:px-48">
+      <div className="px-4">
         <GenreGrid genres={genreFilters} />
       </div>
 

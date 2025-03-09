@@ -8,7 +8,7 @@ import NextTopLoader from "nextjs-toploader";
 import ToasterContext from "../context/ToastContext";
 import ScrollToTop from "@/components/scroll";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function SiteProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <Provider store={store}>
@@ -17,7 +17,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             <ToasterContext />
             <NextTopLoader showSpinner={false} color="teal" />
             {children}
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           </ThemeProvider>
        
       <ScrollToTop />
