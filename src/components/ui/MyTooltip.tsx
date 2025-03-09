@@ -15,6 +15,7 @@ interface MyTooltipProps {
   align?: "start" | "center" | "end"
   delayDuration?: number
   className?: string
+  sideOffset?: number
 }
 
 const MyTooltip = ({
@@ -23,6 +24,7 @@ const MyTooltip = ({
   side = "top",
   align = "center",
   delayDuration = 200,
+  sideOffset = 4,
   className,
 }: MyTooltipProps) => {
   return (
@@ -33,6 +35,7 @@ const MyTooltip = ({
         </TooltipTrigger>
         <TooltipContent
           side={side}
+          sideOffset={sideOffset}
           align={align}
           className={cn(
             "bg-[#000000d9] text-white",
