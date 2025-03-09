@@ -43,20 +43,22 @@ const NavItem = ({
         onClick={handleClick}
         className="w-9 h-9 flex items-center justify-center rounded-md"
       >
-        <div
-          className={`w-9 h-9 flex items-center justify-center rounded-md ${isActive ? "bg-primary" : "bg-gray-800/80 hover:bg-gray-700/70"}`}
-        >
-          <MyTooltip
-            sideOffset={32}
+        <MyTooltip
+            sideOffset={8}
             side="right"
             align="center"
             content={item.title}
           >
+        <div
+          className={`w-9 h-9 flex items-center justify-center rounded-md ${isActive ? "bg-primary" : "bg-gray-800/80 hover:bg-gray-700/70"}`}
+        >
+          
             <item.icon
               className={`w-4 h-4 transition-all ${isActive ? "text-white" : "text-gray-300"}`}
             />
-          </MyTooltip>
+         
         </div>
+        </MyTooltip>
       </Link>
     </div>
   ) : (

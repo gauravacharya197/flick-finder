@@ -103,7 +103,7 @@ const MovieHomepage = () => {
                 "50%",
               ] as any
             }
-            className="rounded-lg mt-3 mb-4"
+            className="rounded-lg mt-3 mb-4 px-4"
             titleHeight="h-8"
             rowHeight="h-5"
             spacing="space-y-6"
@@ -129,7 +129,7 @@ const MovieHomepage = () => {
 
       {/* Popular Shows Section */}
       {trendingLoading ? (
-        <CardLoadingSkeleton />
+        <CardLoadingSkeleton  />
       ) : (
         <MovieCarousel
           key="popularshows"

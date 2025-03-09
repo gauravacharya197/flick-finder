@@ -1,14 +1,11 @@
 'use client'
 // components/Sidebar.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { MyTooltip } from '@/components/ui/MyTooltip';
 import menuData from '@/components/header/menuData';
-import Image from 'next/image';
-import { useAuth } from '../context/AuthContext';
-import toast from 'react-hot-toast';
 import NavItem from '@/components/header/NavItem';
 
 const Sidebar = () => {
