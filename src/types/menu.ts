@@ -5,5 +5,7 @@ export type Menu = {
   newTab: boolean;
   requireLogin : boolean;
   submenu?: Menu[];
-  icon:any
+  icon:any;
+  showOnMobile? : boolean;
+
 };

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Square background -->
+  <rect x="10" y="10" width="80" height="80" rx="5" fill="#1a1a2e"/>
+  
+  <!-- Play button triangle -->
+  <path d="M40,30 L70,50 L40,70 Z" fill="#20B2AA"/>
+  
+  <!-- Film strip elements -->
+  <rect x="25" y="25" width="50" height="5" rx="2" fill="#16213e"/>
+  <rect x="25" y="70" width="50" height="5" rx="2" fill="#16213e"/>
+  
+  <!-- Small film perforations -->
+  <circle cx="30" cy="27.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="40" cy="27.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="50" cy="27.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="60" cy="27.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="70" cy="27.5" r="1.5" fill="#20B2AA"/>
+  
+  <circle cx="30" cy="72.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="40" cy="72.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="50" cy="72.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="60" cy="72.5" r="1.5" fill="#20B2AA"/>
+  <circle cx="70" cy="72.5" r="1.5" fill="#20B2AA"/>
+</svg>

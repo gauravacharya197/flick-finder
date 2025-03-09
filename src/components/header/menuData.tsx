@@ -6,16 +6,14 @@ import {
   FaFire, 
   FaStar, 
   FaPlus, 
-  FaHome
+  FaHome,
+  FaBookmark,
+  FaHistory
 } from 'react-icons/fa';
 import { FaFilter } from "react-icons/fa6";
+import { IoSettings } from "react-icons/io5";
 const menuData: Menu[] = [
-  // {
-  //   id: 1,
-  //   title: "Home",
-  //   newTab: false,
-  //   path: "/",
-  // },
+ 
   {
     id: 2,
     title: "Home",
@@ -30,7 +28,8 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/explore/movies",
     requireLogin: false,
-    icon: FaFilm
+    icon: FaFilm,
+    showOnMobile : true,
   },
   {
     id: 4,
@@ -38,7 +37,8 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/explore/tv",
     requireLogin: false,
-    icon: FaTv
+    icon: FaTv,
+    showOnMobile : true,
   },
   {
     id: 5,
@@ -46,7 +46,8 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/trending",
     requireLogin: false,
-    icon: FaFire
+    icon: FaFire,
+    showOnMobile : true,
   },
   {
     id: 6,
@@ -72,16 +73,38 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/top-movies-tv",
     requireLogin: false,
-    icon: FaStar
+    icon: FaStar,
+    showOnMobile : true,
   },
-  // {
-  //   id: 5,
-  //   title: "History",
-  //   newTab: false,
-  //   path: "/history",
-  //   requireLogin : false
+  {
+    id: 10,
+    title: "Watch History",
+    newTab: false,
+    path: "/history",
+    requireLogin : false,
+    icon: FaHistory,
+    showOnMobile : true,
 
-  // },
+  },
+  {
+    id: 8,
+    title: "Watchlist",
+    newTab: false,
+    path: "/watchlist",
+    requireLogin: true,
+    icon: FaBookmark ,
+    showOnMobile : true,
+  },
+  {
+    id: 9,
+    title: "Setting",
+    newTab: false,
+    path: "/settings",
+    requireLogin: true,
+    icon:  IoSettings,
+    showOnMobile : true,
+  },
+
 
  
   // {

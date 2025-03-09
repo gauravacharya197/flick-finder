@@ -1,7 +1,7 @@
 "use client";
 import { useFetchAndDispatchFilters } from "@/hooks/useFetchDispatchFilter";
 import { useEffect } from "react";
-import { Navigation } from "./Navigation";
+import Navigation from "./Navigation";
 
 const Header = () => {
 
