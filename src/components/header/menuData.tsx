@@ -28,7 +28,7 @@ const menuData: Menu[] = [
     id: 3,
     title: "Movies",
     newTab: false,
-    path: "/explore/movies",
+    path: "/explore/movie",
     requireLogin: false,
     icon: FaFilm,
     showOnMobile : true,
