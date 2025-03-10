@@ -1,77 +1,103 @@
-import React, { useState, useRef, JSX } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
+import { FaUser, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import Modal from "@/components/ui/Modal";
+
 import {
-  FaBookmark,
-  FaHistory,
-  FaSignInAlt,
-  FaSignOutAlt,
-  FaUser,
-} from "react-icons/fa";
-import { IoSettings } from "react-icons/io5";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "../ui/primitives/card";
+import { Button } from "../ui/primitives/button";
 
 const UserMenu = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, loading, logout } = useAuth();
-  const menuRef = useRef(null);
+  const { isLoggedIn, user, logout,loading } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleToggleMenu = () => setIsMenuOpen((prev) => !prev);
-  const handleLogout = () => {
-    logout();
-    setIsMenuOpen(false);
+  const handleButtonClick = () => {
+    if (isLoggedIn) setModalOpen(true);
   };
 
-  // if (loading) return ;
+  const handleCloseModal = () => setModalOpen(false);
+  const handleLogout = () => {
+    logout();
+    setModalOpen(false);
+  };
 
-  const menuItems = [
-
-   isLoggedIn
-      ? { href: "#", onClick: handleLogout, icon: <FaSignOutAlt className="w-4 h-4" />, label: "Logout" }
-      : { href: "/auth/login", icon: <FaSignInAlt className="w-4 h-4" />, label: "Login" },
-  ].filter((item): item is { href: string; icon: JSX.Element; label: string; onClick?: () => void } => Boolean(item));
-
+  // Get user's first letter if logged in
+  const userInitial = isLoggedIn && user?.name ? user.name.charAt(0).toUpperCase() : null;
+  if (loading)  return <></>
   return (
-    <div className="relative" ref={menuRef} 
-    onMouseEnter={()=>setIsMenuOpen(true)}
-    onMouseLeave={()=>setIsMenuOpen(false)}>
-      <button
-        className="flex items-center gap-3 text-primary transition-colors hover:text-primary-400"
-        aria-expanded={isMenuOpen}
-        aria-haspopup="true"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-
-
-        
-      >
-        <FaUser className="text-lg" />
-        <svg
-          className={`h-3 w-3 fill-waterloo transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""}`}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
+    <div className="relative" ref={menuRef}>
+      {isLoggedIn ? (
+        <button
+          className="flex items-center hover:scale-105"
+          onClick={handleButtonClick}
         >
-          <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-        </svg>
-      </button>
+          <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-teal-500 shadow-md">
+            <span className="text-black text-lg font-bold">{userInitial}</span>
+          </div>
+        </button>
+      ) : (
+        <Link href="/auth/login" className="flex items-center hover:scale-105">
+  <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-teal-500 shadow-md">
+    <FaUser className="text-black text-xs sm:text-base" />
+  </div>
+</Link>
+      )}
 
-      <ul
-        className={`absolute right-0 z-50 mt-2 w-40 rounded-md bg-[#111827] text-white shadow-lg transition-all duration-300 ${
-          isMenuOpen
-            ? "visible translate-y-0 opacity-100"
-            : "invisible -translate-y-2 opacity-0"
-        }`}
+      <Modal 
+        open={modalOpen} 
+        onCancel={handleCloseModal} 
+        width={320}
+        centered
+        className="p-0 rounded-lg overflow-hidden"
       >
-        {menuItems.map(({ href, onClick, icon, label }, index) => (
-          <Link
-            key={index}
-            href={href}
-            onClick={onClick}
-            className="flex items-center gap-3 px-4 py-2 transition duration-300 hover:bg-gray-800 hover:text-primary"
-          >
-            {icon}
-            <span>{label}</span>
-          </Link>
-        ))}
-      </ul>
+        <Card className="border-0 shadow-none">
+          <CardHeader className="px-4 pt-4 pb-2">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-teal-500 shadow-sm">
+                <span className="text-black text-lg font-bold">{userInitial}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <CardTitle className="text-lg truncate">{user?.name}</CardTitle>
+                <CardDescription className="text-xs mt-0.5 truncate">{user?.email}</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+            
+          <CardContent className="px-7 py-3">
+            <div className="flex items-center gap-2 py-1">
+              <span className="text-sm text-white">Login Mode: {user?.authenticationProvider}</span>
+            </div>
+          </CardContent>
+            
+          <CardFooter className="flex justify-between items-center px-4 py-3">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleCloseModal}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              Close
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleLogout}
+              className="text-red-500 hover:text-red-700 flex items-center gap-1"
+            >
+              <FaSignOutAlt size={14} />
+              Logout
+            </Button>
+          </CardFooter>
+        </Card>
+      </Modal>
     </div>
   );
 };
