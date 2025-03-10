@@ -5,7 +5,7 @@ import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle } from "react-icons/fa";
 const Footer = () => {
 
   return (
-    <footer className="border-t border-stroke bg-white dark:border-strokedark dark:bg-background py-6">
+    <footer className="mt-8 border-t border-stroke bg-white dark:border-strokedark dark:bg-background py-6">
       <div className="container mx-auto px-4 lg:px-4 2xl:px-4">
         {/* Main Footer Content */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">

@@ -70,7 +70,7 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
     );
   }
   
-  // Render mobile variant
+  // Render mobile variant (without tooltip)
   return (
     <Link
       href={linkHref}
@@ -78,17 +78,9 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
       onClick={handleClick}
       aria-label={item.title}
     >
-      <MyTooltip
-              sideOffset={8}
-              side="right"
-              align="center"
-              content={item.title}
-            >
       <div className={getContainerClass()}>
         <item.icon />
       </div>
-      </MyTooltip>
-     
     </Link>
   );
 };

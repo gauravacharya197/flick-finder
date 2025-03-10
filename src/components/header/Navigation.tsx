@@ -182,29 +182,29 @@ const Navigation = () => {
         }`}
         aria-hidden={!menuOpen}
       >
-        <div className="flex flex-col h-full py-2">
-          <ul className="flex-1">
-            {menuData.filter(x=>x.showOnMobile).map((item) => (
-              <li key={item.id} className="mb-1 relative group">
-               <NavItem
-                  key={item.title}
-                  item={item}
-                  closeMenu={()=>setMenuOpen(false)}
-                  isSidebar={false} // Use mobile styling
-                />
-              </li>
-            ))}
-          </ul>
-          <div className="mt-auto mx-1 mb-2">
-            <button 
-              onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-center w-full h-10 rounded-md bg-primary text-black hover:bg-opacity-90 transition-colors"
-              aria-label="Close Menu"
-            >
-              <MdClose />
-            </button>
-          </div>
-        </div>
+       <div className="flex flex-col h-full py-2">
+  <ul className="flex-1">
+    {menuData.filter((x) => x.showOnMobile).map((item) => (
+      <li key={item.id} className="mb-1 relative group">
+        <NavItem
+          key={item.title}
+          item={item}
+          closeMenu={() => setMenuOpen(false)}
+          isSidebar={false} // Use mobile styling
+        />
+      </li>
+    ))}
+  </ul>
+  <div className="mt-auto mx-1 mb-2 flex items-center justify-center">
+    <button
+      onClick={() => setMenuOpen(false)}
+      className="w-9 h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
+      aria-label="Close Menu"
+    >
+      <MdClose className="w-5 h-5 text-white" />
+    </button>
+  </div>
+</div>
       </div>
     </nav>
   );
