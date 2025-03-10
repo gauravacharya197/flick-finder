@@ -10,7 +10,7 @@ interface CustomTagProps {
 export const CustomTag: React.FC<CustomTagProps> = ({ text, small = true,color="bg-primary" }) => {
   return (
 
-<span className={` rounded ${color} px-2 py-1 ${small? 'text-xs':''}`}>{capitalizeFirstLetter(text)}</span>
+<span className={` rounded ${color} px-2 py-1 ${small? 'text-xs':''} text-white`}>{capitalizeFirstLetter(text)}</span>
 
   );
 };
