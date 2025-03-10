@@ -5,7 +5,7 @@ import { siteConfig } from '@/config/siteConfig';
 import { Metadata } from 'next';
 import React, {  } from 'react'
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} - Discover Trending Movies/TV Series`,
+  title: `${siteConfig.siteName} - Find Trending Movies/TV Series`,
   description: siteConfig.description,
   // other metadata
 };

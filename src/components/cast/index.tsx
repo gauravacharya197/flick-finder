@@ -31,7 +31,7 @@ export const Cast: React.FC<CastProps> = ({ castId }) => {
           .map(credit => credit.displayTitle)
           .join(', ')
       }. ${castInfo.data.knownForDepartment} since ${new Date(castInfo.data.birthday).getFullYear()}.`.slice(0, 160) :
-      'Discover detailed actor profiles, complete filmographies, and career information.',
+      'Find detailed actor profiles, complete filmographies, and career information.',
     openGraph: {
       title: castInfo?.data?.name,
       description: castInfo?.data?.biography?.slice(0, 160),

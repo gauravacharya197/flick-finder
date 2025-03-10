@@ -8,6 +8,7 @@ import { useAuth } from "@/app/context/AuthContext";
 import { addToWatchHistory } from "@/utils/addToWatchHistory";
 import ServerSelector from "./ServerSelector";
 import { getVideoSourceUrl } from "@/utils/getVideoSourceUrl";
+import useDevToolsProtection from "@/hooks/useDevToolProtection";
 
 interface PlayerSectionProps {
   movie: any;
@@ -33,6 +34,7 @@ const PlayerSection = ({
     return 1;
   });
   const isReleased = new Date(movie.released) <= new Date();
+  useDevToolsProtection(isPlaying);
 
   // Update localStorage when server changes
   useEffect(() => {

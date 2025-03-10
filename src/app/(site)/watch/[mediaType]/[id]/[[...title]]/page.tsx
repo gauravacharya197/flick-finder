@@ -22,7 +22,7 @@ export  async function generateMetadata({params}:   WatchPageProps) {
 
   const description = title 
     ? `Watch ${capitalizedTitle} online. Explore a wide selection of free movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`
-    : `Discover and watch movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`;
+    : `Find and watch movies and TV shows on ${siteConfig.siteName}. ${siteConfig.description}`;
 
   return {
     title: `${capitalizedTitle} - Watch ${capitalizedTitle} Online | ${siteConfig.siteName}`,
