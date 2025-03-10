@@ -19,13 +19,16 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
   
   // Event handler with useCallback for better performance
   const handleClick = useCallback((e) => {
-    if (closeMenu) closeMenu();
+   
     
     if (isRestricted) {
       e.preventDefault();
       toast.error("You must login to use this feature", {
         position: "bottom-center",
       });
+    }
+    else{
+      if (closeMenu) closeMenu();
     }
   }, [closeMenu, isRestricted]);
   
