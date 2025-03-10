@@ -46,9 +46,9 @@ const Signup = () => {
   return (
     <>
       {/* <!-- ===== SignUp Form Start ===== --> */}
-      <section className="pb-10 md:pt-2 xl:pt-5">
-        <div className="relative z-1 mx-auto max-w-c-1016 px-7.5 pb-7.5 pt-10 lg:px-15 lg:pt-15 xl:px-20 xl:pt-20">
-          <motion.div
+      <section className="pb-10 ">
+      <div className="relative z-1 mx-auto max-w-c-1016 px-4 pb-7.5  sm:px-7.5 lg:px-15 lg:pt-10 xl:px-20 xl:pt-10">
+      <motion.div
             variants={{
               hidden: {
                 opacity: 0,

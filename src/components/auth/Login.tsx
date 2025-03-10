@@ -77,8 +77,8 @@ const Login = ({ code }: { code?: string }) => {
   return (
     <>
       {/* <!-- ===== Login Form Start ===== --> */}
-      <section className="pb-10 md:pt-2 xl:pt-1">
-        <div className="relative z-1 mx-auto max-w-c-1016 px-4 pb-7.5 pt-10 sm:px-7.5 lg:px-15 lg:pt-15 xl:px-20 xl:pt-20">
+      <section className="pb-10 ">
+        <div className="relative z-1 mx-auto max-w-c-1016 px-4 pb-7.5  sm:px-7.5 lg:px-15 lg:pt-10 xl:px-20 xl:pt-10">
           <div className="absolute left-0 top-0 -z-1 h-2/3 w-full rounded-lg"></div>
 
           <motion.div

@@ -74,7 +74,7 @@ const Footer = () => {
           whileInView="visible"
           transition={{ duration: 0.5, delay: 0.2 }}
           viewport={{ once: true }}
-          className="border-t border-gray-200 dark:border-gray-800 pt-4 mb-4"
+          className="border-t border-gray-200 dark:border-gray-800 pt-2 mb-2"
         >
           <div className="flex items-start gap-2">
             <FaInfoCircle className="text-primary mt-1 flex-shrink-0" size={16} />
