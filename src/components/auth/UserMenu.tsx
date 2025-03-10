@@ -15,7 +15,7 @@ import {
 import { Button } from "../ui/primitives/button";
 
 const UserMenu = () => {
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user, logout,loading } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +31,7 @@ const UserMenu = () => {
 
   // Get user's first letter if logged in
   const userInitial = isLoggedIn && user?.name ? user.name.charAt(0).toUpperCase() : null;
-
+  if (loading)  return <></>
   return (
     <div className="relative" ref={menuRef}>
       {isLoggedIn ? (
@@ -39,8 +39,8 @@ const UserMenu = () => {
           className="flex items-center hover:scale-105"
           onClick={handleButtonClick}
         >
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-teal-500 shadow-md">
-            <span className="text-black text-sm font-bold">{userInitial}</span>
+          <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-teal-500 shadow-md">
+            <span className="text-black text-lg font-bold">{userInitial}</span>
           </div>
         </button>
       ) : (
@@ -73,7 +73,7 @@ const UserMenu = () => {
             
           <CardContent className="px-7 py-3">
             <div className="flex items-center gap-2 py-1">
-              <span className="text-sm text-white">Login Type: {user?.authenticationProvider}</span>
+              <span className="text-sm text-white">Login Mode: {user?.authenticationProvider}</span>
             </div>
           </CardContent>
             
