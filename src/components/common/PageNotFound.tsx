@@ -6,7 +6,7 @@ import RootLayout from "@/app/layout";
 
 export const PageNotFound = () => {
   return (
-      <div className="md:pt-20 bg-background flex flex-col items-center justify-center p-4">
+    <div className="pt-20 md:pt-10 bg-background flex flex-col items-center justify-center p-4">
         <div className="text-center max-w-lg">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -50,14 +50,14 @@ export const PageNotFound = () => {
               href="/" 
               className="flex items-center text-sm bg-primary-500 text-white px-6 py-3 rounded-full hover:bg-primary-600 transition"
             >
-              <FaHome className="mr-2"/> Return to Base
+              <FaHome /> 
             </Link>
             
             <Link 
               href="/explore/movies" 
               className=" text-sm flex items-center bg-primary-500 text-white px-6 py-3 rounded-full hover:bg-primary-600 transition"
             >
-              <FaRocket className="mr-2"/> Explore Universe
+              <FaRocket /> 
             </Link>
           </div>
         </div>
