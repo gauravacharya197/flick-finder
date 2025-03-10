@@ -3,11 +3,13 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Register } from "@/services/AccountService";
 import { googleHandler } from "@/utils/authUtils";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { FaGoogle, FaArrowRight, FaCheck } from "react-icons/fa";
+import Spin from "../common/Spin";
 
 const Signup = () => {
   const {
@@ -20,52 +22,38 @@ const Signup = () => {
   const baseUrl = process.env.NEXT_PUBLIC_APP_BASE_URL;
   const { login } = useAuth();
 
+  const registerMutation = useMutation({
+    mutationFn: (data) => Register(data),
+    onSuccess: (res) => {
+      login(res.data);
+      router.push("/");
+      toast.success("Registration successful", { position: "bottom-center" });
+    },
+    onError: (err: any) => {
+      toast.error(
+        err?.response?.data?.message ||
+          "An error occurred. Please try again.",
+        { position: "bottom-center" },
+      );
+    },
+  });
+
   const onSubmit = (data) => {
     console.log(data);
-    Register(data)
-      .then((res) => {
-        login(res.data); // Using the auth context login
-        router.push("/");
-        toast.success("Registration successful", { position: "bottom-center" });
-      })
-      .catch((err) => {
-        console.log(err);
-
-        toast.error(
-          err?.response?.data?.message ||
-            "An error occurred. Please try again.",
-          { position: "bottom-center" },
-        );
-      });
+    registerMutation.mutate(data);
   };
 
   return (
     <>
       {/* <!-- ===== SignUp Form Start ===== --> */}
-      <section className="pb-10  md:pt-2 xl:pt-5">
-        <div className="relative z-1 mx-auto max-w-c-1016 px-7.5 pb-7.5 pt-10 lg:px-15 lg:pt-15 xl:px-20 xl:pt-20">
-          <div className="absolute bottom-17.5 left-0 -z-1 h-1/3 w-full">
-            <Image
-              src="/images/shape/shape-dotted-light.svg"
-              alt="Dotted"
-              className="dark:hidden"
-              fill
-            />
-            <Image
-              src="/images/shape/shape-dotted-dark.svg"
-              alt="Dotted"
-              className="hidden dark:block"
-              fill
-            />
-          </div>
-
-          <motion.div
+      <section className="pb-10 ">
+      <div className="relative z-1 mx-auto max-w-c-1016 px-4 pb-7.5  sm:px-7.5 lg:px-15 lg:pt-10 xl:px-20 xl:pt-10">
+      <motion.div
             variants={{
               hidden: {
                 opacity: 0,
                 y: -20,
               },
-
               visible: {
                 opacity: 1,
                 y: 0,
@@ -82,47 +70,17 @@ const Signup = () => {
             </h2>
 
             <div className="flex items-center gap-4 sm:gap-8">
-                <button
-                  onClick={() => googleHandler(`${baseUrl}auth/login`)}
-                  aria-label="sign with google"
-                  className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-4 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none sm:px-6"
-                >
-                  <span className="mr-3">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clipPath="url(#clip0_95:967)">
-                        <path
-                          d="M20.0001 10.2216C20.0122 9.53416 19.9397 8.84776 19.7844 8.17725H10.2042V11.8883H15.8277C15.7211 12.539 15.4814 13.1618 15.1229 13.7194C14.7644 14.2769 14.2946 14.7577 13.7416 15.1327L13.722 15.257L16.7512 17.5567L16.961 17.5772C18.8883 15.8328 19.9997 13.266 19.9997 10.2216"
-                          fill="#4285F4"
-                        />
-                        <path
-                          d="M10.2042 20.0001C12.9592 20.0001 15.2721 19.1111 16.9616 17.5778L13.7416 15.1332C12.88 15.7223 11.7235 16.1334 10.2042 16.1334C8.91385 16.126 7.65863 15.7206 6.61663 14.9747C5.57464 14.2287 4.79879 13.1802 4.39915 11.9778L4.27957 11.9878L1.12973 14.3766L1.08856 14.4888C1.93689 16.1457 3.23879 17.5387 4.84869 18.512C6.45859 19.4852 8.31301 20.0005 10.2046 20.0001"
-                          fill="#34A853"
-                        />
-                        <path
-                          d="M4.39911 11.9777C4.17592 11.3411 4.06075 10.673 4.05819 9.99996C4.0623 9.32799 4.17322 8.66075 4.38696 8.02225L4.38127 7.88968L1.19282 5.4624L1.08852 5.51101C0.372885 6.90343 0.00012207 8.4408 0.00012207 9.99987C0.00012207 11.5589 0.372885 13.0963 1.08852 14.4887L4.39911 11.9777Z"
-                          fill="#FBBC05"
-                        />
-                        <path
-                          d="M10.2042 3.86663C11.6663 3.84438 13.0804 4.37803 14.1498 5.35558L17.0296 2.59996C15.1826 0.901848 12.7366 -0.0298855 10.2042 -3.6784e-05C8.3126 -0.000477834 6.45819 0.514732 4.8483 1.48798C3.2384 2.46124 1.93649 3.85416 1.08813 5.51101L4.38775 8.02225C4.79132 6.82005 5.56974 5.77231 6.61327 5.02675C7.6568 4.28118 8.91279 3.87541 10.2042 3.86663Z"
-                          fill="#EB4335"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_95:967">
-                          <rect width="20" height="20" fill="white" />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </span>
-                  Continue with Google
-                </button>
-              </div>
+              <button
+                onClick={() => googleHandler(`${baseUrl}auth/login`)}
+                aria-label="sign with google"
+                className="text-body-color dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border border-stroke bg-[#f8f8f8] px-4 py-3 text-base outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none sm:px-6"
+              >
+                <span className="mr-3">
+                  <FaGoogle className="text-primary" size={20} />
+                </span>
+                Continue with Google
+              </button>
+            </div>
 
             <div className="mb-10 flex items-center justify-center">
               <span className="dark:bg-stroke-dark hidden h-[1px] w-full max-w-[200px] bg-stroke dark:bg-strokedark sm:block"></span>
@@ -133,82 +91,92 @@ const Signup = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-7.5 flex flex-col gap-7.5 lg:mb-12.5">
-                <input
-                  {...register("firstName", {
-                    required: "First name is required",
-                  })}
-                  type="text"
-                  placeholder="First name"
-                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
-                />
-                {errors.firstName && (
-                  <p className="text-red-500">
-                    {errors?.firstName?.message?.toString()}
-                  </p>
-                )}
+              <div className="mb-7.5 flex flex-col gap-2.5 lg:mb-12.5">
+                <div className="flex flex-col">
+                  <input
+                    {...register("firstName", {
+                      required: "First name is required",
+                    })}
+                    type="text"
+                    placeholder="First name"
+                    className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                  />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors?.firstName?.message?.toString()}
+                    </p>
+                  )}
+                </div>
 
-                <input
-                  {...register("lastName", {
-                    required: "Last name is required",
-                  })}
-                  type="text"
-                  placeholder="Last name"
-                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
-                />
-                {errors.lastName && (
-                  <p className="text-red-500">
-                    {errors.lastName?.message?.toString()}
-                  </p>
-                )}
+                <div className="flex flex-col mt-5">
+                  <input
+                    {...register("lastName", {
+                      required: "Last name is required",
+                    })}
+                    type="text"
+                    placeholder="Last name"
+                    className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                  />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.lastName?.message?.toString()}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <div className="mb-7.5 flex flex-col gap-7.5">
-                <input
-                  {...register("email", { required: "Email is required" })}
-                  type="email"
-                  placeholder="Email address"
-                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
-                />
-                {errors.email && (
-                  <p className="text-red-500">
-                    {errors.email.message?.toString()}
-                  </p>
-                )}
+              <div className="mb-7.5 flex flex-col gap-2.5">
+                <div className="flex flex-col">
+                  <input
+                    {...register("email", { required: "Email is required" })}
+                    type="email"
+                    placeholder="Email address"
+                    className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                  />
+                  {errors.email && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.email.message?.toString()}
+                    </p>
+                  )}
+                </div>
 
-                <input
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters long",
-                    },
-                  })}
-                  type="password"
-                  placeholder="Password"
-                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
-                />
-                {errors.password && (
-                  <p className="text-red-500">
-                    {errors.password.message?.toString()}
-                  </p>
-                )}
+                <div className="flex flex-col mt-5">
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters long",
+                      },
+                    })}
+                    type="password"
+                    placeholder="Password"
+                    className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                  />
+                  {errors.password && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.password.message?.toString()}
+                    </p>
+                  )}
+                </div>
 
-                <input
-                  {...register("confirmPassword", {
-                    required: "Confirm password is required",
-                    validate: (value) =>
-                      value === watch("password") || "Passwords do not match",
-                  })}
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
-                />
-                {errors.confirmPassword && (
-                  <p className="text-red-500">
-                    {errors.confirmPassword.message?.toString()}
-                  </p>
-                )}
+                <div className="flex flex-col mt-5">
+                  <input
+                    {...register("confirmPassword", {
+                      required: "Confirm password is required",
+                      validate: (value) =>
+                        value === watch("password") || "Passwords do not match",
+                    })}
+                    type="password"
+                    placeholder="Confirm Password"
+                    className="w-full border-b border-stroke bg-transparent pb-2.5 focus:border-waterloo focus:placeholder:text-black focus-visible:outline-none dark:border-strokedark dark:focus:border-manatee dark:focus:placeholder:text-white"
+                  />
+                  {errors.confirmPassword && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.confirmPassword.message?.toString()}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-10 md:justify-between xl:gap-15">
@@ -219,48 +187,31 @@ const Signup = () => {
                     className="peer sr-only"
                   />
                   <span className="group mt-1 flex h-5 min-w-[20px] items-center justify-center rounded border-gray-300 bg-gray-100 text-blue-600 peer-checked:bg-primary dark:border-gray-600 dark:bg-gray-700">
-                    <svg
-                      className="opacity-0 peer-checked:group-[]:opacity-100"
-                      width="10"
-                      height="8"
-                      viewBox="0 0 10 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M9.70704 0.792787C9.89451 0.980314 9.99983 1.23462 9.99983 1.49979C9.99983 1.76495 9.89451 2.01926 9.70704 2.20679L4.70704 7.20679C4.51951 7.39426 4.26521 7.49957 4.00004 7.49957C3.73488 7.49957 3.48057 7.39426 3.29304 7.20679L0.293041 4.20679C0.110883 4.01818 0.0100885 3.76558 0.0123669 3.50339C0.0146453 3.24119 0.119814 2.99038 0.305222 2.80497C0.490631 2.61956 0.741443 2.51439 1.00364 2.51211C1.26584 2.50983 1.51844 2.61063 1.70704 2.79279L4.00004 5.08579L8.29304 0.792787C8.48057 0.605316 8.73488 0.5 9.00004 0.5C9.26521 0.5 9.51951 0.605316 9.70704 0.792787Z"
-                        fill="white"
-                      />
-                    </svg>
+                    <FaCheck className="opacity-0 peer-checked:group-[]:opacity-100" size={10} />
                   </span>
                   <label
                     htmlFor="default-checkbox"
-                    className="flex max-w-[425px] cursor-pointer select-none  pl-3"
+                    className="flex max-w-[425px] cursor-pointer select-none pl-3"
                   >
                     Keep me signed in
                   </label>
                 </div>
 
                 <button
+                  disabled={registerMutation.isPending}
                   aria-label="signup with email and password"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-black px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  Create Account
-                  <svg
-                    className="fill-white"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.4767 6.16664L6.00668 1.69664L7.18501 0.518311L13.6667 6.99998L7.18501 13.4816L6.00668 12.3033L10.4767 7.83331H0.333344V6.16664H10.4767Z"
-                      fill=""
-                    />
-                  </svg>
+                  {registerMutation.isPending ? (
+                    <>
+                                         <Spin />
+                    </>
+                  ) : (
+                    <>
+                      Create Account
+                      <FaArrowRight className="fill-white" size={14} />
+                    </>
+                  )}
                 </button>
               </div>
 

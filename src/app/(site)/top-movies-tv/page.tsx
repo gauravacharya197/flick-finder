@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} - Discover Top Rated List of Movies/TV Series`,
+  title: `${siteConfig.siteName} - Find Top Rated List of Movies/TV Series`,
   description: siteConfig.description,
   // other metadata
 };

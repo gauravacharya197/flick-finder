@@ -1,37 +1,61 @@
 import { Menu } from "@/types/menu";
 import { AiOutlineHeart } from "react-icons/ai";
-
+import { 
+  FaFilm, 
+  FaTv, 
+  FaFire, 
+  FaStar, 
+  FaPlus, 
+  FaHome,
+  FaBookmark,
+  FaHistory
+} from 'react-icons/fa';
+import { FaFilter } from "react-icons/fa6";
+import { IoSettings } from "react-icons/io5";
 const menuData: Menu[] = [
-  // {
-  //   id: 1,
-  //   title: "Home",
-  //   newTab: false,
-  //   path: "/",
-  // },
-  
+ 
   {
     id: 2,
-    title: "Movies",
+    title: "Home",
     newTab: false,
-    path: "/explore/movies",
-    requireLogin : false
-
+    path: "/",
+    requireLogin: false,
+    icon: FaHome
   },
   {
     id: 3,
-    title: "TV Shows",
+    title: "Movies",
     newTab: false,
-    path: "/explore/tv",
-    requireLogin : false
-
+    path: "/explore/movies",
+    requireLogin: false,
+    icon: FaFilm,
+    showOnMobile : true,
   },
   {
     id: 4,
+    title: "TV Shows",
+    newTab: false,
+    path: "/explore/tv",
+    requireLogin: false,
+    icon: FaTv,
+    showOnMobile : true,
+  },
+  {
+    id: 5,
     title: "Trending",
     newTab: false,
     path: "/trending",
-    requireLogin : false
-
+    requireLogin: false,
+    icon: FaFire,
+    showOnMobile : true,
+  },
+  {
+    id: 6,
+    title: "Filter",
+    newTab: false,
+    path: "/results",
+    requireLogin: false,
+    icon: FaFilter
   },
  
   // {
@@ -39,26 +63,48 @@ const menuData: Menu[] = [
   //   title: "New",
   //   newTab: false,
   //   path: "/new",
-  //   requireLogin : false
-
+  //   requireLogin: false,
+  //   icon: FaPlus
   // },
   
   {
-    id: 5,
+    id: 7,
     title: "Top Rated",
     newTab: false,
     path: "/top-movies-tv",
-    requireLogin : false
+    requireLogin: false,
+    icon: FaStar,
+    showOnMobile : true,
+  },
+  {
+    id: 10,
+    title: "Watch History",
+    newTab: false,
+    path: "/history",
+    requireLogin : false,
+    icon: FaHistory,
+    showOnMobile : true,
 
   },
-  // {
-  //   id: 5,
-  //   title: "History",
-  //   newTab: false,
-  //   path: "/history",
-  //   requireLogin : false
+  {
+    id: 8,
+    title: "Watchlist",
+    newTab: false,
+    path: "/watchlist",
+    requireLogin: true,
+    icon: FaBookmark ,
+    showOnMobile : true,
+  },
+  {
+    id: 9,
+    title: "Setting",
+    newTab: false,
+    path: "/settings",
+    requireLogin: true,
+    icon:  IoSettings,
+    showOnMobile : true,
+  },
 
-  // },
 
  
   // {

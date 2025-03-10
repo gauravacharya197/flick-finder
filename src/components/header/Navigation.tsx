@@ -9,14 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setQuery } from "@/redux/movies/advanceSearchSlice";
 import useClickOutside from "@/hooks/useClickOutside";
-
 import UserMenu from "../auth/UserMenu";
 import { SiteName } from "../common/SiteName";
 import { RobotSearchModal } from "../common/RobotSearchModal";
 import Spinner from "../common/Spin";
 import menuData from "./menuData";
+import NavItem from "./NavItem";
 
-const MyNav = () => {
+const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const { query } = useSelector((state: RootState) => state.advanceSearch);
@@ -25,7 +25,6 @@ const MyNav = () => {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("query");
   const [isPending, startTransition] = useTransition();
-  
   const menuButtonRef = useRef<any>(null);
   const menuContentRef = useRef<HTMLDivElement>(null);
   const searchBarRef = useRef<HTMLDivElement>(null);
@@ -41,7 +40,7 @@ const MyNav = () => {
   
   // Close menu when clicking outside
   useClickOutside([menuButtonRef, menuContentRef], () => setMenuOpen(false), menuOpen);
-
+  
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim()) {
@@ -53,36 +52,36 @@ const MyNav = () => {
     if (searchQuery) router.push("/results");
     dispatch(setQuery(""));
   };
-  const SearchInput = (className='') =>  {
-    return <form onSubmit={handleSearch} className="relative flex-1">
-    <input
-      type="text"
-      value={query}
-      onChange={(e) => dispatch(setQuery(e.target.value))}
-      placeholder="Search Movies/TV"
-      className={`w-full rounded-md px-4 py-1.5 text-black dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
-    />
-    {(query || searchQuery) && (
-      <button
-        type="button"
-        onClick={handleClose}
-        className="absolute right-8 top-1/2 -translate-y-1/2 transform"
-      >
-        <IoMdClose className="text-xl text-primary md:text-2xl" />
-      </button>
-    )}
-    <button
-      type="submit"
-      className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
-      aria-label="Search"
-    >
-      {isPending ? <Spinner /> : <FaSearch className="h-4 w-4 md:h-5 md:w-5" />}
-    </button>
-  </form>
-  }
-
-  // Component for search input with close and search buttons
   
+  const SearchInput = (className = '') =>  {
+    return (
+      <form onSubmit={handleSearch} className="relative flex-1">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => dispatch(setQuery(e.target.value))}
+          placeholder="Search Movies/TV"
+          className={`w-full rounded-md px-4 py-1.5 text-black dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
+        />
+        {(query || searchQuery) && (
+          <button
+            type="button"
+            onClick={handleClose}
+            className="absolute right-8 top-1/2 -translate-y-1/2 transform"
+          >
+            <IoMdClose className="text-xl text-primary md:text-2xl" />
+          </button>
+        )}
+        <button
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 transform text-primary"
+          aria-label="Search"
+        >
+          {isPending ? <Spinner /> : <FaSearch className="h-4 w-4 md:h-5 md:w-5" />}
+        </button>
+      </form>
+    );
+  }
   
   // Filter button component
   const FilterButton = () => (
@@ -97,14 +96,15 @@ const MyNav = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background">
-      <div className="px-3 sm:px-4 lg:px-8 xl:px-12 2xl:px-48">
+    <nav className="fixed top-0 right-0 md:w-[calc(100%-3.5rem)] md:ml-14 px-4 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background w-full">
+      {/* //remove max-w constrain for full width */}
+      <div className="max-w-screen-3xl mx-auto">
         <div className="flex h-12 items-center justify-between">
-          {/* Left section: Menu, Logo, Dropdown */}
-          <div className="relative flex items-center gap-2 sm:gap-3">
+          {/* Left section: Menu, Logo */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <button
               ref={menuButtonRef}
-              className="rounded-md p-1 hover:bg-gray-800 dark:hover:bg-gray-700"
+              className="rounded-md p-1 hover:bg-gray-800 dark:hover:bg-gray-700 md:hidden"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle Menu"
             >
@@ -120,60 +120,35 @@ const MyNav = () => {
             <Link href="/" className="rounded-md bg-primary px-2 py-1 font-bold text-black sm:px-3 md:text-xl">
               <SiteName />
             </Link>
-
-            {/* SEO-friendly menu links - always in the DOM but visually hidden when not active */}
-            <div
-              ref={menuContentRef}
-              className={`absolute left-0 top-full z-40 rounded-md bg-black bg-opacity-95 shadow-lg transition-all duration-100 dark:bg-background ${
-                menuOpen ? "visible opacity-100" : "invisible -translate-y-2 opacity-0 pointer-events-none"
-              }`}
-              aria-hidden={!menuOpen}
-            >
-              <ul className="space-y-3 pt-3">
-                {menuData.map((item) => (
-                  <li key={item.id}>
-                    <Link
-                      href={item.path || "#"}
-                      className="block px-4 py-1 text-white hover:bg-gray-800 hover:text-primary dark:hover:bg-gray-700"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      {item.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          </div>
+          
+          {/* Center: Search bar with responsive width */}
+          <div className="hidden md:flex items-center gap-1 mx-auto">
+            <div className="w-80 lg:w-96">
+              {SearchInput()}
+            </div>
+            <div className="">
+              <RobotSearchModal />
+            </div>
+          </div>
+          
+          {/* Right section: User menu */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Mobile RobotSearchModal */}
+            <div className="md:hidden">
+              <RobotSearchModal />
             </div>
             
-            <RobotSearchModal />
-          </div>
-
-          {/* Center: Desktop search bar */}
-          <div className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform md:block">
-            <div className="flex items-center gap-1 ml-8">
-              <FilterButton />
-              <div className="relative">
-                {SearchInput("w-64 lg:w-80 xl:w-96")} 
-              </div>
-            </div>
-          </div>
-          
-          {/* Spacer for layout */}
-          <div className="hidden md:block md:flex-1"></div>
-          
-          {/* Right: User menu and mobile search toggle */}
-          <div className="flex items-center gap-2 md:hidden">
+            {/* Mobile search toggle */}
             <button
-              className="rounded-md p-1.5 hover:bg-gray-800 dark:hover:bg-gray-700"
+              className="rounded-md p-1.5 hover:bg-gray-800 dark:hover:bg-gray-700 md:hidden"
               onClick={() => setShowSearch(!showSearch)}
               aria-label="Toggle Search"
             >
               <FaSearch className="h-5 w-5 text-primary" />
             </button>
-            <UserMenu />
-          </div>
-          
-          {/* Desktop user menu */}
-          <div className="hidden items-center gap-4 md:flex">
+            
+            {/* User menu (always visible) */}
             <UserMenu />
           </div>
         </div>
@@ -183,13 +158,12 @@ const MyNav = () => {
       <div 
         ref={searchBarRef}
         className={`absolute left-0 right-0 z-40 bg-white bg-opacity-90 overflow-hidden transition-all duration-100 transform origin-top dark:bg-background md:hidden ${
-          showSearch ? "max-h-20 opacity-100" : "max-h-0 opacity-0 -translate-y-2 scale-y-0"
+          showSearch ? "max-h-20 opacity-100" : "max-h-0 opacity-0 "
         }`}
       >
         <div className="p-2 flex items-center gap-2">
           <FilterButton />
           {SearchInput()} 
-
           <button
             className="rounded-md p-1.5 text-red-500 hover:bg-gray-700"
             onClick={() => setShowSearch(false)}
@@ -199,19 +173,41 @@ const MyNav = () => {
           </button>
         </div>
       </div>
-
-      {/* SEO-friendly navigation - hidden visually but accessible to search engines */}
-      <nav className="sr-only">
-        <ul>
-          {menuData.map((item) => (
-            <li key={`seo-${item.id}`}>
-              <Link href={item.path || "#"}>{item.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+      
+      {/* Mobile menu */}
+      <div
+        ref={menuContentRef}
+        className={`fixed left-0 top-12 bottom-0 z-40 w-16 bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto overflow-x-hidden md:hidden ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        aria-hidden={!menuOpen}
+      >
+       <div className="flex flex-col h-full py-2">
+  <ul className="flex-1">
+    {menuData.filter((x) => x.showOnMobile).map((item) => (
+      <li key={item.id} className="mb-1 relative group">
+        <NavItem
+          key={item.title}
+          item={item}
+          closeMenu={() => setMenuOpen(false)}
+          isSidebar={false} // Use mobile styling
+        />
+      </li>
+    ))}
+  </ul>
+  <div className="mt-auto mx-1 mb-2 flex items-center justify-center">
+    <button
+      onClick={() => setMenuOpen(false)}
+      className="w-9 h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
+      aria-label="Close Menu"
+    >
+      <MdClose className="w-5 h-5 text-white" />
+    </button>
+  </div>
+</div>
+      </div>
+    </nav>
   );
 };
 
-export default MyNav;
+export default Navigation;

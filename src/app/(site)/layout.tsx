@@ -1,20 +1,38 @@
+// SiteLayout.jsx
 import Footer from "@/components/footer";
-import Header from "@/components/header";
 import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import Providers from "./Provider";
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+import SiteProviders from "./SiteProvider";
+import Sidebar from "./Sidebar";
+import Header from "@/components/header";
+
+export default function SiteLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   let googleAnalyticsCode = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS;
 
   return (
-    <Providers>
-      <Suspense fallback={<></>}>
-        <Header />
-      </Suspense>
-      <main className="min-h-screen">{children}</main>
-      <Footer />
-      <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
+    <SiteProviders>
+      <div className="flex">
+        {/* Sidebar with fixed position */}
 
-    </Providers>
+        <Suspense fallback={<></>}>
+          <Sidebar />
+        </Suspense>
+        {/* Main content with margin to account for sidebar */}
+        <div className="flex flex-col min-h-screen w-full md:ml-14 overflow-x-hidden">
+          <Suspense fallback={<></>}>
+            <Header />
+          </Suspense>
+          <main className="flex-1">{children}</main>
+
+          <Footer />
+        </div>
+      </div>
+
+      <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
+    </SiteProviders>
   );
 }

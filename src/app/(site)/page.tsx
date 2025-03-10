@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/siteConfig";
 import MovieHomepage from "./home/page";
+import Container from "@/components/common/Container";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -12,7 +13,7 @@ export default function HomePage() {
  
   return (
     <>
-      <div><MovieHomepage/></div>
+      <><MovieHomepage/></>
 
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 import { useFetchAndDispatchFilters } from "@/hooks/useFetchDispatchFilter";
-import Navbar from "./Navbar";
 import { useEffect } from "react";
+import Navigation from "./Navigation";
 
 const Header = () => {
 
@@ -9,7 +9,7 @@ const Header = () => {
   
 
   return (
-    <Navbar/>
+    <Navigation/>
   );
 };
 

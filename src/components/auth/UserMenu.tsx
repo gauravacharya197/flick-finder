@@ -24,10 +24,8 @@ const UserMenu = () => {
   // if (loading) return ;
 
   const menuItems = [
-    { href: "/history", icon: <FaHistory className="w-4 h-4" />, label: "History" },
-    isLoggedIn && { href: "/watchlist", icon: <FaBookmark className="w-4 h-4" />, label: "Watchlist" },
-    isLoggedIn && { href: "/settings", icon: <IoSettings className="w-4 h-4" />, label: "Settings" },
-    isLoggedIn
+
+   isLoggedIn
       ? { href: "#", onClick: handleLogout, icon: <FaSignOutAlt className="w-4 h-4" />, label: "Logout" }
       : { href: "/auth/login", icon: <FaSignInAlt className="w-4 h-4" />, label: "Login" },
   ].filter((item): item is { href: string; icon: JSX.Element; label: string; onClick?: () => void } => Boolean(item));
