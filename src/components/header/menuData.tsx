@@ -20,7 +20,9 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/",
     requireLogin: false,
-    icon: FaHome
+    icon: FaHome,
+    showOnMobile : true,
+
   },
   {
     id: 3,
