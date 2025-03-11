@@ -89,16 +89,15 @@ export default function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
 
       {/* Logout Button */}
       <div className="mt-auto px-2 py-4">
-      <Link href="/" className="w-full flex items-center mb-2 justify-center p-3 bg-primary-400  text-white rounded-lg ">
-          <PiKeyReturnLight className="text-xl" />
-          <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Main</span>
-        </Link>
-        <button onClick={handleSignOut} className="w-full flex items-center justify-center p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
-          <FaSignOutAlt className="text-xl" />
-          <span className={`ml-3 transition-all ${collapsed ? "hidden" : "block"}`}>Logout</span>
-        </button>
-        
-      </div>
+  <Link href="/" className="w-full flex items-center mb-2 justify-center p-3 bg-primary-400 text-white rounded-lg">
+    <PiKeyReturnLight className={collapsed ? "mx-auto" : "text-xl"} />
+    <span className={`ml-3 ${collapsed ? "hidden" : "block"}`}>Main</span>
+  </Link>
+  <button onClick={handleSignOut} className="w-full flex items-center justify-center p-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+    <FaSignOutAlt className={collapsed ? "mx-auto" : "text-xl"} />
+    <span className={`ml-3 ${collapsed ? "hidden" : "block"}`}>Logout</span>
+  </button>
+</div>
     </aside>
   );
 }

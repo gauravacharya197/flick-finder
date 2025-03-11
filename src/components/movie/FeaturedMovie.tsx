@@ -48,16 +48,18 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
             </h1>
 
             {/* Movie Info */}
-            <div className="mb-4 flex flex-wrap items-center gap-4">
-              <CustomTag 
-                        text={movie?.mediaType} 
-                      />
+            <div className="mb-4 flex flex-wrap items-center gap-2 md:gap-4">
+              <CustomTag text={movie?.mediaType} />
               <div className="flex items-center">
                 <span className="ml-1">
                   <Rating voteAverage={movie?.voteAverage} />
                 </span>
               </div>
               <span>{formatDate(movie?.displayReleaseDate)}</span>
+              
+              {/* Genres - with responsive class to force new line on mobile */}
+              <div className="w-full md:w-auto md:inline-block"></div>
+              
               {movie?.genreIds
                 ?.map((x: string) => {
                   const genre = genresData.find((y: any) => y.externalId === x);
@@ -67,7 +69,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
                 .map((genreName, index) => (
                   <span
                     key={index}
-                    className="rounded bg-gray-800 px-2 py-1 text-xs text-white"
+                    className=" rounded bg-gray-800 px-2 py-1 text-sm text-white"
                   >
                     {genreName}
                   </span>
@@ -81,7 +83,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4">
               <Link
-                href={constructWatchUrl(movie?.mediaType, movie?.id,movie?.displayTitle)}
+                href={constructWatchUrl(movie?.mediaType, movie?.id, movie?.displayTitle)}
                 className="flex items-center rounded-md bg-primary px-6 py-3 transition-colors hover:bg-primary-400 md:px-8"
               >
                 <FaPlay className="mr-2 h-4 w-4" />
