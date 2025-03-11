@@ -36,7 +36,6 @@ const MovieCarousel = ({
   pauseOnHover = true,
   slidesGap,
 }: MovieCarouselProps) => {
-  const { genres: genresData } = useSelector((state: any) => state.filters);
   const swiperRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   

@@ -13,9 +13,9 @@ export function middleware(request: NextRequest) {
     // If not authenticated, redirect to signin
     if (!adminCookie?.value) {
       // Create the URL for the signin page
-      const signInUrl = new URL('/admin/signin', request.url);
+      const signInUrl = new URL('/not-found', request.url);
       // Add the original URL as a "from" parameter to redirect back after login
-      signInUrl.searchParams.set('from', path);
+      //signInUrl.searchParams.set('from', path);
       return NextResponse.redirect(signInUrl);
     }
   }

@@ -43,6 +43,9 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
     },
     staleTime: Infinity,
     getNextPageParam: (lastPage, pages) => {
+      if (lastPage.data.results.length === 0) {
+        return undefined; // Stop pagination if results are empty
+      }
       const totalPages = lastPage.data.totalPages;
       return pages.length < totalPages ? pages.length + 1 : undefined;
     },
