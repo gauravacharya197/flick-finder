@@ -80,7 +80,7 @@ const menuData: Menu[] = [
   },
   {
     id: 10,
-    title: "Watch History",
+    title: "History",
     newTab: false,
     path: "/history",
     requireLogin : false,
