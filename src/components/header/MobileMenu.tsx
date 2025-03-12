@@ -32,7 +32,7 @@ export const MobileMenu = ({ isOpen, menuContentRef, closeMenu }) => (
         </div>
         
         {/* Login-required items */}
-        <ul className="mb-4">
+        <ul className="mb-2">
           {menuData.filter((x) => x.showOnMobile && x.requireLogin).map((item) => (
             <li key={item.id} className="mb-1 relative group">
               <NavItem
@@ -46,15 +46,7 @@ export const MobileMenu = ({ isOpen, menuContentRef, closeMenu }) => (
         </ul>
         
         {/* Close button */}
-        <div className="mt-auto mx-3 mb-4">
-          <button
-            onClick={closeMenu}
-            className="w-full h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
-            aria-label="Close Menu"
-          >
-            <MdClose className="w-5 h-5 text-white" />
-          </button>
-        </div>
+        
       </div>
     </div>
   );
