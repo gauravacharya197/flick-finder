@@ -26,7 +26,7 @@ export default function SiteLayout({
           <Suspense fallback={<></>}>
             <Header />
           </Suspense>
-          <main className="flex-1">{children}</main>
+          <main className="min-h-screen">{children}</main>
 
           <Footer />
         </div>
