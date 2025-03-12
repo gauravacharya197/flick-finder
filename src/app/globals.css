@@ -96,7 +96,16 @@ pre {
   scrollbar-width: thin;
   scrollbar-color: var(--tw-primary-500) #1f2937; /* Adjust the primary color variable */
 }
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-autohiding-scrollbar: none; /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 
 
 

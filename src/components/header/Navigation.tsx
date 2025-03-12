@@ -13,8 +13,7 @@ import UserMenu from "../auth/UserMenu";
 import { SiteName } from "../common/SiteName";
 import { RobotSearchModal } from "../common/RobotSearchModal";
 import Spinner from "../common/Spin";
-import menuData from "./menuData";
-import NavItem from "./NavItem";
+import { MobileMenu } from "./MobileMenu";
 
 const Navigation = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -117,7 +116,7 @@ const Navigation = () => {
               )}
             </button>
             
-            <Link href="/" className="rounded-md bg-primary px-2 py-1 font-bold text-black sm:px-3 md:text-xl">
+            <Link href="/" className="rounded-md bg-primary px-2 py-1 font-bold text-black sm:px-3 text-lg md:text-xl">
               <SiteName />
             </Link>
           </div>
@@ -173,40 +172,12 @@ const Navigation = () => {
           </button>
         </div>
       </div>
-      
-      {/* Mobile menu */}
-      <div
-        ref={menuContentRef}
-        className={`fixed left-0 top-12 bottom-0 z-40  bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto overflow-x-hidden md:hidden ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-        aria-hidden={!menuOpen}
-      >
-       <div className="flex flex-col h-full py-2">
-  <ul className="flex-1">
-    {menuData.filter((x) => x.showOnMobile).map((item) => (
-      <li key={item.id} className="mb-1 relative group">
-        <NavItem
-          key={item.title}
-          item={item}
-          closeMenu={() => setMenuOpen(false)}
-          isSidebar={false} // Use mobile styling
-        />
-      </li>
-    ))}
-  </ul>
-  <div className="mt-auto mx-1 mb-2 flex items-center justify-center">
-    <button
-      onClick={() => setMenuOpen(false)}
-      className="w-full h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
-      aria-label="Close Menu"
-    >
-      <MdClose className="w-5 h-5 text-white" />
-    </button>
-  </div>
-</div>
-      </div>
-    </nav>
+      <MobileMenu 
+        isOpen={menuOpen} 
+        menuContentRef={menuContentRef} 
+        closeMenu={() => setMenuOpen(false)} 
+      />
+      </nav>
   );
 };
 
