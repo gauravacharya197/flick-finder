@@ -11,7 +11,7 @@ export const MobileMenu = ({ isOpen, menuContentRef, closeMenu }) => (
       }`}
       aria-hidden={!isOpen}
     >
-      <div className="flex flex-col h-full py-2 overflow-y-auto hide-scrollbar">
+      <div className="flex flex-col h-full pt-2 overflow-y-auto hide-scrollbar">
         {/* Regular menu items */}
         <ul className="flex-1">
           {menuData.filter((x) => x.showOnMobile && !x.requireLogin).map((item) => (
@@ -32,7 +32,7 @@ export const MobileMenu = ({ isOpen, menuContentRef, closeMenu }) => (
         </div>
         
         {/* Login-required items */}
-        <ul className="mb-2">
+        <ul className="mb-1">
           {menuData.filter((x) => x.showOnMobile && x.requireLogin).map((item) => (
             <li key={item.id} className="mb-1 relative group">
               <NavItem
