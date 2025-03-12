@@ -19,8 +19,6 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
   
   // Event handler with useCallback for better performance
   const handleClick = useCallback((e) => {
-   
-    
     if (isRestricted) {
       e.preventDefault();
       toast.error("You must login to use this feature", {
@@ -41,7 +39,7 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
   const getIconClass = () => 
     `${isActive ? "text-white" : "text-gray-300"} transition-all`;
   
-  // Render sidebar variant
+  // Render sidebar variant sidebar on laptop
   if (isSidebar) {
     const IconContainer = (
       <div className={getContainerClass()}>
@@ -73,17 +71,20 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
     );
   }
   
-  // Render mobile variant (without tooltip)
+  // Render mobile variant with title and icon
   return (
     <Link
       href={linkHref}
-      className="flex items-center justify-center h-12 text-white rounded-md mx-1 transition-colors duration-200"
+      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200 ${
+        isActive ? "bg-primary text-white" : "text-gray-300 hover:bg-gray-700/50"
+      }`}
       onClick={handleClick}
       aria-label={item.title}
     >
-      <div className={getContainerClass()}>
-        <item.icon />
+      <div className={`flex items-center justify-center w-8 h-8 ${isActive ? "" : "text-gray-400"}`}>
+        <item.icon className="w-5 h-5" />
       </div>
+      <span className="font-medium">{item.title}</span>
     </Link>
   );
 };

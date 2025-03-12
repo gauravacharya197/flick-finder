@@ -177,7 +177,7 @@ const Navigation = () => {
       {/* Mobile menu */}
       <div
         ref={menuContentRef}
-        className={`fixed left-0 top-12 bottom-0 z-40 w-16 bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto overflow-x-hidden md:hidden ${
+        className={`fixed left-0 top-12 bottom-0 z-40  bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto overflow-x-hidden md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-hidden={!menuOpen}
@@ -198,7 +198,7 @@ const Navigation = () => {
   <div className="mt-auto mx-1 mb-2 flex items-center justify-center">
     <button
       onClick={() => setMenuOpen(false)}
-      className="w-9 h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
+      className="w-full h-9 flex items-center justify-center rounded-md bg-primary hover:bg-opacity-90 transition-colors"
       aria-label="Close Menu"
     >
       <MdClose className="w-5 h-5 text-white" />

@@ -69,10 +69,15 @@ export const Genre = ({value}:any) => {
         onChange={(value) => dispatch(setMediaType(value))}
       />
       {isLoading ? (
-        <Skeleton
-          
-
-        />
+        <Skeleton 
+        showTitle={false}
+        rows={8}
+        rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+        className="rounded-lg mt-3"
+        titleHeight="h-8"
+        rowHeight="h-5"
+        spacing="space-y-6"
+      />
       ) : isError ? (
         <ErrorMessage
           className='w-full mt-2'

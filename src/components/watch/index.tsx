@@ -58,6 +58,8 @@ const Watch = ({ params }: WatchPageProps) => {
                     rowHeight="h-4"
                     spacing="space-y-2"
                   />
+                                    <Skeleton showTitle={true} titleHeight="h-8" rows={0} />
+
                 </div>
                 {/* Right sidebar skeleton */}
               </div>
