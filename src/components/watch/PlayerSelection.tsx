@@ -34,7 +34,7 @@ const PlayerSection = ({
     return 1;
   });
   const isReleased = new Date(movie.released) <= new Date();
-  useDevToolsProtection(isPlaying);
+  //useDevToolsProtection(isPlaying);
 
   // Update localStorage when server changes
   useEffect(() => {
