@@ -41,6 +41,15 @@ const advanceSearchSlice = createSlice({
     setSortBy: (state, action: PayloadAction<string>) => {
       state.sortBy = action.payload;
     },
+    clearAllFilters: (state) => {
+      // Reset all filter values to initial state
+      // Keep the query if needed, or reset it too
+      state.countries = '';
+      state.genres = '';
+      state.years = '';
+      state.mediaType = 'All';
+      state.sortBy = '';
+    },
   },
 });
 
@@ -50,7 +59,8 @@ export const {
   setGenres,
   setYears,
   setSortBy,
-  setMediaType
+  setMediaType,
+  clearAllFilters
 } = advanceSearchSlice.actions;
 
 export default advanceSearchSlice.reducer;

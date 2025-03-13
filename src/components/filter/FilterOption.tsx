@@ -8,12 +8,16 @@ import {
   setYears,
   setSortBy,
   setMediaType,
+  clearAllFilters,
+
 } from "@/redux/movies/advanceSearchSlice";
 import useClickOutside from "@/hooks/useClickOutside";
 import { IoChevronDownOutline, IoChevronUpOutline } from "react-icons/io5";
 import { Segmented } from "../ui/Segmented";
 import { AiOutlineFilter } from "react-icons/ai";
-import {Option} from '../../types/option';
+import { MdClearAll } from "react-icons/md";
+import { Option } from '../../types/option';
+import { formatDate, getDateRange } from "@/utils/sortDate";
 // Types for options and state
 
 const FilterOption = () => {
@@ -27,6 +31,9 @@ const FilterOption = () => {
     sortBy,
     mediaType,
   } = useSelector((state: RootState) => state.advanceSearch);
+
+  // Check if any filters are applied
+  const hasActiveFilters = !!(searchGenres || searchCountries || searchYears || sortBy || (mediaType!=''));
 
   // Prepare options for countries, genres, years, and sort
   const countryOptions: Option[] = [
@@ -61,25 +68,20 @@ const FilterOption = () => {
     value: String(year),
     label: String(year),
   }));
+  //past 40 days, upcoming 6 months
+  const { startDate, currentDate, endDate } = getDateRange(40, 6);
 
-  const currentDate = new Date();
-  const recentStartDate = new Date(currentDate);
-  recentStartDate.setDate(currentDate.getDate() - 40);
-  const upcomingEndDate = new Date(currentDate);
-  upcomingEndDate.setMonth(currentDate.getMonth() + 6);
-
-  const formatDate = (date: Date) => date.toISOString().split("T")[0];
 
   const sortOptions: Option[] = [
-    { value: "popularity.desc", label: "Most Popular" },
+    { value: "popularity.desc", label: "Popular" },
     {
-      value: `popularity.desc&primary_release_date.gte=${formatDate(recentStartDate)}&primary_release_date.lte=${formatDate(currentDate)}`,
-      label: "Most Recent",
+      value: `popularity.desc&primary_release_date.gte=${formatDate(startDate)}&primary_release_date.lte=${formatDate(currentDate)}`,
+      label: "Recently Released",
     },
     { value: "vote_count.desc", label: "Top Rated" },
     { value: "revenue.desc", label: "Top Grossing" },
     {
-      value: `popularity.desc&primary_release_date.gte=${formatDate(currentDate)}&primary_release_date.lte=${formatDate(upcomingEndDate)}`,
+      value: `popularity.desc&primary_release_date.gte=${formatDate(currentDate)}&primary_release_date.lte=${formatDate(endDate)}`,
       label: "Upcoming Releases",
     },
     { value: "original_title.asc", label: "A to Z Title" },
@@ -105,7 +107,7 @@ const FilterOption = () => {
   };
 
   // Toggles the selection for each filter type
-  const toggleSelection = (type:any, value:any) => {
+  const toggleSelection = (type: any, value: any) => {
     toggleDropdown(type);
     if (type === "genre") {
       // If the same item is clicked again, deselect it
@@ -118,7 +120,12 @@ const FilterOption = () => {
       dispatch(setSortBy(sortBy === value ? null : value));
     }
   };
-  
+
+  // Handle clear all filters
+  const handleClearAllFilters = () => {
+    dispatch(clearAllFilters())
+    setOpenDropdown(null);
+  };
 
   // Renders individual dropdowns
   const renderDropdown = (type: string, options: Option[], selectedValue: string | null) => {
@@ -129,17 +136,20 @@ const FilterOption = () => {
         {/* Dropdown button */}
         <button
           onClick={() => toggleDropdown(type)}
-          className="flex w-full items-center justify-between truncate rounded bg-gray-200 p-2 py-1 text-black transition dark:bg-gray-800 dark:text-white"
+          className={`flex w-full items-center justify-between truncate rounded p-2 py-1 transition
+            ${selectedValue 
+              ? "bg-primary bg-opacity-20 text-primary dark:bg-primary dark:bg-opacity-30 dark:text-white" 
+              : "bg-gray-200 text-black dark:bg-gray-800 dark:text-white"}`}
         >
           <div className="flex items-center">
-          <AiOutlineFilter  className="mr-2" />
+            <AiOutlineFilter className="mr-2" />
             <span className="truncate">
               {type.charAt(0).toUpperCase() + type.slice(1)}
               {selectedValue &&
                 `: ${options.find((option: Option) => option.value === selectedValue)?.label || selectedValue}`}
             </span>
           </div>
-          {openDropdown === type ? <IoChevronUpOutline/> : <IoChevronDownOutline/>}
+          {openDropdown === type ? <IoChevronUpOutline /> : <IoChevronDownOutline />}
         </button>
 
         {/* Dropdown content */}
@@ -170,6 +180,19 @@ const FilterOption = () => {
 
   return (
     <div className="mt-1 flex w-full flex-col items-start overflow-visible">
+      <div className="mb-2 flex w-full items-center justify-between">
+        <h3 className=" font-medium">Filter Options</h3>
+        {hasActiveFilters && (
+          <button
+            onClick={handleClearAllFilters}
+            className="group flex items-center gap-1 rounded bg-red-500 bg-opacity-10 px-2 py-1 text-xs font-medium text-red-500 transition hover:bg-opacity-20 dark:bg-red-500 dark:bg-opacity-20 dark:text-red-400 dark:hover:bg-opacity-30"
+          >
+            <MdClearAll className="transition group-hover:rotate-12" />
+            Clear All
+          </button>
+        )}
+      </div>
+      
       {/* Filter Options Grid */}
       <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-5">
         {renderDropdown("genre", genreOptions, searchGenres)}

@@ -1,5 +1,6 @@
 import Container from '@/components/common/Container';
 import { MediaSection } from '@/components/common/MediaSection';
+import Explore from '@/components/explore';
 import { siteConfig } from '@/config/siteConfig';
 import { setMediaType } from '@/redux/movies/advanceSearchSlice';
 import { MediaType } from '@/types/mediaType';
@@ -32,7 +33,7 @@ export default async function ExplorePage({params}:   ExplorePageProps) {
 
   return (
     <Container>
-      <MediaSection mediaType={mediaType} />
+      <Explore mediaType={mediaType} />
     </Container>
   );
 }

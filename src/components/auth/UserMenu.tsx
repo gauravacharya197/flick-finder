@@ -1,3 +1,4 @@
+'use client'
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
@@ -31,7 +32,9 @@ const UserMenu = () => {
 
   // Get user's first letter if logged in
   const userInitial = isLoggedIn && user?.name ? user.name.charAt(0).toUpperCase() : null;
-  if (loading)  return <></>
+  if (loading)  return <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-teal-500 shadow-md">
+  <span className="text-black text-lg font-bold">{""}</span>
+</div>
   return (
     <div className="relative" ref={menuRef}>
       {isLoggedIn ? (
