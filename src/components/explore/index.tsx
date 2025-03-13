@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { discover, getTrending } from "@/services/MovieService";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -10,9 +10,15 @@ import Skeleton from "../common/Skeleton";
 import SectionHeader from "../common/SectionHeader";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { MdSort } from "react-icons/md";
-import { FaChevronDown } from "react-icons/fa";
 import { formatDate, getDateRange } from "@/utils/sortDate";
-import useClickOutside from "@/hooks/useClickOutside"; // Import your hook
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 
 interface SortOption {
   id: string;
@@ -22,15 +28,8 @@ interface SortOption {
 
 const Explore: React.FC<any> = ({ mediaType }) => {
   const [sortOption, setSortOption] = useState<string>("popularity.desc");
-  const [showSortDropdown, setShowSortDropdown] = useState(false);
-  const sortDropdownRef = useRef<any>(null);
   const { startDate, currentDate, endDate } = getDateRange(40, 6);
   
-  // Use the useClickOutside hook to close dropdown when clicking outside
-  useClickOutside(sortDropdownRef, () => {
-    setShowSortDropdown(false);
-  }, showSortDropdown);
-
   // Media-type specific sort options
   const movieSortOptions: SortOption[] = [
     { id: "popular", label: "Popular", value: "popularity.desc" },
@@ -97,7 +96,6 @@ const Explore: React.FC<any> = ({ mediaType }) => {
 
   const handleSortChange = (value: string) => {
     setSortOption(value);
-    setShowSortDropdown(false);
   };
 
   const observerRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isFetching });
@@ -108,36 +106,24 @@ const Explore: React.FC<any> = ({ mediaType }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-3 pt-2 border-b dark:border-gray-800">
         <SectionHeader text={`Browse ${capitalizeFirstLetter(mediaType)}`} />
         
-        {/* Improved Sort Dropdown with responsive positioning */}
-        <div className="relative mt-2 sm:mt-0 z-20 self-start sm:self-auto" ref={sortDropdownRef}>
-          <button 
-            onClick={() => setShowSortDropdown(!showSortDropdown)}
-            className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition-colors"
-            aria-expanded={showSortDropdown}
-            aria-haspopup="true"
-          >
-            <MdSort className="text-lg" />
-            <span>{getCurrentSortLabel()}</span>
-            <FaChevronDown className={`h-4 w-4 transition-transform duration-200 ${showSortDropdown ? 'rotate-180' : ''}`} />
-          </button>
-          
-          {showSortDropdown && (
-            <div className="absolute left-0 sm:right-0 sm:left-auto z-10 mt-2 w-56 origin-top-left sm:origin-top-right rounded-lg bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-900 dark:ring-gray-700 max-w-[calc(100vw-2rem)]">
+        {/* shadcn/ui Select component */}
+        <div className="mt-4 sm:mt-0 self-start sm:self-auto">
+          <Select value={sortOption} onValueChange={handleSortChange}>
+          <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-gray-900 w-48 text-white">
+          <div className="flex items-center gap-2">
+                <MdSort className="text-lg" />
+                <SelectValue placeholder={getCurrentSortLabel()} />
+              </div>
+            </SelectTrigger>
+            <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+
               {sortOptions.map((option) => (
-                <button
-                  key={option.id}
-                  onClick={() => handleSortChange(option.value)}
-                  className={`block w-full px-4 py-2.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
-                    sortOption === option.value 
-                      ? 'bg-primary/10 text-primary font-medium dark:bg-primary/20' 
-                      : 'text-gray-700 dark:text-gray-200'
-                  }`}
-                >
+                <SelectItem key={option.id} value={option.value}>
                   {option.label}
-                </button>
+                </SelectItem>
               ))}
-            </div>
-          )}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
