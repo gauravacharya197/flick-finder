@@ -17,7 +17,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 2,
     name: "Secondary",
-    baseUrl: "https://vidsrc.in/embed/",
+    baseUrl: "https://v2.vidsrc.me/embed/",
     urlSeparator: "/"
   },
   {
