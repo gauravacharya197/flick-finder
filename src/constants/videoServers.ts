@@ -11,16 +11,15 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 1,
     name: "Primary",
-    baseUrl: "https://vidsrc.in/embed/",
-    urlSeparator: "/"
+    baseUrl: "https://moviesapi.club",
+    urlSeparator: "-"
   },
   {
     id: 2,
     name: "Secondary",
-    baseUrl: "https://moviesapi.club",
-    urlSeparator: "-"
+    baseUrl: "https://vidsrc.in/embed/",
+    urlSeparator: "/"
   },
-  
   {
     id: 3,
     name: "VideoLink",
