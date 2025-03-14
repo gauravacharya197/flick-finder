@@ -17,7 +17,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 2,
     name: "Secondary",
-    baseUrl: "https://player.autoembed.cc/embed/",
+    baseUrl: "https://v2.vidsrc.me/embed/",
     urlSeparator: "/"
   },
   {
@@ -37,7 +37,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 4,
     name: "Alt",
-    baseUrl: "https://v2.vidsrc.me/embed/",
+    baseUrl: "https://player.autoembed.cc/embed/",
     urlSeparator: "/",
   }
 ];

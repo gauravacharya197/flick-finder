@@ -77,8 +77,13 @@ export const TopRatedList = () => {
         <>
           <MovieList movies={movies} showFeaturedMovie/>
           {hasNextPage && (
-            <div ref={observerRef} className="loading-indicator">
-              {isFetching && <h1>Loading...</h1>}
+            <div ref={observerRef} className="loading-indicator py-4 flex justify-center">
+              {isFetching && (
+                <div className="flex items-center space-x-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Loading more</span>
+                </div>
+              )}
             </div>
           )}
           {!hasNextPage && (
