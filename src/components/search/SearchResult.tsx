@@ -77,8 +77,16 @@ const SearchResult: React.FC<SearchResultProps> = ({ query }) => {
          <div className="mt-5">
         <MovieList movies={movies} />
       </div>
-          {hasNextPage && <div ref={observerRef} className="loading-indicator">{isFetching && <h1 className="mt-2">Loading</h1>}</div>}
-          {!hasNextPage && <p className="mt-4 text-center">You’ve reached the end of the list</p>}
+      {hasNextPage && (
+            <div ref={observerRef} className="loading-indicator py-4 flex justify-center">
+              {isFetching && (
+                <div className="flex items-center space-x-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Loading more</span>
+                </div>
+              )}
+            </div>
+          )}          {!hasNextPage && <p className="mt-4 text-center">You’ve reached the end of the list</p>}
         </>
       )}
      
