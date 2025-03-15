@@ -5,6 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import SiteProviders from "./SiteProvider";
 import Sidebar from "./Sidebar";
 import Header from "@/components/header";
+import Head from "next/head";
 
 export default function SiteLayout({
   children,
@@ -16,6 +17,9 @@ export default function SiteLayout({
   return (
     <SiteProviders>
       <div className="flex">
+        <Head>
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="d8ddab61-aa5d-4cc3-a1e8-77bd5eff208d"></script>
+        </Head>
         {/* Sidebar with fixed position */}
 
         <Suspense fallback={<></>}>
