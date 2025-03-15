@@ -118,12 +118,12 @@ export const Videos = ()=> {
           <Table>
   <TableHeader>
     <TableRow>
-      <TableHead className="w-[80px] ">ID</TableHead>
-      <TableHead className="w-[250px] ">Title</TableHead>
-      <TableHead className="w-[120px] ">TMDB ID</TableHead>
-      <TableHead className="w-[120px] ">IMDB ID</TableHead>
-      <TableHead className="min-w-[200px]">Source</TableHead>
-      <TableHead className="w-[120px] ">Actions</TableHead>
+      <TableHead className="w-[80px]">ID</TableHead>
+      <TableHead className="w-[250px]">Title</TableHead>
+      <TableHead className="w-[120px]">TMDB</TableHead>
+      <TableHead className="w-[120px]">IMDB</TableHead>
+      <TableHead className="min-w-[200px] max-w-[300px]">Source</TableHead>
+      <TableHead className="w-[120px]">Actions</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
@@ -146,22 +146,24 @@ export const Videos = ()=> {
       videos?.map((video) => (
         <TableRow 
           key={video.id}
-          className=" transition-colors duration-150"
+          className="transition-colors duration-150"
         >
-          <TableCell >{video.id}</TableCell>
-          <TableCell >{video.title}</TableCell>
-          <TableCell >{video.tmdbId || '—'}</TableCell>
-          <TableCell >{video.imdbId || '—'}</TableCell>
-          <TableCell className="text-starttruncate" title={video.videoSource}>
-            {video.videoSource}
+          <TableCell>{video.id}</TableCell>
+          <TableCell>{video.title}</TableCell>
+          <TableCell>{video.tmdbId || '—'}</TableCell>
+          <TableCell>{video.imdbId || '—'}</TableCell>
+          <TableCell className="max-w-[300px]">
+            <div className="truncate" title={video.videoSource}>
+              {video.videoSource}
+            </div>
           </TableCell>
-          <TableCell className="text-center">
+          <TableCell>
             <div className="flex justify-center space-x-3">
               <Button
                 onClick={() => handleEdit(video)}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-gray-600  hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
+                className="h-8 w-8 text-gray-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
               >
                 <FaPencil className="h-4 w-4 text-blue-600" />
               </Button>
@@ -169,7 +171,7 @@ export const Videos = ()=> {
                 onClick={() => handleDelete(video.id)}
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-gray-600  hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+                className="h-8 w-8 text-gray-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
               >
                 <FaTrash className="h-4 w-4 text-red-600" />
               </Button>
