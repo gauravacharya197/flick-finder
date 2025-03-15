@@ -9,14 +9,14 @@ export interface VideoServer {
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 1,
-    name: "Primary",
+    id: 5,
+    name: "MClub",
     baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   },
   {
-    id: 2,
-    name: "Secondary",
+    id: 4,
+    name: "VidSrc",
     baseUrl: "https://v2.vidsrc.me/embed/",
     urlSeparator: "/"
   },
@@ -29,15 +29,21 @@ export const VIDEO_SERVERS: VideoServer[] = [
    
   },
   {
-    id: 5,
-    name: "Embed",
+    id: 2,
+    name: "Secondary",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
   {
-    id: 4,
+    id: 6,
     name: "Alt",
     baseUrl: "https://player.autoembed.cc/embed/",
     urlSeparator: "/",
+  },
+  {
+    id:1,
+    name: "Primary",
+    baseUrl :"https://111movies.com/",
+    urlSeparator:"/"
   }
 ];

@@ -11,7 +11,7 @@ import SectionHeader from "../common/SectionHeader";
 import ErrorMessage from "../common/ErrorMessage";
 import { WatchPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
-import PlayerSection from "./PlayerSelection";
+import PlayerSection from "./PlayerOptions";
 const Watch = ({ params }: WatchPageProps) => {
   // Destructure params
   const { id, mediaType, title } = params;

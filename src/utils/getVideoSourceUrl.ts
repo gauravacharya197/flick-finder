@@ -9,10 +9,8 @@ export function getVideoSourceUrl(
   selectedEpisode: number | null
 ): string {
   // For server 1, use direct video source if available
-  if (selectedServer === 1 && movie?.videoSource) {
-    if (movie.videoSource.startsWith("https://short")) {
-      return movie.videoSource;
-    }
+  if (selectedServer === 0 && movie?.videoSource) {
+   
     return movie.videoSource;
   }
 
