@@ -17,7 +17,7 @@ export default function SiteLayout({
   return (
     <SiteProviders>
       <div className="flex">
-        <Head>
+        <Head key={'umami'}>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="d8ddab61-aa5d-4cc3-a1e8-77bd5eff208d"></script>
         </Head>
         {/* Sidebar with fixed position */}
@@ -36,7 +36,7 @@ export default function SiteLayout({
         </div>
       </div>
 
-      <GoogleAnalytics gaId={googleAnalyticsCode || ""} />
+      <GoogleAnalytics key={'gaa'} gaId={googleAnalyticsCode || ""} />
     </SiteProviders>
   );
 }
