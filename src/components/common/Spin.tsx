@@ -5,6 +5,7 @@ type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 interface SpinnerProps {
   size?: SpinnerSize;
+  color?:string
 }
 
 const sizes: Record<SpinnerSize, string> = {
@@ -15,11 +16,11 @@ const sizes: Record<SpinnerSize, string> = {
   xl: 'w-12 h-12'
 };
 
-const Spinner: React.FC<SpinnerProps> = ({ size = 'md' }) => {
+const Spinner: React.FC<SpinnerProps> = ({ size = 'md',color='text-primary' }) => {
   return (
     <div className="flex items-center justify-center">
       <PiSpinnerBold 
-        className={`${sizes[size]} animate-spin text-primary`}
+        className={`${sizes[size]} animate-spin ${color}`}
         aria-label="Loading"
       />
     </div>
