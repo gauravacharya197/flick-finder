@@ -6,6 +6,7 @@ import SiteProviders from "./SiteProvider";
 import Sidebar from "./Sidebar";
 import Header from "@/components/header";
 import Head from "next/head";
+import Script from "next/script";
 
 export default function SiteLayout({
   children,
@@ -17,9 +18,8 @@ export default function SiteLayout({
   return (
     <SiteProviders>
       <div className="flex">
-        <Head key={'umami'}>
-        <script defer src="https://cloud.umami.is/script.js" data-website-id="d8ddab61-aa5d-4cc3-a1e8-77bd5eff208d"></script>
-        </Head>
+        <Script defer src="https://cloud.umami.is/script.js" data-website-id="d8ddab61-aa5d-4cc3-a1e8-77bd5eff208d"></Script>
+       
         {/* Sidebar with fixed position */}
 
         <Suspense fallback={<></>}>
