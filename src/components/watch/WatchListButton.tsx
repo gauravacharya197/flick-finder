@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBookmark } from 'react-icons/fa';
+import { FaRegBookmark } from "react-icons/fa";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { addToWatchlist, iswatchlisted } from '@/services/WatchlistService';
@@ -93,7 +93,7 @@ const WatchlistButton: React.FC<WatchlistButtonProps> = ({
       className="flex items-center gap-2 rounded-lg bg-transparent px-3 py-2 text-sm hover:bg-gray-800/50"
       disabled={mutation.isPending}
     >
-      <FaBookmark
+      <FaRegBookmark
         className={`h-4 w-4 transition-colors  ${
           isWatchlisted ? 'text-primary' : 'text-white'
         }`}
