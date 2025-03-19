@@ -15,14 +15,14 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "-"
   },
   {
-    id: 3,
+    id: 4,
     name: "VidSrc",
     baseUrl: "https://v2.vidsrc.me/embed/",
     urlSeparator: "/"
   },
   {
-    id: 4,
-    name: "VideoLink",
+    id: 3,
+    name: "VidLink",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
      idType: 'id'
