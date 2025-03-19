@@ -20,29 +20,43 @@ import Skeleton from "../common/Skeleton";
 import { getMangaDetails } from "@/services/MangaService";
 import { Button } from "../ui/primitives/button";
 import { CustomTag } from "../common/CustomTag";
-import { FaChevronLeft, FaChevronRight, FaExpand, FaMinus, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaExpand, FaMinus, FaPlus, FaSearch, FaTimes, FaBars } from "react-icons/fa";
 import { Input } from "../ui/primitives/input";
 
 const ReadManga = ({ params }: ReadMangaPageProps) => {
-  // Destructure params
   const { id, title } = params;
   const [chapters, setChapters] = useState<any[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-  const [chapterData, setChapterData] = useState<any>(null);
   const [pageImages, setPageImages] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [chapterLoading, setChapterLoading] = useState(false);
   const [zoom, setZoom] = useState(100);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Hidden by default
   const [searchTerm, setSearchTerm] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   if (!id) {
     return <ErrorMessage message="Error: Missing required parameters" />;
   }
 
   const mangaId = id;
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   // Fetch manga details
   const {
@@ -62,23 +76,22 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   useEffect(() => {
     const fetchChapters = async () => {
       if (!mangaId) return;
-      
+
       setLoading(true);
       try {
         const response = await fetch(`/api/manga/${mangaId}/chapters?language=en`);
         const data = await response.json();
-        
+
         if (data.data && Array.isArray(data.data)) {
-          // Sort chapters by number
           const sortedChapters = data.data.sort((a: any, b: any) => {
             const chA = parseFloat(a.attributes.chapter || '0');
             const chB = parseFloat(b.attributes.chapter || '0');
             return chA - chB;
           });
-          
+
           setChapters(sortedChapters);
-          
-          // Select first chapter by default if available
+
+          // Select first chapter by default
           if (sortedChapters.length > 0 && !selectedChapter) {
             setSelectedChapter(sortedChapters[0].id);
           }
@@ -97,19 +110,14 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   useEffect(() => {
     const fetchChapterPages = async () => {
       if (!selectedChapter) return;
-      
+
       setChapterLoading(true);
-      setCurrentPage(0);
       setPageImages([]);
-      
+
       try {
         const response = await fetch(`/api/chapter/${selectedChapter}/pages`);
         const data = await response.json();
-        
-        if (data.chapter) {
-          setChapterData(data.chapter);
-        }
-        
+
         if (data.pages && Array.isArray(data.pages)) {
           setPageImages(data.pages);
         }
@@ -123,20 +131,12 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
     fetchChapterPages();
   }, [selectedChapter]);
 
-  const handlePrevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < pageImages.length - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
   const handleChapterChange = (value: string) => {
     setSelectedChapter(value);
+    // Close sidebar automatically on mobile after selecting a chapter
+    if (isMobile) {
+      setSidebarOpen(false);
+    }
   };
 
   const incrementZoom = () => {
@@ -170,26 +170,12 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
     const chapterNum = chapter.attributes.chapter || "";
     const chapterTitle = chapter.attributes.title || "";
     const searchLower = searchTerm.toLowerCase();
-    
+
     return (
-      chapterNum.toString().includes(searchLower) || 
+      chapterNum.toString().includes(searchLower) ||
       chapterTitle.toLowerCase().includes(searchLower)
     );
   });
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        handlePrevPage();
-      } else if (e.key === "ArrowRight") {
-        handleNextPage();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentPage, pageImages.length]);
 
   if (isLoading) {
     return <Skeleton />;
@@ -202,44 +188,127 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   if (!manga) {
     return <ErrorMessage message="Manga data not available" />;
   }
-  
-  // Find the current chapter information
+
   const currentChapterInfo = chapters.find(ch => ch.id === selectedChapter);
   const chapterNumber = currentChapterInfo?.attributes?.chapter || "N/A";
   const chapterTitle = currentChapterInfo?.attributes?.title || "";
-  
-  // Find next and previous chapters
-  const currentIndex = chapters.findIndex(ch => ch.id === selectedChapter);
-  const prevChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
-  const nextChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
   return (
-    <div className="flex h-screen bg-neutral-900 text-gray-200 overflow-hidden">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-background text-gray-200 overflow-hidden">
+      {/* Main content (Manga page view) */}
+      <div className="flex-1 flex flex-col h-full relative">
+        {/* Reader header */}
+        <div className="h-12 flex items-center justify-between border-b border-[rgb(31,41,55)] bg-[#111827] py-3 md:py-0">
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={toggleSidebar}
+              className="md:px-2 md:py-1 p-1 bg-[rgb(31,41,55)] rounded text-md hover:bg-[rgb(31,41,55)] transition-colors"
+            >
+              <FaBars className="md:hidden" />
+              <span className="hidden md:inline">
+                {sidebarOpen ? "Hide Chapters" : "Show Chapters"}
+              </span>
+            </button>
+
+            <div className="text-md truncate max-w-[60vw] md:max-w-none">
+              <span className="font-medium">Chapter {chapterNumber}</span>
+              {chapterTitle && <span className="text-gray-400 ml-2 hidden md:inline">{chapterTitle}</span>}
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <div className="flex items-center bg-[rgb(31,41,55)] rounded">
+              <button
+                onClick={decrementZoom}
+                className="p-1 text-gray-400 hover:text-white"
+                title="Zoom out"
+              >
+                <FaMinus size={12} />
+              </button>
+              <span className="text-sm px-2 border-x border-[rgb(31,41,55)]">{zoom}%</span>
+              <button
+                onClick={incrementZoom}
+                className="p-1 text-gray-400 hover:text-white"
+                title="Zoom in"
+              >
+                <FaPlus size={12} />
+              </button>
+            </div>
+
+            <button
+              onClick={toggleFullscreen}
+              className="p-1 bg-[rgb(31,41,55)] rounded text-gray-400 hover:text-white"
+              title="Toggle fullscreen"
+            >
+              <FaExpand size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Reader content */}
+        <div className="flex-1 overflow-y-auto bg-[#111827]">
+          {chapterLoading ? (
+            <div className="flex justify-center items-center h-full w-full">
+              <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-[rgb(31,41,55)] h-12 w-12"></div>
+              </div>
+            </div>
+          ) : pageImages.length === 0 ? (
+            <div className="flex justify-center items-center h-full w-full">
+              <p className="text-gray-500">No images available for this chapter</p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center py-2">
+              {pageImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Page ${index + 1}`}
+                  className="max-w-full mb-2 transition-all duration-200"
+                  style={{ width: `${zoom}%` }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Sidebar (Chapters + Manga info) */}
       {sidebarOpen && (
-        <div className="w-80 h-full bg-black border-r border-neutral-800 flex flex-col overflow-hidden">
+        <div className="fixed md:relative w-full md:w-64 h-full bg-[#111827] border-l border-[rgb(31,41,55)] flex flex-col overflow-hidden transition-all duration-300 z-50">
+          {/* Sidebar header with close button for mobile */}
+          <div className="flex items-center justify-between pr-6 border-b border-[rgb(31,41,55)] md:hidden">
+            <h2 className="font-medium">Chapters</h2>
+            <button
+              onClick={toggleSidebar}
+              className="p-1 bg-[rgb(31,41,55)] rounded text-gray-400 hover:text-white"
+            >
+              <FaTimes size={16} />
+            </button>
+          </div>
+
           {/* Manga info */}
-          <div className="p-4 border-b border-neutral-800">
-            <div className="flex items-center mb-4">
-              <div className="w-24 h-32 overflow-hidden rounded mr-3">
+          <div className="p-2 border-b border-[rgb(31,41,55)]">
+            <div className="flex items-center">
+              <div className="w-16 h-20 overflow-hidden rounded mr-2">
                 {manga.coverImage ? (
-                  <img 
-                    src={manga.coverImage} 
-                    alt={manga.title} 
+                  <img
+                    src={manga.coverImage}
+                    alt={manga.title}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
-                    <p className="text-gray-500">No cover</p>
+                  <div className="w-full h-full bg-[rgb(31,41,55)] flex items-center justify-center">
+                    <p className="text-gray-500 text-sm">No cover</p>
                   </div>
                 )}
               </div>
               <div className="flex-1">
-                <h1 className="text-lg font-bold line-clamp-2">{manga.title}</h1>
-                <p className="text-xs text-gray-400 mt-1">Status: {manga.status || "Unknown"}</p>
-                <p className="text-xs text-gray-400">Released: {manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</p>
+                <h1 className="text-md font-bold line-clamp-2">{manga.title}</h1>
+                <p className="text-sm text-gray-400 mt-1">Status: {manga.status || "Unknown"}</p>
+                <p className="text-sm text-gray-400">Released: {manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</p>
                 {manga.genres && manga.genres.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2">
+                  <div className="flex flex-wrap gap-1 mt-1">
                     {manga.genres.slice(0, 3).map((genre: string, idx: number) => (
                       <CustomTag key={idx} text={genre} />
                     ))}
@@ -248,38 +317,37 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
               </div>
             </div>
           </div>
-          
+
           {/* Chapter list header with search */}
-          <div className="p-3 border-b border-neutral-800">
-            <h2 className="text-md font-semibold mb-2">Chapters</h2>
+          <div className="p-2 border-b border-[rgb(31,41,55)]">
             <div className="relative">
               <Input
                 type="text"
                 placeholder="Search chapters..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-neutral-800 border-neutral-700 text-sm pl-8"
+                className="w-full bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md pl-8"
               />
-              <FaSearch className="absolute left-2.5 top-2.5 text-gray-400" size={14} />
+              <FaSearch className="absolute left-2 top-2 text-gray-400" size={14} />
               {searchTerm && (
-                <button 
+                <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-2.5 top-2.5 text-gray-400 hover:text-white"
+                  className="absolute right-2 top-2 text-gray-400 hover:text-white"
                 >
                   <FaTimes size={14} />
                 </button>
               )}
             </div>
           </div>
-          
+
           {/* Chapter list */}
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="p-4">
+              <div className="p-2">
                 <Skeleton rows={5} />
               </div>
             ) : filteredChapters.length === 0 ? (
-              <p className="p-4 text-gray-500">
+              <p className="p-2 text-gray-500">
                 {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
               </p>
             ) : (
@@ -287,19 +355,19 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
                 {filteredChapters.map((chapter, index) => {
                   const chNum = chapter.attributes.chapter || "N/A";
                   const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
-                  
+
                   return (
                     <button
                       key={chapter.id}
                       onClick={() => handleChapterChange(chapter.id)}
-                      className={`text-left px-4 py-3 hover:bg-neutral-800 border-b border-neutral-800 transition-colors ${
-                        selectedChapter === chapter.id ? 'bg-neutral-800 font-medium' : ''
+                      className={`text-left px-2 py-1.5 hover:bg-[rgb(31,41,55)] border-b border-[rgb(31,41,55)] transition-colors ${
+                        selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
                       }`}
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium">Chapter {chNum}</span>
+                        <span className="text-md font-medium">Chapter {chNum}</span>
                         {chTitle !== `Chapter ${chNum}` && (
-                          <span className="text-xs text-gray-400 truncate">{chTitle}</span>
+                          <span className="text-sm text-gray-400 truncate">{chTitle}</span>
                         )}
                       </div>
                     </button>
@@ -308,149 +376,8 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
               </div>
             )}
           </div>
-          
-          {/* Manga description */}
-          
         </div>
       )}
-      
-      {/* Main content */}
-      <div className="flex-1 flex flex-col h-full relative">
-        {/* Reader header */}
-        <div className="h-14 flex items-center justify-between px-4 border-b border-neutral-800 bg-black">
-          <div className="flex items-center space-x-4">
-            <button 
-              onClick={toggleSidebar}
-              className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors"
-            >
-              {sidebarOpen ? "Hide Chapters" : "Show Chapters"}
-            </button>
-            
-            <div className="text-sm">
-              <span className="font-medium">Chapter {chapterNumber}</span>
-              {chapterTitle && <span className="text-gray-400 ml-2">{chapterTitle}</span>}
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center bg-neutral-800 rounded">
-              <button
-                onClick={decrementZoom}
-                className="p-1.5 text-gray-400 hover:text-white"
-                title="Zoom out"
-              >
-                <FaMinus size={12} />
-              </button>
-              <span className="text-xs px-2 border-x border-neutral-700">{zoom}%</span>
-              <button
-                onClick={incrementZoom}
-                className="p-1.5 text-gray-400 hover:text-white"
-                title="Zoom in"
-              >
-                <FaPlus size={12} />
-              </button>
-            </div>
-            
-            <button
-              onClick={toggleFullscreen}
-              className="p-1.5 bg-neutral-800 rounded text-gray-400 hover:text-white"
-              title="Toggle fullscreen"
-            >
-              <FaExpand size={14} />
-            </button>
-          </div>
-        </div>
-        
-        {/* Reader content */}
-        <div className="flex-1 overflow-auto bg-neutral-900 flex justify-center relative">
-          {chapterLoading ? (
-            <div className="flex justify-center items-center h-full w-full">
-              <Skeleton rows={7} />
-            </div>
-          ) : pageImages.length === 0 ? (
-            <div className="flex justify-center items-center h-full w-full">
-              <p className="text-gray-500">No images available for this chapter</p>
-            </div>
-          ) : (
-            <>
-              {/* Left navigation area */}
-              <div 
-                className="absolute left-0 top-0 w-1/4 h-full cursor-pointer z-10"
-                onClick={handlePrevPage}
-              />
-              
-              {/* Right navigation area */}
-              <div 
-                className="absolute right-0 top-0 w-1/4 h-full cursor-pointer z-10"
-                onClick={handleNextPage}
-              />
-              
-              {/* Image container */}
-              <div className="flex justify-center items-center min-h-full py-4">
-                <img
-                  src={pageImages[currentPage]}
-                  alt={`Page ${currentPage + 1}`}
-                  className="max-h-full object-contain transition-all duration-200"
-                  style={{ width: `${zoom}%` }}
-                />
-              </div>
-            </>
-          )}
-        </div>
-        
-        {/* Reader footer */}
-        <div className="h-14 flex items-center justify-between px-4 border-t border-neutral-800 bg-black">
-          <div className="flex items-center space-x-4">
-            {prevChapter && (
-              <button
-                onClick={() => setSelectedChapter(prevChapter.id)}
-                className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors flex items-center"
-              >
-                <FaChevronLeft size={10} className="mr-1" />
-                Prev Chapter
-              </button>
-            )}
-            
-            <div className="flex items-center bg-neutral-800 rounded overflow-hidden">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 0}
-                className={`p-2 ${
-                  currentPage === 0 ? 'text-gray-600' : 'text-gray-300 hover:bg-neutral-700'
-                }`}
-              >
-                <FaChevronLeft size={12} />
-              </button>
-              <div className="px-3 py-1 border-x border-neutral-700">
-                <span className="text-sm">
-                  {currentPage + 1} / {pageImages.length}
-                </span>
-              </div>
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === pageImages.length - 1}
-                className={`p-2 ${
-                  currentPage === pageImages.length - 1 ? 'text-gray-600' : 'text-gray-300 hover:bg-neutral-700'
-                }`}
-              >
-                <FaChevronRight size={12} />
-              </button>
-            </div>
-          </div>
-          
-          <div>
-            {nextChapter && (
-              <button
-                onClick={() => setSelectedChapter(nextChapter.id)}
-                className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors flex items-center"
-              >
-                Next Chapter
-                <FaChevronRight size={10} className="ml-1" />
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
