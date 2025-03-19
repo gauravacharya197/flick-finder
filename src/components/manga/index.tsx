@@ -9,7 +9,8 @@ import ErrorMessage from "@/components/common/ErrorMessage";
 import Skeleton from "../common/Skeleton";
 import SectionHeader from "../common/SectionHeader";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
-import { MdSort } from "react-icons/md";
+import { MdSort, MdSearch } from "react-icons/md";
+import { IoIosCloseCircle } from "react-icons/io";
 
 import {
   Select,
@@ -34,6 +35,8 @@ interface MangaItem {
 
 const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
   const [sortOption, setSortOption] = useState<string>("popular");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   
   // Media-type specific sort options
   const mangaSortOptions: SortOption[] = [
@@ -49,6 +52,15 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     return option ? option.label : "Popular";
   };
 
+  // Debounce search input to prevent excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   const {
     data,
     fetchNextPage,
@@ -57,11 +69,12 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useInfiniteQuery({
-    queryKey: ["Manga", mediaType, sortOption],
+    queryKey: ["Manga", mediaType, sortOption, debouncedSearch],
     queryFn: async () => {
-      // Call the getManga API which returns data directly
-      const response = await getManga('');
+      // Call the getManga API with the search query
+      const response = await getManga(debouncedSearch);
       
       // Sort the data based on the selected sort option
       let sortedData = [...response.data];
@@ -95,6 +108,14 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     setSortOption(value);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
   const observerRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isFetching });
   const mangas = data?.pages[0]?.data.results || [];
 
@@ -112,23 +133,45 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-3 pt-2 border-b dark:border-gray-800">
         <SectionHeader text={`Browse ${capitalizeFirstLetter(mediaType)}`} />
         
-        {/* shadcn/ui Select component */}
-        <div className="mt-4 sm:mt-0 self-start sm:self-auto">
-          <Select value={sortOption} onValueChange={handleSortChange}>
-            <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-gray-900 w-48 text-white">
-              <div className="flex items-center gap-2">
-                <MdSort className="text-lg" />
-                <SelectValue placeholder={getCurrentSortLabel()} />
-              </div>
-            </SelectTrigger>
-            <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
-              {mangaSortOptions.map((option) => (
-                <SelectItem key={option.id} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
+          {/* Search input */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search manga..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="w-full sm:w-64 pl-10 pr-10 py-2 border rounded-md border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+            <MdSearch className="absolute left-3 top-3 text-gray-400 text-lg" />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-3 text-gray-400 hover:text-white"
+              >
+                <IoIosCloseCircle className="text-lg" />
+              </button>
+            )}
+          </div>
+          
+          {/* shadcn/ui Select component */}
+          <div className="self-start sm:self-auto">
+            <Select value={sortOption} onValueChange={handleSortChange}>
+              <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-gray-900 w-48 text-white">
+                <div className="flex items-center gap-2">
+                  <MdSort className="text-lg" />
+                  <SelectValue placeholder={getCurrentSortLabel()} />
+                </div>
+              </SelectTrigger>
+              <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+                {mangaSortOptions.map((option) => (
+                  <SelectItem key={option.id} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
@@ -144,6 +187,16 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
         />
       ) : isError ? (
         <ErrorMessage className="mt-2 w-full" message={error?.message || "Something went wrong while fetching manga details."} />
+      ) : transformedMangas.length === 0 ? (
+        <div className="mt-8 text-center">
+          <p className="text-lg text-gray-400">No manga found matching your search.</p>
+          <button 
+            onClick={clearSearch}
+            className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark"
+          >
+            Clear Search
+          </button>
+        </div>
       ) : (
         <>
           <div className="mt-5">

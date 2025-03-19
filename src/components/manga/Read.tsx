@@ -14,14 +14,14 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 
-import SectionHeader from "../common/SectionHeader";
 import ErrorMessage from "../common/ErrorMessage";
 import { ReadMangaPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
 import { getMangaDetails } from "@/services/MangaService";
 import { Button } from "../ui/primitives/button";
 import { CustomTag } from "../common/CustomTag";
-import { FaBookOpen, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaExpand, FaMinus, FaPlus, FaSearch, FaTimes } from "react-icons/fa";
+import { Input } from "../ui/primitives/input";
 
 const ReadManga = ({ params }: ReadMangaPageProps) => {
   // Destructure params
@@ -33,7 +33,10 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [chapterLoading, setChapterLoading] = useState(false);
-  const [showControls, setShowControls] = useState(true);
+  const [zoom, setZoom] = useState(100);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   if (!id) {
     return <ErrorMessage message="Error: Missing required parameters" />;
@@ -123,14 +126,12 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   const handlePrevPage = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
-      window.scrollTo(0, 0);
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < pageImages.length - 1) {
       setCurrentPage(currentPage + 1);
-      window.scrollTo(0, 0);
     }
   };
 
@@ -138,9 +139,43 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
     setSelectedChapter(value);
   };
 
-  const toggleControls = () => {
-    setShowControls(!showControls);
+  const incrementZoom = () => {
+    setZoom(Math.min(zoom + 10, 200));
   };
+
+  const decrementZoom = () => {
+    setZoom(Math.max(zoom - 10, 50));
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().then(() => {
+          setIsFullscreen(false);
+        });
+      }
+    }
+  };
+
+  // Filter chapters based on search term
+  const filteredChapters = chapters.filter(chapter => {
+    const chapterNum = chapter.attributes.chapter || "";
+    const chapterTitle = chapter.attributes.title || "";
+    const searchLower = searchTerm.toLowerCase();
+    
+    return (
+      chapterNum.toString().includes(searchLower) || 
+      chapterTitle.toLowerCase().includes(searchLower)
+    );
+  });
 
   // Keyboard navigation
   useEffect(() => {
@@ -179,249 +214,242 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   const nextChapter = currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-6 bg-background min-h-screen">
-      {/* Manga info header - Card based */}
-      <Card className="mb-6 overflow-hidden shadow-md">
-        <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-0">
-            {/* Cover image */}
-            <div className="col-span-1 bg-background">
-              {manga.coverImage ? (
-                <img 
-                  src={manga.coverImage} 
-                  alt={manga.title} 
-                  className="w-full h-full object-cover max-h-96 md:max-h-full"
-                />
-              ) : (
-                <div className="w-full h-64 md:h-full bg-gray-200 flex items-center justify-center">
-                  <p className="text-gray-500">No cover image</p>
-                </div>
-              )}
-            </div>
-            
-            {/* Manga details */}
-            <div className="col-span-1 md:col-span-3 p-6">
-              <h1 className="text-2xl md:text-3xl font-bold mb-3 text-white">{manga.title}</h1>
-              
-              <div className="flex flex-wrap gap-2 mb-4">
-                <CustomTag text=  {manga.status || "Unknown status"}/>
-                 
-                
-                {manga.releaseDate && (
-                                  <CustomTag text=  {new Date(manga.releaseDate).toLocaleDateString()}/>
-
-                 
+    <div className="flex h-screen bg-neutral-900 text-gray-200 overflow-hidden">
+      {/* Sidebar */}
+      {sidebarOpen && (
+        <div className="w-80 h-full bg-black border-r border-neutral-800 flex flex-col overflow-hidden">
+          {/* Manga info */}
+          <div className="p-4 border-b border-neutral-800">
+            <div className="flex items-center mb-4">
+              <div className="w-24 h-32 overflow-hidden rounded mr-3">
+                {manga.coverImage ? (
+                  <img 
+                    src={manga.coverImage} 
+                    alt={manga.title} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-neutral-800 flex items-center justify-center">
+                    <p className="text-gray-500">No cover</p>
+                  </div>
                 )}
               </div>
-              
-              {manga.genres && manga.genres.length > 0 && (
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-2">
-                    {manga.genres.map((genre: string, index: number) => (
-                      <span key={index}  className="bg-blue-100 text-blue-800 hover:bg-blue-200">
-                        {genre}
-                      </span>
+              <div className="flex-1">
+                <h1 className="text-lg font-bold line-clamp-2">{manga.title}</h1>
+                <p className="text-xs text-gray-400 mt-1">Status: {manga.status || "Unknown"}</p>
+                <p className="text-xs text-gray-400">Released: {manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</p>
+                {manga.genres && manga.genres.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {manga.genres.slice(0, 3).map((genre: string, idx: number) => (
+                      <CustomTag key={idx} text={genre} />
                     ))}
                   </div>
-                </div>
-              )}
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                {manga.authors && manga.authors.length > 0 && (
-                  <div>
-                    <span className="text-gray-600 font-medium">Authors: </span>
-                    {manga.authors.join(", ")}
-                  </div>
-                )}
-                
-                {manga.rating && (
-                  <div>
-                    <span className="text-gray-600 font-medium">Rating: </span>
-                    <span className="font-semibold">{manga.rating}/10</span>
-                  </div>
                 )}
               </div>
-              
-              {manga.description && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-white">Description</h3>
-                  <p className="text-white text-sm md:text-base line-clamp-4 md:line-clamp-none">
-                    {manga.description.split('---')[0].trim()}
-                  </p>
-                </div>
+            </div>
+          </div>
+          
+          {/* Chapter list header with search */}
+          <div className="p-3 border-b border-neutral-800">
+            <h2 className="text-md font-semibold mb-2">Chapters</h2>
+            <div className="relative">
+              <Input
+                type="text"
+                placeholder="Search chapters..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-neutral-800 border-neutral-700 text-sm pl-8"
+              />
+              <FaSearch className="absolute left-2.5 top-2.5 text-gray-400" size={14} />
+              {searchTerm && (
+                <button 
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-2.5 top-2.5 text-gray-400 hover:text-white"
+                >
+                  <FaTimes size={14} />
+                </button>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Chapter navigation and reader controls */}
-      <Card className="mb-6 shadow-sm">
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex-1">
-             
-              {loading ? (
-                <div className="h-10 w-full bg-background animate-pulse rounded"></div>
-              ) : chapters.length === 0 ? (
-                <p className="text-gray-500">No chapters available</p>
-              ) : (
-                <div className="w-full max-w-xs">
-                  <Select 
-                    value={selectedChapter || ""} 
-                    onValueChange={handleChapterChange} 
-                    disabled={loading}
-                  >
-                   <SelectTrigger className="max-full border-gray-700 bg-gray-800 ring-0 focus:ring-0 focus:ring-offset-0  text-white">
-
-                      <SelectValue placeholder="Select a chapter" />
-                    </SelectTrigger>
-                    <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
-
-                      <SelectGroup>
-                        <SelectLabel>Chapters</SelectLabel>
-                        {chapters.map((chapter) => (
-                          <SelectItem key={chapter.id} value={chapter.id}>
-                            Chapter {chapter.attributes.chapter || "N/A"}
-                            {chapter.attributes.title ? ` - ${chapter.attributes.title}` : ""}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </div>
-            
-            {selectedChapter && pageImages.length > 0 && (
-              <div className="flex flex-col md:flex-row items-center gap-4">
-                <div className="flex items-center gap-2">
-                  
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => prevChapter && setSelectedChapter(prevChapter.id)}
-                          disabled={!prevChapter}
-                          className="px-3"
-                        >
-                          <FaChevronLeft className="h-5 w-5" />
-                          <span className="sr-md:not-sr-only ml-1">Prev Chapter</span>
-                        </Button>
-                      
-                        
-                    
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => nextChapter && setSelectedChapter(nextChapter.id)}
-                          disabled={!nextChapter}
-                          className="px-3"
-                        >
-                          <span className="sr-md:not-sr-only mr-1">Next Chapter</span>
-                          <FaChevronRight className="h-5 w-5" />
-                        </Button>
-                     
-                     
-                </div>
-                
-                <span className="ml-2">
-                  Page {currentPage + 1} of {pageImages.length}
-                </span>
+          
+          {/* Chapter list */}
+          <div className="flex-1 overflow-y-auto">
+            {loading ? (
+              <div className="p-4">
+                <Skeleton rows={5} />
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Chapter reader */}
-      {selectedChapter && (
-        <Card className="mb-8 shadow-md overflow-hidden">
-          <CardContent className="p-0">
-            <div className="bg-gray-800 text-white p-4">
-              <h2 className="text-xl font-semibold">
-                Chapter {chapterNumber}
-                {chapterTitle && <span className="text-gray-300 ml-2">- {chapterTitle}</span>}
-              </h2>
-            </div>
-
-            {chapterLoading ? (
-              <div className="flex justify-center items-center h-96 bg-gray-50 p-4">
-                <Skeleton rows={7} />
-              </div>
-            ) : pageImages.length === 0 ? (
-              <div className="flex justify-center items-center h-96 bg-gray-50 p-4">
-                <p className="text-gray-500">No images available for this chapter</p>
-              </div>
+            ) : filteredChapters.length === 0 ? (
+              <p className="p-4 text-gray-500">
+                {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
+              </p>
             ) : (
-              <div className="relative" onClick={toggleControls}>
-                <div className="flex flex-col items-center bg-black">
-                  <img
-                    src={pageImages[currentPage]}
-                    alt={`Page ${currentPage + 1}`}
-                    className="max-w-full max-h-screen object-contain"
-                    loading="eager"
-                  />
-                </div>
-
-                {/* Floating page controls */}
-                {showControls && (
-                  <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-10 bg-gray-900/80 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-3 text-white shadow-lg">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePrevPage();
-                      }}
-                      disabled={currentPage === 0}
-                      className="text-white hover:bg-white/20 rounded-full"
+              <div className="flex flex-col">
+                {filteredChapters.map((chapter, index) => {
+                  const chNum = chapter.attributes.chapter || "N/A";
+                  const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
+                  
+                  return (
+                    <button
+                      key={chapter.id}
+                      onClick={() => handleChapterChange(chapter.id)}
+                      className={`text-left px-4 py-3 hover:bg-neutral-800 border-b border-neutral-800 transition-colors ${
+                        selectedChapter === chapter.id ? 'bg-neutral-800 font-medium' : ''
+                      }`}
                     >
-                      <FaChevronLeft className="h-6 w-6" />
-                    </Button>
-                    
-                    <span className="text-sm font-medium px-2">
-                      {currentPage + 1} / {pageImages.length}
-                    </span>
-                    
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleNextPage();
-                      }}
-                      disabled={currentPage === pageImages.length - 1}
-                      className="text-white hover:bg-white/20 rounded-full"
-                    >
-                      <FaChevronRight className="h-6 w-6" />
-                    </Button>
-                  </div>
-                )}
-                
-                {/* Invisible click areas for page navigation */}
-                <div 
-                  className="absolute top-0 left-0 w-1/3 h-full cursor-pointer opacity-0"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrevPage();
-                  }}
-                />
-                <div 
-                  className="absolute top-0 right-0 w-1/3 h-full cursor-pointer opacity-0"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNextPage();
-                  }}
-                />
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">Chapter {chNum}</span>
+                        {chTitle !== `Chapter ${chNum}` && (
+                          <span className="text-xs text-gray-400 truncate">{chTitle}</span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+          
+          {/* Manga description */}
+          
+        </div>
       )}
       
-      {/* Keyboard shortcuts info */}
-      <div className="text-center text-gray-500 text-sm mb-6">
-        <p>Tip: Use keyboard arrow keys (← →) to navigate between pages</p>
+      {/* Main content */}
+      <div className="flex-1 flex flex-col h-full relative">
+        {/* Reader header */}
+        <div className="h-14 flex items-center justify-between px-4 border-b border-neutral-800 bg-black">
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={toggleSidebar}
+              className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors"
+            >
+              {sidebarOpen ? "Hide Chapters" : "Show Chapters"}
+            </button>
+            
+            <div className="text-sm">
+              <span className="font-medium">Chapter {chapterNumber}</span>
+              {chapterTitle && <span className="text-gray-400 ml-2">{chapterTitle}</span>}
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center bg-neutral-800 rounded">
+              <button
+                onClick={decrementZoom}
+                className="p-1.5 text-gray-400 hover:text-white"
+                title="Zoom out"
+              >
+                <FaMinus size={12} />
+              </button>
+              <span className="text-xs px-2 border-x border-neutral-700">{zoom}%</span>
+              <button
+                onClick={incrementZoom}
+                className="p-1.5 text-gray-400 hover:text-white"
+                title="Zoom in"
+              >
+                <FaPlus size={12} />
+              </button>
+            </div>
+            
+            <button
+              onClick={toggleFullscreen}
+              className="p-1.5 bg-neutral-800 rounded text-gray-400 hover:text-white"
+              title="Toggle fullscreen"
+            >
+              <FaExpand size={14} />
+            </button>
+          </div>
+        </div>
+        
+        {/* Reader content */}
+        <div className="flex-1 overflow-auto bg-neutral-900 flex justify-center relative">
+          {chapterLoading ? (
+            <div className="flex justify-center items-center h-full w-full">
+              <Skeleton rows={7} />
+            </div>
+          ) : pageImages.length === 0 ? (
+            <div className="flex justify-center items-center h-full w-full">
+              <p className="text-gray-500">No images available for this chapter</p>
+            </div>
+          ) : (
+            <>
+              {/* Left navigation area */}
+              <div 
+                className="absolute left-0 top-0 w-1/4 h-full cursor-pointer z-10"
+                onClick={handlePrevPage}
+              />
+              
+              {/* Right navigation area */}
+              <div 
+                className="absolute right-0 top-0 w-1/4 h-full cursor-pointer z-10"
+                onClick={handleNextPage}
+              />
+              
+              {/* Image container */}
+              <div className="flex justify-center items-center min-h-full py-4">
+                <img
+                  src={pageImages[currentPage]}
+                  alt={`Page ${currentPage + 1}`}
+                  className="max-h-full object-contain transition-all duration-200"
+                  style={{ width: `${zoom}%` }}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        
+        {/* Reader footer */}
+        <div className="h-14 flex items-center justify-between px-4 border-t border-neutral-800 bg-black">
+          <div className="flex items-center space-x-4">
+            {prevChapter && (
+              <button
+                onClick={() => setSelectedChapter(prevChapter.id)}
+                className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors flex items-center"
+              >
+                <FaChevronLeft size={10} className="mr-1" />
+                Prev Chapter
+              </button>
+            )}
+            
+            <div className="flex items-center bg-neutral-800 rounded overflow-hidden">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                className={`p-2 ${
+                  currentPage === 0 ? 'text-gray-600' : 'text-gray-300 hover:bg-neutral-700'
+                }`}
+              >
+                <FaChevronLeft size={12} />
+              </button>
+              <div className="px-3 py-1 border-x border-neutral-700">
+                <span className="text-sm">
+                  {currentPage + 1} / {pageImages.length}
+                </span>
+              </div>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === pageImages.length - 1}
+                className={`p-2 ${
+                  currentPage === pageImages.length - 1 ? 'text-gray-600' : 'text-gray-300 hover:bg-neutral-700'
+                }`}
+              >
+                <FaChevronRight size={12} />
+              </button>
+            </div>
+          </div>
+          
+          <div>
+            {nextChapter && (
+              <button
+                onClick={() => setSelectedChapter(nextChapter.id)}
+                className="px-3 py-1.5 bg-neutral-800 rounded text-sm hover:bg-neutral-700 transition-colors flex items-center"
+              >
+                Next Chapter
+                <FaChevronRight size={10} className="ml-1" />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
