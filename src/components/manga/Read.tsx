@@ -31,7 +31,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   const [loading, setLoading] = useState(false);
   const [chapterLoading, setChapterLoading] = useState(false);
   const [zoom, setZoom] = useState(100);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Hidden by default
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Hidden by default
   const [searchTerm, setSearchTerm] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -225,7 +225,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
               >
                 <FaMinus size={12} />
               </button>
-              <span className="text-sm px-2 border-x border-[rgb(31,41,55)]">{zoom}%</span>
+              <span className="text-md px-2 border-x border-[rgb(31,41,55)]">{zoom}%</span>
               <button
                 onClick={incrementZoom}
                 className="p-1 text-gray-400 hover:text-white"
@@ -237,10 +237,10 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
 
             <button
               onClick={toggleFullscreen}
-              className="p-1 bg-[rgb(31,41,55)] rounded text-gray-400 hover:text-white"
+              className="p-1 text-md bg-[rgb(31,41,55)] rounded text-gray-400 hover:text-white"
               title="Toggle fullscreen"
             >
-              <FaExpand size={14} />
+              <FaExpand size={18} />
             </button>
           </div>
         </div>
@@ -326,17 +326,9 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
                 placeholder="Search chapters..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md pl-8"
+                className="w-full bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md"
               />
-              <FaSearch className="absolute left-2 top-2 text-gray-400" size={14} />
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="absolute right-2 top-2 text-gray-400 hover:text-white"
-                >
-                  <FaTimes size={14} />
-                </button>
-              )}
+             
             </div>
           </div>
 
@@ -360,7 +352,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
                     <button
                       key={chapter.id}
                       onClick={() => handleChapterChange(chapter.id)}
-                      className={`text-left px-2 py-1.5 hover:bg-[rgb(31,41,55)] border-b border-[rgb(31,41,55)] transition-colors ${
+                      className={`text-left px-2 py-1.5 hover:bg-gray-800/30 border-b border-[rgb(31,41,55)] transition-colors ${
                         selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
                       }`}
                     >

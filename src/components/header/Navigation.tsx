@@ -68,6 +68,7 @@ const Navigation = () => {
             onClick={handleClose}
             className="absolute right-8 top-1/2 -translate-y-1/2 transform"
           >
+            
             <IoMdClose className="text-xl text-primary md:text-2xl" />
           </button>
         )}

@@ -1,30 +1,35 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+
+interface RouteParams {
+  params: Promise<{ id: string }>;
+}
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: RouteParams
 ) {
-  const id = params.id;
-  
-  // Get search params
-  const searchParams = request.nextUrl.searchParams;
-  const language = searchParams.get("language") || "en";
-  const limit = searchParams.get("limit") || "100";
-  
   try {
+    const { id } = await params;
+
+    // Get search params
+    const url = new URL(request.url);
+    const searchParams = url.searchParams;
+    const language = searchParams.get("language") || "en";
+    const limit = searchParams.get("limit") || "100";
+
     const response = await fetch(
-      `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${language}&limit=${limit}&order[chapter]=asc`, 
+      `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${language}&limit=${limit}&order[chapter]=asc`,
       {
         headers: {
-          "User-Agent": "YourAppName/1.0"
-        }
+          "User-Agent": "YourAppName/1.0",
+        },
       }
     );
-    
+
     if (!response.ok) {
       throw new Error(`MangaDex API responded with status: ${response.status}`);
     }
-    
+
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
