@@ -72,6 +72,14 @@ const PlayerOptions = ({
   };
 
   const handleServerChange = (serverId: number) => {
+    if (selectedServer && window.gtag) {
+      // Send event to Google Analytics
+      window.gtag("event", "server_selection", {
+        event_category: "Server Interaction",
+        event_label: serverId, // Example: "Server 1"
+        value: serverId,
+      });
+    }
     setSelectedServer(serverId);
   };
 

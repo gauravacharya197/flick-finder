@@ -10,7 +10,10 @@ export function getVideoSourceUrl(
 ): string {
   // For server 1, use direct video source if available
   if (selectedServer === 0 && movie?.videoSource) {
-   
+    if(mediaType=="tv")
+    {
+      
+    }
     return movie.videoSource;
   }
 

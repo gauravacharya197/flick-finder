@@ -3,6 +3,10 @@ export const constructWatchUrl = (mediaType: string, movieId: string, displayTit
     const formattedTitle = displayTitle
       ? encodeURIComponent(displayTitle.toLowerCase().replace(/\s+/g, '-'))
       : '';
+    if(mediaType.toLowerCase()=='manga')
+    {
+      return `/manga/${movieId}/${formattedTitle}`;
+    }
     return `/watch/${mediaType}/${movieId}/${formattedTitle}`;
   };
   

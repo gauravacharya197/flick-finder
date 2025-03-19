@@ -8,9 +8,10 @@ import {
   FaPlus, 
   FaHome,
   FaBookmark,
-  FaHistory
+  FaHistory,
+  FaAddressBook
 } from 'react-icons/fa';
-import { FaFilter } from "react-icons/fa6";
+import { FaBookOpen, FaFilter } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
 const menuData: Menu[] = [
  
@@ -40,6 +41,15 @@ const menuData: Menu[] = [
     path: "/explore/tv",
     requireLogin: false,
     icon: FaTv,
+    showOnMobile : true,
+  },
+  {
+    id: 4.2,
+    title: "Manga",
+    newTab: false,
+    path: "/explore/manga",
+    requireLogin: false,
+    icon: FaBookOpen,
     showOnMobile : true,
   },
   {
