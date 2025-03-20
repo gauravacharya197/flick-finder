@@ -32,6 +32,7 @@ const PlayerOptions = ({
     if (typeof window !== "undefined") {
       if(movie?.videoSource)
       {
+        
         return 0;
       }
       const storedValue = localStorage.getItem("selectedServer");

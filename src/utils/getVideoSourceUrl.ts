@@ -8,14 +8,21 @@ export function getVideoSourceUrl(
   selectedSeason: number | null,
   selectedEpisode: number | null
 ): string {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   // For server 1, use direct video source if available
-  if (selectedServer === 0 && movie?.videoSource) {
-    if(mediaType=="tv")
-    {
-      
-    }
-    return movie.videoSource;
+  if(selectedServer===0){
+  if (mediaType.toLowerCase() === "movie" && movie.videoSource) {
+    return `${baseUrl}player?mediaType=movie&movieId=${movie.id}&&imdbId=${ movie.imdbID}`;
   }
+
+  // For TV Shows: Check if videoSource is true, then construct API URL
+  if (mediaType.toLowerCase() === "tv" && movie.videoSource) {
+    if (!selectedSeason || !selectedEpisode) return "";
+
+    return `${baseUrl}player?mediaType=tv&movieId=${movie.id || movie.imdbID}&season=${selectedSeason}&episode=${selectedEpisode}`;
+  }
+}
 
   // Find the selected server config
   const server = VIDEO_SERVERS.find(s => s.id === selectedServer);
@@ -24,11 +31,11 @@ export function getVideoSourceUrl(
 
   // Get separator from server config or use default
   const separator = server.urlSeparator || '/';
-  
+
   // Build URL based on content type
   if (mediaType === "tv" && selectedSeason !== null && selectedEpisode !== null) {
     return `${server.baseUrl}/${mediaType}/${movieId}${separator}${selectedSeason}${separator}${selectedEpisode}?poster=${movie?.coverImage}`;
   }
-  
+
   return `${server.baseUrl}/${mediaType}/${movieId}?poster=${movie?.coverImage}`;
 }
