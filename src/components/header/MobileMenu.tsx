@@ -6,7 +6,7 @@ import NavItem from "./NavItem";
 export const MobileMenu = ({ isOpen, menuContentRef, closeMenu }) => (
     <div
       ref={menuContentRef}
-      className={`w-48 fixed left-0 top-12 bottom-0 z-40 bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto scrollbar-hide md:hidden ${
+      className={`w-46 fixed left-0 top-12 bottom-0 z-50 bg-gradient-to-b from-gray-900 to-black shadow-lg transition-all duration-300 ease-in-out transform overflow-y-auto scrollbar-hide md:hidden ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
       aria-hidden={!isOpen}

@@ -75,7 +75,7 @@ const NavItem = ({ item, closeMenu, isSidebar = false }) => {
   return (
     <Link
       href={linkHref}
-      className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200 ${
+      className={`flex items-center gap-2 px-3 py-1 rounded-md transition-colors duration-200 ${
         isActive ? "bg-primary text-white" : "text-gray-300 hover:bg-gray-700/50"
       }`}
       onClick={handleClick}

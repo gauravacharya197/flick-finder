@@ -129,7 +129,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   };
 
   const incrementZoom = () => {
-    setZoom(Math.min(zoom + 10, 200));
+    setZoom(Math.min(zoom + 10, 100));
   };
 
   const decrementZoom = () => {
@@ -264,101 +264,96 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
 
       {/* Sidebar (Chapters + Manga info) */}
       {sidebarOpen && (
-        <div className="fixed md:relative w-full md:w-64 h-full bg-[#111827] border-l border-[rgb(31,41,55)] flex flex-col overflow-hidden transition-all duration-300 z-50">
-          {/* Sidebar header with close button for mobile */}
-          <div className="flex items-center justify-between pr-6 border-b border-[rgb(31,41,55)] md:hidden">
-            <h2 className="font-medium">Chapters</h2>
-            <button
-              onClick={toggleSidebar}
-              className="p-1 bg-[rgb(31,41,55)] rounded text-gray-400 hover:text-white"
-            >
-              <FaTimes size={16} />
-            </button>
-          </div>
+  <div className="fixed md:relative w-[100%] md:w-60 h-full bg-[#111827] border-l border-[rgb(31,41,55)] flex flex-col overflow-hidden transition-all duration-300 z-40 left-0">
+    {/* Sidebar header with close button for mobile */}
+    <div className="flex items-center justify-between px-3 py-2 border-b border-[rgb(31,41,55)] md:hidden">
+      <h2 className="text-md font-medium">Chapters</h2>
+      
+    </div>
 
-          {/* Manga info */}
-          <div className="p-2 border-b border-[rgb(31,41,55)]">
-            <div className="flex items-center">
-              <div className="w-16 h-20 overflow-hidden rounded mr-2">
-                {manga.coverImage ? (
-                  <img
-                    src={`${baseUrl}api/File/image?url=${manga.coverImage}`}
-                    alt={manga.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-[rgb(31,41,55)] flex items-center justify-center">
-                    <p className="text-gray-500 text-sm">No cover</p>
-                  </div>
-                )}
-              </div>
-              <div className="flex-1">
-                <h1 className="text-md font-bold line-clamp-2">{manga.title}</h1>
-                <p className="text-sm text-gray-400 mt-1">Status: {manga.status || "Unknown"}</p>
-                <p className="text-sm text-gray-400">Released: {manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</p>
-                {manga.genres && manga.genres.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {manga.genres.slice(0, 3).map((genre: string, idx: number) => (
-                      <CustomTag key={idx} text={genre} />
-                    ))}
-                  </div>
-                )}
-              </div>
+    {/* Compact Manga info */}
+    <div className="p-2 border-b border-[rgb(31,41,55)]">
+      <div className="flex items-start gap-2">
+        <div className="w-12 h-16 overflow-hidden rounded flex-shrink-0">
+          {manga.coverImage ? (
+            <img
+              src={`${baseUrl}api/File/image?url=${manga.coverImage}`}
+              alt={manga.title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full bg-[rgb(31,41,55)] flex items-center justify-center">
+              <p className="text-xs text-gray-500">No cover</p>
             </div>
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-md font-bold line-clamp-2">{manga.title}</h1>
+          <div className="flex flex-wrap items-center text-xs text-gray-400 mt-1 gap-x-2">
+            <span>{manga.status || "Unknown"}</span>
+            <span>{manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</span>
           </div>
-
-          {/* Chapter list header with search */}
-          <div className="p-2 border-b border-[rgb(31,41,55)]">
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="Search chapters..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md"
-              />
-             
+          {manga.genres && manga.genres.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-1">
+              {manga.genres.slice(0, 2).map((genre: string, idx: number) => (
+                <CustomTag key={idx} text={genre} />
+              ))}
             </div>
-          </div>
+          )}
+        </div>
+      </div>
+    </div>
 
-          {/* Chapter list */}
-          <div className="flex-1 overflow-y-auto">
-            {loading ? (
-              <div className="p-2">
-                <Skeleton rows={5} />
-              </div>
-            ) : filteredChapters.length === 0 ? (
-              <p className="p-2 text-gray-500">
-                {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
-              </p>
-            ) : (
-              <div className="flex flex-col">
-                {filteredChapters.map((chapter) => {
-                  const chNum = chapter.attributes.chapter || "N/A";
-                  const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
+    {/* Compact search box */}
+    <div className="px-2 py-1.5 border-b border-[rgb(31,41,55)]">
+      <Input
+        type="text"
+        placeholder="Search chapters..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full h-8 bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md py-1 px-2"
+      />
+    </div>
 
-                  return (
-                    <button
-                      key={chapter.id}
-                      onClick={() => handleChapterChange(chapter.id)}
-                      className={`text-left px-2 py-1.5 hover:bg-gray-800/30 border-b border-[rgb(31,41,55)] transition-colors ${
-                        selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
-                      }`}
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-md font-medium">Chapter {chNum}</span>
-                        {chTitle !== `Chapter ${chNum}` && (
-                          <span className="text-sm text-gray-400 truncate">{chTitle}</span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+    {/* Optimized chapter list */}
+    <div className="flex-1 overflow-y-auto">
+      {loading ? (
+        <div className="p-2">
+          <Skeleton rows={5} />
+        </div>
+      ) : filteredChapters.length === 0 ? (
+        <p className="p-2 text-xs text-gray-500">
+          {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
+        </p>
+      ) : (
+        <div className="flex flex-col">
+          {filteredChapters.map((chapter) => {
+            const chNum = chapter.attributes.chapter || "N/A";
+            const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
+
+            return (
+              <button
+                key={chapter.id}
+                onClick={() => handleChapterChange(chapter.id)}
+                className={`text-left px-2 py-1 hover:bg-gray-800/30 border-b border-[rgb(31,41,55)] transition-colors ${
+                  selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
+                }`}
+              >
+                <div className="flex flex-col">
+                  <span className="text-md font-medium">Chapter {chNum}</span>
+                  {chTitle !== `Chapter ${chNum}` && (
+                    <span className="text-sm text-gray-400 truncate">{chTitle}</span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
         </div>
       )}
+    </div>
+  </div>
+)}
     </div>
   );
 };
