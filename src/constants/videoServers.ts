@@ -9,10 +9,10 @@ export interface VideoServer {
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 5,
-    name: "MClub",
-    baseUrl: "https://moviesapi.club",
-    urlSeparator: "-"
+    id: 2,
+    name: "Secondary",
+   baseUrl :"https://111movies.com/",
+    urlSeparator:"/"
   },
   {
     id: 4,
@@ -29,8 +29,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
    
   },
   {
-    id: 2,
-    name: "Secondary",
+    id: 5,
+    name: "Embed",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
@@ -43,7 +43,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id:1,
     name: "Primary",
-    baseUrl :"https://111movies.com/",
-    urlSeparator:"/"
+     baseUrl: "https://moviesapi.club",
+    urlSeparator: "-"
   }
 ];
