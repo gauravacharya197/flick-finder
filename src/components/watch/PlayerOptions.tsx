@@ -26,7 +26,7 @@ const PlayerOptions = ({
 }: PlayerOptionsProps) => {
 
   const { isLoggedIn, user } = useAuth();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [selectedServer, setSelectedServer] = useState(() => {
     // Try to get the stored value from localStorage on initial render
     if (typeof window !== "undefined") {
