@@ -22,7 +22,7 @@ export  async function generateMetadata({params}:   ReadMangaProps) {
     : `Find and watch movies and TV shows and Manga on ${siteConfig.siteName}. ${siteConfig.description}`;
 
   return {
-    title: `${capitalizedTitle} - Watch ${capitalizedTitle} Online | ${siteConfig.siteName}`,
+    title: `${capitalizedTitle} - Read ${capitalizedTitle} Manga Online | ${siteConfig.siteName}`,
     description,
   };
 }
