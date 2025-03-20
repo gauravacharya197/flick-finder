@@ -34,6 +34,8 @@ interface MangaItem {
 }
 
 const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
   const [sortOption, setSortOption] = useState<string>("popular");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -136,7 +138,7 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
   const transformedMangas = mangas.map((manga: MangaItem) => ({
     id: manga.id,
     displayTitle: manga.title,
-    posterPath: manga.coverImage,
+    posterPath: `${baseUrl}api/File/image?url=${manga.coverImage}`,
     displayReleaseDate: manga.releasedDate,
     mediaType: "Manga",
   }));

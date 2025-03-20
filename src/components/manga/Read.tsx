@@ -2,29 +2,18 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-
-import { Card, CardContent } from "@/components/ui/primitives/card";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
-
 import ErrorMessage from "../common/ErrorMessage";
 import { ReadMangaPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
 import { getMangaDetails } from "@/services/MangaService";
-import { Button } from "../ui/primitives/button";
 import { CustomTag } from "../common/CustomTag";
-import { FaChevronLeft, FaChevronRight, FaExpand, FaMinus, FaPlus, FaSearch, FaTimes, FaBars } from "react-icons/fa";
+import { FaExpand, FaMinus, FaPlus, FaTimes, FaBars } from "react-icons/fa";
 import { Input } from "../ui/primitives/input";
 
 const ReadManga = ({ params }: ReadMangaPageProps) => {
-  const { id, title } = params;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  const { id } = params;
   const [chapters, setChapters] = useState<any[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
   const [pageImages, setPageImages] = useState<string[]>([]);
@@ -293,7 +282,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
               <div className="w-16 h-20 overflow-hidden rounded mr-2">
                 {manga.coverImage ? (
                   <img
-                    src={manga.coverImage}
+                    src={`${baseUrl}api/File/image?url=${manga.coverImage}`}
                     alt={manga.title}
                     className="w-full h-full object-cover"
                   />
@@ -344,7 +333,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
               </p>
             ) : (
               <div className="flex flex-col">
-                {filteredChapters.map((chapter, index) => {
+                {filteredChapters.map((chapter) => {
                   const chNum = chapter.attributes.chapter || "N/A";
                   const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
 
