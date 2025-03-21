@@ -9,8 +9,8 @@ export interface VideoServer {
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 2,
-    name: "Secondary",
+    id: 1,
+    name: "Primary",
    baseUrl :"https://111movies.com/",
     urlSeparator:"/"
   },
@@ -41,8 +41,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/",
   },
   {
-    id:1,
-    name: "Primary",
+    id:2,
+    name: "Secoondary",
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   }
