@@ -99,8 +99,16 @@ const Watch = ({ params }: WatchPageProps) => {
               <SectionHeader className="mb-5 mt-10" text="Casts" />
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {movie?.casts && movie.casts.length > 0 ? (
-  movie.casts.map((character, index) => (
-    <div key={index}>{character.name}</div>
+  movie?.casts?.map((character, index) => (
+    
+    <CastCard
+      key={index}
+      index={index}
+      imgSrc={character.profilePath}
+      name={character.name}
+      role={character.character}
+      castId={character.id}
+    />
   ))
 ) : (
   <p>No cast available</p>

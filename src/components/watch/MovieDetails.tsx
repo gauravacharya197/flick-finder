@@ -59,7 +59,7 @@ const MovieDetails = ({ movie, mediaType }) => {
         <div className="lg:w-3/4 space-y-6">
           {/* Header */}
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent text-white">
               {movie?.title}
             </h1>
             {movie?.tagLine && (

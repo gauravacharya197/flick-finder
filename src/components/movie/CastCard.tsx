@@ -6,7 +6,7 @@ const CastCard = ({ imgSrc, name, role,castId }:any) => {
   const fallBackImageUrl = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
 
   return (
-    <MyTooltip content={role ? `${name} as ${role}` : name}>
+    <MyTooltip className='text-xs' content={role ? `${name} as ${role}` : name}>
     <Link href={`/movies/cast/${castId}`}>
       <div className="group relative overflow-hidden rounded-lg bg-gray-900/40 transition-all duration-300 hover:bg-gray-900/60 hover:ring-1 hover:ring-gray-700">
         {/* Image Container - Smaller aspect ratio for mobile */}
