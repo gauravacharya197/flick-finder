@@ -26,13 +26,15 @@ const PlayerOptions = ({
 }: PlayerOptionsProps) => {
 
   const { isLoggedIn, user } = useAuth();
-  const [isPlaying, setIsPlaying] = useState(true);
+  const isReleased = new Date(movie.released) <= new Date();
+  
+  // Set isPlaying to true by default ONLY if the content is released
+  const [isPlaying, setIsPlaying] = useState(isReleased);
+  
   const [selectedServer, setSelectedServer] = useState(() => {
     // Try to get the stored value from localStorage on initial render
     if (typeof window !== "undefined") {
-      if(movie?.videoSource)
-      {
-        
+      if(movie?.videoSource) {
         return 0;
       }
       const storedValue = localStorage.getItem("selectedServer");
@@ -40,13 +42,31 @@ const PlayerOptions = ({
     }
     return 1;
   });
-  const isReleased = new Date(movie.released) <= new Date();
+  
   //useDevToolsProtection(isPlaying);
+  
   // Update localStorage when server changes
   useEffect(() => {
     if(selectedServer===0)return;
     localStorage.setItem("selectedServer", selectedServer.toString());
   }, [selectedServer]);
+
+  // Add to watch history after 10 minutes (600000 ms) if content is released and playing
+  useEffect(() => {
+    let watchHistoryTimeout: NodeJS.Timeout;
+    
+    if (isReleased && isPlaying) {
+      watchHistoryTimeout = setTimeout(() => {
+        addToWatchHistory(movie);
+      }, 1*1000*60*30); // 30 minutes
+    }
+    
+    return () => {
+      if (watchHistoryTimeout) {
+        clearTimeout(watchHistoryTimeout);
+      }
+    };
+  }, [isReleased, isPlaying, movie]);
 
   const handleShare = async () => {
     try {
@@ -61,15 +81,9 @@ const PlayerOptions = ({
   };
 
   const handlePlay = () => {
-    setIsPlaying(true);
-
-    // Add to watch history after 10 minutes of playing
-    setTimeout(
-      () => {
-        addToWatchHistory(movie);
-      },
-      10 * 60 * 1000
-    );
+    if (isReleased) {
+      setIsPlaying(true);
+    }
   };
 
   const handleServerChange = (serverId: number) => {
@@ -93,7 +107,7 @@ const PlayerOptions = ({
         }
         alt={movie?.title || "Movie cover"}
       />
-      {isReleased && (
+      {isReleased ? (
         <button
           onClick={handlePlay}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary/80 hover:bg-primary text-white p-6 rounded-full transition-all duration-300 transform hover:scale-110"
@@ -101,6 +115,11 @@ const PlayerOptions = ({
         >
           <FaPlay className="text-2xl" />
         </button>
+      ) : (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-700/80 text-white p-4 rounded-lg text-center">
+          <p className="font-semibold mb-1">Coming Soon</p>
+          <p className="text-sm">Available {new Date(movie.released).toLocaleDateString()}</p>
+        </div>
       )}
     </div>
   );

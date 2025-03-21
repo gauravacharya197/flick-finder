@@ -17,7 +17,7 @@ export async function GET(
     // Step 1: Get chapter data
     const chapterResponse = await fetch(`https://api.mangadex.org/chapter/${id}`, {
       headers: {
-        "User-Agent": "YourAppName/1.0"
+        "User-Agent": "FUI/1.0"
       }
     });
 

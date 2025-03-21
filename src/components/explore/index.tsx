@@ -19,12 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
+import { SortOption } from "@/types/sortOptions";
 
-interface SortOption {
-  id: string;
-  label: string;
-  value: string;
-}
+
 
 const Explore: React.FC<any> = ({ mediaType }) => {
   const [sortOption, setSortOption] = useState<string>("popularity.desc");
@@ -108,23 +105,25 @@ const Explore: React.FC<any> = ({ mediaType }) => {
         
         {/* shadcn/ui Select component */}
         <div className="mt-4 sm:mt-0 self-start sm:self-auto">
-          <Select value={sortOption} onValueChange={handleSortChange}>
-          <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-gray-900 w-48 text-white">
-          <div className="flex items-center gap-2">
-                <MdSort className="text-lg" />
-                <SelectValue placeholder={getCurrentSortLabel()} />
-              </div>
-            </SelectTrigger>
-            <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
-
-              {sortOptions.map((option) => (
-                <SelectItem key={option.id} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+  <Select value={sortOption} onValueChange={handleSortChange}>
+    <SelectTrigger 
+      className={`max-w-xs border-gray-700 ${sortOption ? "bg-primary bg-opacity-20 text-primary" : "bg-gray-800"} 
+      ring-gray-900 w-48 h-10`}
+    >
+      <div className="flex items-center gap-2">
+        <MdSort className="text-lg" />
+        <SelectValue placeholder={getCurrentSortLabel()} />
+      </div>
+    </SelectTrigger>
+    <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+      {sortOptions.map((option) => (
+        <SelectItem key={option.id} value={option.value} className="cursor-pointer data-[highlighted]:bg-gray-700 data-[highlighted]:text-white">
+          {option.label}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+</div>
       </div>
 
       {isLoading ? (

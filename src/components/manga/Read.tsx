@@ -14,13 +14,9 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const { id } = params;
-  const [chapters, setChapters] = useState<any[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<string | null>(null);
-  const [pageImages, setPageImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [chapterLoading, setChapterLoading] = useState(false);
   const [zoom, setZoom] = useState(100);
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Hidden by default
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -59,66 +55,50 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
     staleTime: 5 * 60 * 1000,
   });
 
+  const {
+    data: chaptersData,
+    isLoading: chaptersLoading,
+  } = useQuery({
+    queryKey: ["chapters", mangaId],
+    queryFn: async () => {
+      const response = await fetch(`/api/manga/${mangaId}/chapters?language=en`);
+      const data = await response.json();
+      
+      if (data.data && Array.isArray(data.data)) {
+        const sortedChapters = data.data.sort((a: any, b: any) => {
+          const chA = parseFloat(a.attributes.chapter || '0');
+          const chB = parseFloat(b.attributes.chapter || '0');
+          return chA - chB;
+        });
+        setSelectedChapter(sortedChapters[0]?.id); // Set the first chapter as default
+        return sortedChapters;
+      }
+      return [];
+    },
+    staleTime: 5 * 60 * 1000,
+   
+  });
+
+  // Fetch chapter pages with React Query
+  const {
+    data: pagesData,
+    isLoading: pagesLoading,
+  } = useQuery({
+    queryKey: ["chapterPages", selectedChapter],
+    queryFn: async () => {
+      if (!selectedChapter) return { pages: [] };
+      
+      const response = await fetch(`/api/chapter/${selectedChapter}/pages`);
+      const data = await response.json();
+      return data;
+    },
+    enabled: !!selectedChapter,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const chapters = chaptersData || [];
+  const pageImages = pagesData?.pages || [];
   const manga = mangaData?.data;
-
-  // Fetch chapters for this manga
-  useEffect(() => {
-    const fetchChapters = async () => {
-      if (!mangaId) return;
-
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/manga/${mangaId}/chapters?language=en`);
-        const data = await response.json();
-
-        if (data.data && Array.isArray(data.data)) {
-          const sortedChapters = data.data.sort((a: any, b: any) => {
-            const chA = parseFloat(a.attributes.chapter || '0');
-            const chB = parseFloat(b.attributes.chapter || '0');
-            return chA - chB;
-          });
-
-          setChapters(sortedChapters);
-
-          // Select first chapter by default
-          if (sortedChapters.length > 0 && !selectedChapter) {
-            setSelectedChapter(sortedChapters[0].id);
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching chapters:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChapters();
-  }, [mangaId]);
-
-  // Fetch chapter pages when a chapter is selected
-  useEffect(() => {
-    const fetchChapterPages = async () => {
-      if (!selectedChapter) return;
-
-      setChapterLoading(true);
-      setPageImages([]);
-
-      try {
-        const response = await fetch(`/api/chapter/${selectedChapter}/pages`);
-        const data = await response.json();
-
-        if (data.pages && Array.isArray(data.pages)) {
-          setPageImages(data.pages);
-        }
-      } catch (err) {
-        console.error("Error fetching chapter pages:", err);
-      } finally {
-        setChapterLoading(false);
-      }
-    };
-
-    fetchChapterPages();
-  }, [selectedChapter]);
 
   const handleChapterChange = (value: string) => {
     setSelectedChapter(value);
@@ -236,7 +216,7 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
 
         {/* Reader content */}
         <div className="flex-1 overflow-y-auto bg-[#111827]">
-          {chapterLoading ? (
+          {pagesLoading ? (
             <div className="flex justify-center items-center h-full w-full">
               <div className="animate-pulse flex space-x-4">
                 <div className="rounded-full bg-[rgb(31,41,55)] h-12 w-12"></div>
@@ -264,96 +244,97 @@ const ReadManga = ({ params }: ReadMangaPageProps) => {
 
       {/* Sidebar (Chapters + Manga info) */}
       {sidebarOpen && (
-  <div className="fixed md:relative w-[100%] md:w-60 h-full bg-[#111827] border-l border-[rgb(31,41,55)] flex flex-col overflow-hidden transition-all duration-300 z-40 left-0">
-    {/* Sidebar header with close button for mobile */}
-    <div className="flex items-center justify-between px-3 py-2 border-b border-[rgb(31,41,55)] md:hidden">
-      <h2 className="text-md font-medium">Chapters</h2>
-      
-    </div>
-
-    {/* Compact Manga info */}
-    <div className="p-2 border-b border-[rgb(31,41,55)]">
-      <div className="flex items-start gap-2">
-        <div className="w-12 h-16 overflow-hidden rounded flex-shrink-0">
-          {manga.coverImage ? (
-            <img
-              src={`${baseUrl}api/File/image?url=${manga.coverImage}`}
-              alt={manga.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full bg-[rgb(31,41,55)] flex items-center justify-center">
-              <p className="text-xs text-gray-500">No cover</p>
-            </div>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-md font-bold line-clamp-2">{manga.title}</h1>
-          <div className="flex flex-wrap items-center text-xs text-gray-400 mt-1 gap-x-2">
-            <span>{manga.status || "Unknown"}</span>
-            <span>{manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</span>
+        <div className="fixed md:relative w-[100%] md:w-60 h-full bg-[#111827] border-l border-[rgb(31,41,55)] flex flex-col overflow-hidden transition-all duration-300 z-40 left-0">
+          {/* Sidebar header with close button for mobile */}
+          <div className="flex items-center justify-between px-3 py-2 border-b border-[rgb(31,41,55)] md:hidden">
+            <h2 className="text-md font-medium">Chapters</h2>
+            
           </div>
-          {manga.genres && manga.genres.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-1">
-              {manga.genres.slice(0, 2).map((genre: string, idx: number) => (
-                <CustomTag key={idx} text={genre} />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
 
-    {/* Compact search box */}
-    <div className="px-2 py-1.5 border-b border-[rgb(31,41,55)]">
-      <Input
-        type="text"
-        placeholder="Search chapters..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full h-8 bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md py-1 px-2"
-      />
-    </div>
-
-    {/* Optimized chapter list */}
-    <div className="flex-1 overflow-y-auto">
-      {loading ? (
-        <div className="p-2">
-          <Skeleton rows={5} />
-        </div>
-      ) : filteredChapters.length === 0 ? (
-        <p className="p-2 text-xs text-gray-500">
-          {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
-        </p>
-      ) : (
-        <div className="flex flex-col">
-          {filteredChapters.map((chapter) => {
-            const chNum = chapter.attributes.chapter || "N/A";
-            const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
-
-            return (
-              <button
-                key={chapter.id}
-                onClick={() => handleChapterChange(chapter.id)}
-                className={`text-left px-2 py-1 hover:bg-gray-800/30 border-b border-[rgb(31,41,55)] transition-colors ${
-                  selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
-                }`}
-              >
-                <div className="flex flex-col">
-                  <span className="text-md font-medium">Chapter {chNum}</span>
-                  {chTitle !== `Chapter ${chNum}` && (
-                    <span className="text-sm text-gray-400 truncate">{chTitle}</span>
-                  )}
+          {/* Compact Manga info */}
+          <div className="p-2 border-b border-[rgb(31,41,55)]">
+            <div className="flex items-start gap-2">
+              <div className="w-12 h-16 overflow-hidden rounded flex-shrink-0">
+                {manga.coverImage ? (
+                  <img
+                    src={`${baseUrl}api/File/image?url=${manga.coverImage}`}
+                    alt={manga.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[rgb(31,41,55)] flex items-center justify-center">
+                    <p className="text-xs text-gray-500">No cover</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-md font-bold line-clamp-2">{manga.title}</h1>
+                <div className="flex flex-wrap items-center text-xs text-gray-400 mt-1 gap-x-2">
+                  <span>{manga.status || "Unknown"}</span>
+                  <span>{manga.releaseDate ? new Date(manga.releaseDate).toLocaleDateString() : "Unknown"}</span>
                 </div>
-              </button>
-            );
-          })}
+                {manga.genres && manga.genres.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {manga.genres.slice(0, 2).map((genre: string, idx: number) => (
+                      <CustomTag color="bg-gray-800/80 hover:bg-gray-700/80 transition-colors"
+                      key={idx} text={genre} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Compact search box */}
+          <div className="px-2 py-1.5 border-b border-[rgb(31,41,55)]">
+            <Input
+              type="text"
+              placeholder="Search chapters..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-8 bg-[rgb(31,41,55)] border-[rgb(31,41,55)] text-md py-1 px-2"
+            />
+          </div>
+
+          {/* Optimized chapter list */}
+          <div className="flex-1 overflow-y-auto">
+            {chaptersLoading ? (
+              <div className="p-2">
+                <Skeleton rows={5} />
+              </div>
+            ) : filteredChapters.length === 0 ? (
+              <p className="p-2 text-xs text-gray-500">
+                {chapters.length === 0 ? "No chapters available" : "No matching chapters found"}
+              </p>
+            ) : (
+              <div className="flex flex-col">
+                {filteredChapters.map((chapter) => {
+                  const chNum = chapter.attributes.chapter || "N/A";
+                  const chTitle = chapter.attributes.title || `Chapter ${chNum}`;
+
+                  return (
+                    <button
+                      key={chapter.id}
+                      onClick={() => handleChapterChange(chapter.id)}
+                      className={`text-left px-2 py-1 hover:bg-gray-800/30 border-b border-[rgb(31,41,55)] transition-colors ${
+                        selectedChapter === chapter.id ? 'bg-[rgb(31,41,55)] font-medium' : ''
+                      }`}
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-md font-medium">Chapter {chNum}</span>
+                        {chTitle !== `Chapter ${chNum}` && (
+                          <span className="text-sm text-gray-400 truncate">{chTitle}</span>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       )}
-    </div>
-  </div>
-)}
     </div>
   );
 };

@@ -21,7 +21,7 @@ export async function GET(
       `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${language}&limit=${limit}&order[chapter]=asc`,
       {
         headers: {
-          "User-Agent": "YourAppName/1.0",
+          "User-Agent": "FUI/1.0",
         },
       }
     );

@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { getManga } from "@/services/MangaService";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { getManga, getMangaGenre } from "@/services/MangaService";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MovieList } from "@/components/movie/MovieList";
 import ErrorMessage from "@/components/common/ErrorMessage";
 import Skeleton from "../common/Skeleton";
 import SectionHeader from "../common/SectionHeader";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
-import { MdSort, MdSearch } from "react-icons/md";
-import { IoIosCloseCircle, IoMdClose } from "react-icons/io";
+import { MdSort, MdSearch, MdFilterList } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 import {
   Select,
@@ -19,50 +21,115 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
+import { SortOption } from "@/types/sortOptions";
+import { Button } from "../ui/primitives/button";
 
-interface SortOption {
-  id: string;
-  label: string;
-  value: string;
+
+
+
+// Define the filter state type
+interface FilterState {
+  sortOption: string;
+  selectedGenre: any | null;
 }
 
-interface MangaItem {
-  title: string;
-  releasedDate: string;
-  coverImage: string;
-  id: string;
-}
+// Default filter state
+const DEFAULT_FILTER_STATE: FilterState = {
+  sortOption: "popular",
+  selectedGenre: null
+};
 
 const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
+  
+  // Get the search query from URL
+  const searchQuery = searchParams.get("q") || "";
+  
+  // Get stored filter state from React Query cache
+  const { data: filterState } = useQuery({
+    queryKey: ["mangaFilterState"],
+    queryFn: () => {
+      // This function should normally never run if initialData is provided
+      return DEFAULT_FILTER_STATE;
+    },
+    initialData: () => {
+      // Try to get existing filter state from cache, or use defaults
+      return queryClient.getQueryData(["mangaFilterState"]) || DEFAULT_FILTER_STATE;
+    },
+    staleTime: Infinity // Never consider this data stale
+  });
+  
+  // Update URL search param
+  const updateSearchParam = useCallback((value: string) => {
+    const url = new URL(window.location.href);
+    const currentParams = new URLSearchParams(url.search);
+    
+    if (value) {
+      currentParams.set("q", value);
+    } else {
+      currentParams.delete("q");
+    }
+    
+    const paramString = currentParams.toString();
+    const newUrl = `${window.location.pathname}${
+      paramString ? `?${paramString}` : ""
+    }`;
+    
+    router.push(newUrl, { scroll: false });
+  }, [router]);
+  
+  // Update filter state in React Query cache
+  const updateFilterState = useCallback((updates: Partial<FilterState>) => {
+    queryClient.setQueryData(
+      ["mangaFilterState"], 
+      (oldData: FilterState | undefined) => ({
+        ...(oldData || DEFAULT_FILTER_STATE),
+        ...updates
+      })
+    );
+  }, [queryClient]);
 
-  const [sortOption, setSortOption] = useState<string>("popular");
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  // Fetch all available genres
+  const { data: genresData, isLoading: genresLoading } = useQuery({
+    queryKey: ["mangaGenres"],
+    queryFn: async () => {
+      const response = await getMangaGenre();
+      return response;
+    },
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
+  });
 
   // Media-type specific sort options
   const mangaSortOptions: SortOption[] = [
-    { id: "popular", label: "Popular", value: "popular" },
-    { id: "newest", label: "Newest", value: "newest" },
-    { id: "oldest", label: "Oldest", value: "oldest" },
-    { id: "alphabetical", label: "A-Z", value: "alphabetical" },
+    { id: "order[followedCount]=desc", label: "Popular", value: "popular" },
+    { id: "order[createdAt]=desc", label: "Newest", value: "newest" },
+    { id: "order[createdAt]=asc", label: "Oldest", value: "oldest" },
+    { id: "order[title]=asc", label: "A-Z", value: "alphabetical" },
   ];
 
   // Get current sort option label
-  const getCurrentSortLabel = () => {
-    const option = mangaSortOptions.find((opt) => opt.value === sortOption);
-    return option ? option.label : "Popular";
+  const getCurrentSortItem = () => {
+    const option = mangaSortOptions.find((opt) => opt.value === filterState.sortOption);
+    return option || mangaSortOptions[0]; // Default to first option if not found
   };
-
-  // Debounce search input to prevent excessive API calls
+  
+  // Debounce search input handling
+  const [inputValue, setInputValue] = useState(searchQuery);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearch(searchQuery);
+      if (inputValue !== searchQuery) {
+        updateSearchParam(inputValue);
+      }
     }, 500);
-
+    
     return () => clearTimeout(timer);
-  }, [searchQuery]);
+  }, [inputValue, searchQuery, updateSearchParam]);
 
+  // Use React Query for data fetching with filter state values
   const {
     data,
     fetchNextPage,
@@ -73,27 +140,25 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     error,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ["Manga", mediaType, sortOption, debouncedSearch],
+    queryKey: [
+      "Manga",
+      mediaType,
+      filterState.sortOption,
+      searchQuery,
+      filterState.selectedGenre?.id,
+    ],
     queryFn: async ({ pageParam = 1 }) => {
-      // Call the getManga API with the search query and page number
-      const response = await getManga(debouncedSearch, pageParam);
-      
+      // Call the getManga API with the search query, page number, and genre ID
+      const response = await getManga(
+        searchQuery,
+        pageParam,
+        filterState.selectedGenre?.id,
+        getCurrentSortItem().id
+      );
+
       // Sort the data based on the selected sort option
       let sortedData = [...response.data.data];
 
-      if (sortOption === "newest") {
-        sortedData.sort(
-          (a, b) =>
-            new Date(b.releasedDate).getTime() - new Date(a.releasedDate).getTime()
-        );
-      } else if (sortOption === "oldest") {
-        sortedData.sort(
-          (a, b) =>
-            new Date(a.releasedDate).getTime() - new Date(b.releasedDate).getTime()
-        );
-      } else if (sortOption === "alphabetical") {
-        sortedData.sort((a, b) => a.title.localeCompare(b.title));
-      }
       // For "popular", use the default order from the API
 
       return {
@@ -107,35 +172,45 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     getNextPageParam: (lastPage) => {
       const currentPage = lastPage.data.currentPage;
       const totalPages = lastPage.data.totalPages;
-      
+
       // If we've reached the last page, return undefined to stop fetching
       return currentPage < totalPages ? currentPage + 1 : undefined;
     },
     initialPageParam: 1,
     retry: 1,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
   });
 
+  // Handler functions
   const handleSortChange = (value: string) => {
-    setSortOption(value);
+    updateFilterState({ sortOption: value });
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const clearSearch = () => {
-    setSearchQuery("");
+    setInputValue("");
+    updateSearchParam("");
+  };
+
+  const handleGenreSelect = (genre: any | null) => {
+    updateFilterState({ selectedGenre: genre });
   };
 
   // Set up the infinite scroll observer
-  const observerRef = useInfiniteScroll({ fetchNextPage, hasNextPage, isFetching });
-
+  const observerRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  });
 
   // Aggregate all manga items from all pages
-  const mangas = data?.pages.flatMap(page => page.data.results) || [];
+  const mangas = data?.pages.flatMap((page) => page.data.results) || [];
 
   // Transform manga data to match the expected format of MovieList component
-  const transformedMangas = mangas.map((manga: MangaItem) => ({
+  const transformedMangas = mangas.map((manga) => ({
     id: manga.id,
     displayTitle: manga.title,
     posterPath: `${baseUrl}api/File/image?url=${manga.coverImage}`,
@@ -149,53 +224,97 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
         <SectionHeader text={`Browse ${capitalizeFirstLetter(mediaType)}`} />
 
         <div className="mt-4 sm:mt-0 flex flex-col sm:flex-row gap-3">
-          {/* Search input */}
-          <div className="relative flex-1 sm:flex-none">
-            <input
-              type="text"
-              placeholder="Search manga..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="w-full sm:w-64 pl-10 pr-10 py-2 border rounded-md border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-primary"
-              style={{ height: "40px" }} // Match the height of the select component
-            />
-            <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
-            {searchQuery && (
-              <button
-                onClick={clearSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-              >
-                <IoMdClose className="text-lg" />
-              </button>
-            )}
-          </div>
+  {/* Search input - full width on mobile */}
+  <div className="relative w-full">
+    <input
+      type="text"
+      placeholder="Search manga..."
+      value={inputValue}
+      onChange={handleSearchChange}
+      className="w-full pl-10 pr-10 py-2 border rounded-md border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-primary h-10"
+    />
+    <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
+    {inputValue && (
+      <button
+        onClick={clearSearch}
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+      >
+        <IoMdClose className="text-lg" />
+      </button>
+    )}
+  </div>
 
-          {/* shadcn/ui Select component */}
-          <div className="self-start sm:self-auto">
-            <Select value={sortOption} onValueChange={handleSortChange}>
-              <SelectTrigger className="max-w-xs border-gray-700 bg-gray-800 ring-gray-900 w-48 text-white h-10">
-                <div className="flex items-center gap-2">
-                  <MdSort className="text-lg" />
-                  <SelectValue placeholder={getCurrentSortLabel()} />
-                </div>
-              </SelectTrigger>
-              <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
-                {mangaSortOptions.map((option) => (
-                  <SelectItem key={option.id} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+  {/* Filters row - side by side on all device sizes */}
+  <div className="flex flex-row gap-3 w-full">
+    {/* Genre filter */}
+    <Select
+      value={filterState.selectedGenre?.id || "All"}
+      onValueChange={(value) => {
+        if (value === "All") {
+          handleGenreSelect(null);
+        } else {
+          const genre = genresData?.find((g: any) => g.id === value);
+          if (genre) handleGenreSelect(genre);
+        }
+      }}
+    >
+      <SelectTrigger 
+        className={`border-gray-700 ${filterState.selectedGenre?.id ? "bg-primary bg-opacity-20 text-primary" : "bg-gray-800"} 
+        ring-gray-900 h-10 flex-1 md:w-42 lg:w-42`}
+      >
+        <div className="flex items-center gap-2">
+          <MdFilterList className="text-lg" />
+          <SelectValue 
+            placeholder={filterState.selectedGenre?.name || "Genre"} 
+          />
         </div>
+      </SelectTrigger>
+      <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+        <SelectItem value="All" className="cursor-pointer data-[highlighted]:bg-gray-700 data-[highlighted]:text-white">All Genres</SelectItem>
+        {genresLoading ? (
+          <div className="flex justify-center py-4">
+            <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          genresData?.map((genre: any) => (
+            <SelectItem key={genre.id} value={genre.id} className="cursor-pointer data-[highlighted]:bg-gray-700 data-[highlighted]:text-white">
+              {genre.name}
+            </SelectItem>
+          ))
+        )}
+      </SelectContent>
+    </Select>
+
+    {/* Sort select */}
+    <Select value={filterState.sortOption} onValueChange={handleSortChange}>
+      <SelectTrigger 
+        className={`border-gray-700 ${filterState.sortOption ? "bg-primary bg-opacity-20 text-primary" : "bg-gray-800"} 
+        ring-gray-900 h-10 flex-1 sm:w-40 md:w-52 lg:w-64`}
+      >
+        <div className="flex items-center gap-2">
+          <MdSort className="text-lg" />
+          <SelectValue placeholder={getCurrentSortItem().label || "Popular"} />
+        </div>
+      </SelectTrigger>
+      <SelectContent className="border-gray-700 bg-gray-800 text-gray-100">
+        {mangaSortOptions.map((option) => (
+          <SelectItem key={option.id} value={option.value} className="cursor-pointer data-[highlighted]:bg-gray-700 data-[highlighted]:text-white">
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+</div>
       </div>
 
       {isLoading ? (
         <Skeleton
           showTitle={false}
           rows={8}
-          rowWidths={["100%", "100%", "100%", "100%", "50%", "50%", "50%", "50%"] as any}
+          rowWidths={
+            ["100%", "100%", "100%", "100%", "50%", "50%", "50%", "50%"] as any
+          }
           className="rounded-lg mt-3"
           titleHeight="h-8"
           rowHeight="h-5"
@@ -204,20 +323,28 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
       ) : isError ? (
         <ErrorMessage
           className="mt-2 w-full"
-          message={error?.message || "Something went wrong while fetching manga details."}
+          message={
+            error?.message ||
+            "Something went wrong while fetching manga details."
+          }
         />
-      )  : (
+      ) : (
         <>
           <div className="mt-5">
             <MovieList movies={transformedMangas} />
           </div>
           {/* Infinite scroll loader */}
           {hasNextPage && (
-            <div ref={observerRef} className="loading-indicator py-4 flex justify-center">
+            <div
+              ref={observerRef}
+              className="loading-indicator py-4 flex justify-center"
+            >
               {isFetching && (
                 <div className="flex items-center space-x-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-primary"></div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Loading more</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Loading more
+                  </span>
                 </div>
               )}
             </div>
