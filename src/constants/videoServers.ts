@@ -43,7 +43,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   },
   {
     id:2,
-    name: "Secoondary",
+    name: "Secondary",
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   }

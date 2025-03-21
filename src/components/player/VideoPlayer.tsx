@@ -28,7 +28,7 @@ const VidPlayer = ({ sourceUrl, sandbox = '' }) => {
         referrerPolicy="origin"
         allowFullScreen={true}
         style={{ width: "100%", height: "100%", border: "none" }}
-        onLoad={handleIframeLoad}
+        
         {...(sandbox ? { sandbox } : {})}
       />
     </div>
