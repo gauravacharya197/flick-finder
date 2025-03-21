@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: 'https://flickday.to/trending', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: 'https://flickday.to/explore/movie', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: 'https://flickday.to/explore/tv', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: 'https://flickday.to/explore/manga', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    // { url: 'https://flickday.to/explore/manga', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: 'https://flickday.to/filter', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: 'https://flickday.to/explore/top-movies-tv', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
   ];
