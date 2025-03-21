@@ -8,9 +8,10 @@ import {
   FaPlus, 
   FaHome,
   FaBookmark,
-  FaHistory
+  FaHistory,
+  FaAddressBook
 } from 'react-icons/fa';
-import { FaFilter } from "react-icons/fa6";
+import { FaBookOpen, FaFilter } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
 const menuData: Menu[] = [
  
@@ -40,6 +41,15 @@ const menuData: Menu[] = [
     path: "/explore/tv",
     requireLogin: false,
     icon: FaTv,
+    showOnMobile : true,
+  },
+  {
+    id: 4.2,
+    title: "Manga",
+    newTab: false,
+    path: "/explore/manga",
+    requireLogin: false,
+    icon: FaBookOpen,
     showOnMobile : true,
   },
   {
@@ -107,58 +117,6 @@ const menuData: Menu[] = [
     showOnMobile : true,
   },
 
-
- 
-  // {
-  //   id: 3,
-  //   title: "Pages",
-  //   newTab: false,
-  //   submenu: [
-  //     {
-  //       id: 31,
-  //       title: "Blog Grid",
-  //       newTab: false,
-  //       path: "/blog",
-  //     },
-  //     {
-  //       id: 34,
-  //       title: "Sign In",
-  //       newTab: false,
-  //       path: "/auth/signin",
-  //     },
-  //     {
-  //       id: 35,
-  //       title: "Sign Up",
-  //       newTab: false,
-  //       path: "/auth/signup",
-  //     },
-      // {
-      //   id: 35,
-      //   title: "Docs",
-      //   newTab: false,
-      //   path: "/docs",
-      // },
-      // {
-      //   id: 35.1,
-      //   title: "Support",
-      //   newTab: false,
-      //   path: "/support",
-      // },
-      // {
-      //   id: 36,
-      //   title: "404",
-      //   newTab: false,
-      //   path: "/error",
-      // },
-    //],
- // },
-
-  // {
-  //   id: 4,
-  //   title: "Support",
-  //   newTab: false,
-  //   path: "/support",
-  // },
 ];
 
 export default menuData;

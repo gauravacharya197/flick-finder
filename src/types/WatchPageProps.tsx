@@ -5,3 +5,9 @@ export type WatchPageProps = {
       title?: string
     }
   }
+  export type ReadMangaPageProps = {
+    params: {
+      id: string,
+      title?: string
+    }
+  }

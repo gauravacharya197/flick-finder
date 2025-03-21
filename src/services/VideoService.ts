@@ -9,6 +9,9 @@ export interface Video {
   tmdbId?: string;
   imdbId?: string;
   videoSource: string;
+  mediaType?: string; // New field
+  seasons?: number; // New field
+  episode?: number; // New field
 }
 
 export default class VideoService {

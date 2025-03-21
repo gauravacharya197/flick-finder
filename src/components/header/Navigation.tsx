@@ -68,6 +68,7 @@ const Navigation = () => {
             onClick={handleClose}
             className="absolute right-8 top-1/2 -translate-y-1/2 transform"
           >
+            
             <IoMdClose className="text-xl text-primary md:text-2xl" />
           </button>
         )}
@@ -116,7 +117,7 @@ const Navigation = () => {
               )}
             </button>
             
-            <Link href="/" className="rounded-md bg-primary px-2 py-1 font-bold text-black sm:px-3 text-lg md:text-xl">
+            <Link href="/" className="rounded-md bg-primary px-2 py-1 font-bold text-black sm:px-3 text-xl md:text-xl">
               <SiteName />
             </Link>
           </div>
