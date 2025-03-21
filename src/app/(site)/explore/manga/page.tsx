@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { FaHome, FaRocket } from "react-icons/fa";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -26,7 +26,7 @@ export default function MangaPage() {
   return (
     <Container>
       <h1 className="sr-only">Browse Manga - Read Free Manga Online</h1>
-      <Manga />
+      <Suspense><Manga /></Suspense>
     </Container>
   );
 }
