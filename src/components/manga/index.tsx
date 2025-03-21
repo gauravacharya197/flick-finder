@@ -215,7 +215,7 @@ const Manga: React.FC<any> = ({ mediaType = "manga" }) => {
     displayTitle: manga.title,
     posterPath: `${baseUrl}api/File/image?url=${manga.coverImage}`,
     displayReleaseDate: manga.releasedDate,
-    mediaType: "Manga",
+    mediaType: manga.type,
   }));
 
   return (
