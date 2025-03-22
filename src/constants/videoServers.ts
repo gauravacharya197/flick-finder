@@ -12,13 +12,14 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 2,
     name: "Secondary",
-   baseUrl :"https://111movies.com/",
-    urlSeparator:"/"
+   baseUrl :"https://player.videasy.net",
+    urlSeparator:"/",
+    idType: 'id'
   },
   {
     id: 4,
     name: "VidSrc",
-    baseUrl: "https://v2.vidsrc.me/embed/",
+    baseUrl: "https://v2.vidsrc.me/embed",
     urlSeparator: "/"
   },
   {
@@ -38,7 +39,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 6,
     name: "Alt",
-    baseUrl: "https://player.autoembed.cc/embed/",
+    baseUrl: "https://player.autoembed.cc/embed",
     urlSeparator: "/",
   },
   {

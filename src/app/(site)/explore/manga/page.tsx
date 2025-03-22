@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     url: `${siteConfig.url}/explore/manga`,
   },
   alternates: {
-    canonical: `${siteConfig.url}explore/manga`,
+    canonical: `${siteConfig.url}/explore/manga`,
   }
 };
 
