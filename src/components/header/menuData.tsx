@@ -43,15 +43,7 @@ const menuData: Menu[] = [
     icon: FaTv,
     showOnMobile : true,
   },
-  {
-    id: 4.2,
-    title: "Manga",
-    newTab: false,
-    path: "/explore/manga",
-    requireLogin: false,
-    icon: FaBookOpen,
-    showOnMobile : true,
-  },
+
   {
     id: 5,
     title: "Trending",
@@ -86,6 +78,15 @@ const menuData: Menu[] = [
     path: "/top-movies-tv",
     requireLogin: false,
     icon: FaStar,
+    showOnMobile : true,
+  },
+  {
+    id: 7.2,
+    title: "Manga",
+    newTab: false,
+    path: "/explore/manga",
+    requireLogin: false,
+    icon: FaBookOpen,
     showOnMobile : true,
   },
   {
