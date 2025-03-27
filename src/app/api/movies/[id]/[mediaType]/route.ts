@@ -38,7 +38,7 @@ export async function GET(
 
     const data = await response.json();
     
-    // Filter results to remove less popular or obscure content
+    // Filter results to remove less popular or obscure contents
     if (data.results && Array.isArray(data.results)) {
       data.results = data.results.filter(item => 
         item.popularity >= MIN_POPULARITY && 
