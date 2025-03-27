@@ -8,6 +8,10 @@ interface RouteParams {
   }>;
 }
 
+// Constants for filtering criteria
+const MIN_POPULARITY = 0.2;
+const MIN_VOTE_COUNT = 20;
+
 export async function GET(
   request: Request,
   { params }: RouteParams
@@ -33,6 +37,16 @@ export async function GET(
     }
 
     const data = await response.json();
+    
+    // Filter results to remove less popular or obscure content
+    if (data.results && Array.isArray(data.results)) {
+      data.results = data.results.filter(item => 
+        item.popularity >= MIN_POPULARITY && 
+        item.vote_count >= MIN_VOTE_COUNT &&
+        item.poster_path // Ensure it has a poster
+      );
+    }
+    
     return NextResponse.json(data);
     
   } catch (error) {
