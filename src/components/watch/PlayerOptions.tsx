@@ -87,11 +87,11 @@ const PlayerOptions = ({
   };
 
   const handleServerChange = (serverId: number) => {
-    if (selectedServer && window.gtag) {
+    if (selectedServer && window.umami) {
       // Send event to Google Analytics
-      window.gtag("event", "server_selection", {
-        event_category: "Server Interaction",
-        event_label: serverId, // Example: "Server 1"
+      window.umami.track("server_selection", {
+        category: "Server Interaction",
+        label: `Server ${serverId}`,
         value: serverId,
       });
     }

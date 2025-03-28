@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle, FaBalanceScale } from "react-icons/fa";
+import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle, FaBalanceScale, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -72,7 +72,7 @@ const Footer = () => {
           viewport={{ once: true }}
           className="border-t border-gray-200 dark:border-gray-800 pt-2 mb-2"
         >
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-2 mb-4">
             <FaInfoCircle className="text-primary mt-1 flex-shrink-0" size={16} />
             <div className="flex-grow">
               <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Disclaimer</h4>
@@ -82,17 +82,31 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* DMCA Link */}
-          {/* <div className="flex justify-start mt-4">
-            <Link 
-              href="/dmca"
-              aria-label="DMCA"
-              className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
-            >
-              <FaBalanceScale size={16} />
-              <span className="ml-2">DMCA</span>
-            </Link>
-          </div> */}
+          {/* Contact and DMCA Section */}
+          <div className="flex justify-between items-center">
+            {/* Email - Aligned Left */}
+            <div className="flex items-center">
+              <a 
+                href="mailto:feedback@flickday.to"
+                className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
+              >
+                <FaEnvelope size={16} />
+                <span className="ml-2">feedback@flickday.to</span>
+              </a>
+            </div>
+
+            {/* DMCA Link - Aligned Right */}
+            {/* <div className="flex items-center">
+              <Link 
+                href="/dmca"
+                aria-label="DMCA"
+                className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
+              >
+                <FaBalanceScale size={16} />
+                <span className="ml-2">DMCA</span>
+              </Link>
+            </div> */}
+          </div>
         </motion.div>
       </div>
     </footer>
