@@ -56,12 +56,10 @@ const DMCAPage = () => {
           </p>
           <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mt-3">
            
-            <p className="text-gray-600 dark:text-gray-300">
-              Flickday Legal Department
-            </p>
-            <p className="text-gray-600 dark:text-gray-300">
-              Email: dmca@flickday.to
-            </p>
+           
+            <a href="mailto:feedback@flickday.to" className="text-gray-600 dark:text-gray-300">
+              Email: feedback@flickday.to
+            </a>
           </div>
         </section>
       </motion.div>

@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/formatDate";
 import { FaStar } from "react-icons/fa";
 import { formatRating } from "@/utils/formatRating";
 import { formatAmount } from "@/utils/formatAmount";
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 
 const MovieDetails = ({ movie, mediaType }) => {
   const generateKeywords = () => {
@@ -99,7 +100,7 @@ const MovieDetails = ({ movie, mediaType }) => {
             <DetailItem label="Director" value={movie?.director} />
             <DetailItem label="Awards" value={movie?.awards} />
             <DetailItem label="Country" value={movie?.country} />
-            <DetailItem label="Language" value={movie?.language} />
+            <DetailItem label="Original Language" value={capitalizeFirstLetter(movie?.language)} />
             
             {/* Production Companies - Now with improved visual treatment but inside the details grid */}
             <div className="space-y-1 md:col-span-2">
