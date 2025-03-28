@@ -71,15 +71,7 @@ const menuData: Menu[] = [
   //   icon: FaPlus
   // },
   
-  {
-    id: 7,
-    title: "Top Rated",
-    newTab: false,
-    path: "/top-movies-tv",
-    requireLogin: false,
-    icon: FaStar,
-    showOnMobile : true,
-  },
+ 
   {
     id: 7.2,
     title: "Manga",

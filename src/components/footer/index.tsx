@@ -1,11 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
-import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle } from "react-icons/fa";
+import Link from "next/link";
+import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle, FaBalanceScale } from "react-icons/fa";
 
 const Footer = () => {
-
   return (
-    <footer className="mt-8 border-t border-stroke bg-white dark:border-strokedark dark:bg-background py-6">
+    <footer className="mt-8 border-t border-stroke bg-white dark:border-strokedark dark:bg-background py-4">
       <div className="container mx-auto px-4 lg:px-4 2xl:px-4">
         {/* Main Footer Content */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
@@ -22,12 +22,9 @@ const Footer = () => {
             className="flex flex-col justify-center md:justify-start mb-4 md:mb-0 md:w-[25%]"
           >
             <div className="text-primary font-bold text-xl md:text-2xl mb-1 text-center md:text-left">Flickday</div>
-           
           </motion.div>
           
-        
-          
-          {/* Social Icons - Right Side on Desktop */}
+          {/* Social Links - Right Side on Desktop */}
           <motion.div
             variants={{
               hidden: { opacity: 0, y: -10 },
@@ -52,7 +49,6 @@ const Footer = () => {
               </li>
               <li>
                 <a 
-                
                   aria-label="Telegram" 
                   className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300"
                 >
@@ -85,10 +81,19 @@ const Footer = () => {
               </p>
             </div>
           </div>
+
+          {/* DMCA Link */}
+          {/* <div className="flex justify-start mt-4">
+            <Link 
+              href="/dmca"
+              aria-label="DMCA"
+              className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
+            >
+              <FaBalanceScale size={16} />
+              <span className="ml-2">DMCA</span>
+            </Link>
+          </div> */}
         </motion.div>
-        
-        {/* Note Section */}
-       
       </div>
     </footer>
   );
