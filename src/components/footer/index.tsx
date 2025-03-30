@@ -83,9 +83,9 @@ const Footer = () => {
           </div>
 
           {/* Contact and DMCA Section */}
-          <div className="flex justify-between items-center">
-            {/* Email - Aligned Left */}
-            <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <div className="flex items-center gap-6">
+              {/* Email */}
               <a 
                 href="mailto:feedback@flickday.to"
                 className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
@@ -93,19 +93,16 @@ const Footer = () => {
                 <FaEnvelope size={16} />
                 <span className="ml-2">feedback@flickday.to</span>
               </a>
-            </div>
-
-            {/* DMCA Link - Aligned Right */}
-            {/* <div className="flex items-center">
+              
+              {/* DMCA Link - Now next to email to avoid overlap with scroll button */}
               <Link 
                 href="/dmca"
-                aria-label="DMCA"
                 className="flex items-center text-[#D1D8E0] hover:text-primary transition-colors duration-300 text-sm"
               >
                 <FaBalanceScale size={16} />
                 <span className="ml-2">DMCA</span>
               </Link>
-            </div> */}
+            </div>
           </div>
         </motion.div>
       </div>
