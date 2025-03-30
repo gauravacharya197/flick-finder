@@ -17,13 +17,13 @@ export const VIDEO_SERVERS: VideoServer[] = [
     idType: 'id'
   },
   {
-    id: 4,
+    id: 5,
     name: "VidSrc",
     baseUrl: "https://v2.vidsrc.me/embed",
     urlSeparator: "/"
   },
   {
-    id: 3,
+    id: 4,
     name: "VidLink",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
@@ -31,13 +31,19 @@ export const VIDEO_SERVERS: VideoServer[] = [
    
   },
   {
-    id: 5,
+    id: 6,
     name: "Embed",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
+  // {
+  //   id: 3,
+  //   name: "111Movies",
+  //   baseUrl: "https://www.111movies.com",
+  //   urlSeparator: "/"
+  // },
   {
-    id: 6,
+    id: 7,
     name: "Alt",
     baseUrl: "https://player.autoembed.cc/embed",
     urlSeparator: "/",
