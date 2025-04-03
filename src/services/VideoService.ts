@@ -12,14 +12,38 @@ export interface Video {
   mediaType?: string; // New field
   seasons?: number; // New field
   episode?: number; // New field
+  uploaded?: string | null | undefined; // New field
+
 }
 
 export default class VideoService {
-  static async getVideos(searchQuery?: string): Promise<Video[]> {
-    const url = searchQuery ? `${baseUrl}api/videos?search=${searchQuery}` : `${baseUrl}api/videos`;
-    const { data } = await apiClient.get(url);
+  static async getVideos(
+    options: {
+      searchQuery?: string;
+      pageNumber?: string;
+      sortDescending?: boolean;
+    } = {}
+  ){
+    const { searchQuery, pageNumber, sortDescending = true } = options;
+    
+    // Start with base URL
+    const url = new URL(`${baseUrl}api/videos`);
+    
+    // Add query parameters if they exist
+    if (searchQuery) {
+      url.searchParams.append('search', searchQuery);
+    }
+    
+    if (pageNumber) {
+      url.searchParams.append('pageNumber', pageNumber);
+    }
+    
+    url.searchParams.append('sortDescending', sortDescending.toString());
+    
+    const { data } = await apiClient.get(url.toString());
     return data;
   }
+
 
   static async addVideo(newVideo: Partial<Video>) {
     return await  apiClient.post(`${baseUrl}api/videos`, newVideo);

@@ -63,26 +63,18 @@ export default function MovieDetailCache() {
   
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="space-y-4">
         <h1 className="text-3xl font-bold text-white dark:text-gray-100">
-          Movie Details Caches
-        </h1>
-       {/* Improved Total Count Display */}
-      <div className="flex items-center space-x-3">
-        
-        <div>
-         
-          <p className="text-2xl font-bold text-teal-500 dark:text-teal-300">
+          Movie Details Caches <p className="text-2xl font-bold text-teal-500 dark:text-teal-300">
             {movieData?.data.totalCount.toLocaleString()}
           </p>
-        </div>
-     
+        </h1>
+       {/* Improved Total Count Display */}
       
-    </div>
       </div>
       
-      <div className="relative max-w-md">
+      <div className="relative mb-3 max-w-md">
         <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
         <Input
           className="pl-10 pr-10 h-12 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
