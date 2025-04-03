@@ -6,7 +6,7 @@ import { FaDiscord, FaTelegram, FaHeart, FaInfoCircle, FaBalanceScale, FaEnvelop
 const Footer = () => {
   return (
     <footer className="mt-8 border-t border-stroke bg-white dark:border-strokedark dark:bg-background py-4">
-      <div className="container mx-auto px-4 lg:px-4 2xl:px-4">
+      <div className="  px-4">
         {/* Main Footer Content */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           {/* Branding - Left Side on Desktop */}
@@ -34,7 +34,7 @@ const Footer = () => {
             whileInView="visible"
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
-            className="flex justify-center md:justify-end md:w-[25%]"
+            className="flex justify-center md:justify-end"
           >
             <ul className="flex items-center gap-4">
               <li>
