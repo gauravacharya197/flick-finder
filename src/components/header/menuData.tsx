@@ -76,7 +76,7 @@ const menuData: Menu[] = [
     id: 7.2,
     title: "Manga",
     newTab: false,
-    path: "/explore/manga",
+    path: "/manga",
     requireLogin: false,
     icon: FaBookOpen,
     showOnMobile : true,

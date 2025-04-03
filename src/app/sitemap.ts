@@ -45,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: 'https://flickday.to/trending', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: 'https://flickday.to/explore/movie', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: 'https://flickday.to/explore/tv', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
-    { url: 'https://flickday.to/explore/manga', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
+    { url: 'https://flickday.to/manga', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
     { url: 'https://flickday.to/results', lastModified: new Date(), changeFrequency: 'daily', priority: 0.8 },
   ];
 
