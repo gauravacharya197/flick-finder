@@ -33,13 +33,13 @@ const PlayerOptions = ({
   
   const [selectedServer, setSelectedServer] = useState(() => {
     // Try to get the stored value from localStorage on initial render
-    if (typeof window !== "undefined") {
-      if(movie?.videoSource) {
-        return 0;
-      }
-      const storedValue = localStorage.getItem("selectedServer");
-      return storedValue ? parseInt(storedValue) : 1;
-    }
+    // if (typeof window !== "undefined") {
+    //   if(movie?.videoSource) {
+    //     return 0;
+    //   }
+    //   const storedValue = localStorage.getItem("selectedServer");
+    //   return storedValue ? parseInt(storedValue) : 1;
+    // }
     return 1;
   });
   

@@ -18,7 +18,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   },
   {
     id: 5,
-    name: "VidSrc",
+    name: "Backup",
     baseUrl: "https://v2.vidsrc.me/embed",
     urlSeparator: "/"
   },
@@ -29,6 +29,12 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/",
      idType: 'id'
    
+  },
+  {
+    id: 1,
+    name: "Primary",
+    baseUrl: "https://vidfast.pro",
+    urlSeparator: "/"
   },
   {
     id: 6,
@@ -42,15 +48,15 @@ export const VIDEO_SERVERS: VideoServer[] = [
   //   baseUrl: "https://www.111movies.com",
   //   urlSeparator: "/"
   // },
+  // {
+  //   id: 7,
+  //   name: "Alt",
+  //   baseUrl: "https://player.autoembed.cc/embed",
+  //   urlSeparator: "/",
+  // },
   {
-    id: 7,
-    name: "Alt",
-    baseUrl: "https://player.autoembed.cc/embed",
-    urlSeparator: "/",
-  },
-  {
-    id:1,
-    name: "Primary",
+    id:3,
+    name: "MovAPI",
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   }
