@@ -11,19 +11,33 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/primitives/button";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
+import { formatDateTime } from "@/utils/formatDateTime";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import Pagination from "@/components/ui/Pagination";
 
 export const Videos = ()=> {
   const queryClient = useQueryClient();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [sortDescending, setSortDescending] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      // Reset to first page when search changes
+      setCurrentPage(1);
+    }, 500);
 
-  const { data: videos, isLoading, error } = useQuery<Video[]>({
-    queryKey: ["videos", searchQuery],
-    queryFn: () => VideoService.getVideos(searchQuery),
-  });
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+  const { data: videos, isLoading, error } = useQuery({
+    queryKey: ["videos", debouncedSearch, currentPage, sortDescending],
+    queryFn: () => VideoService.getVideos({ searchQuery:debouncedSearch ,pageNumber: currentPage.toString(),sortDescending
+    }),  });
 
   const addVideoMutation = useMutation({
     mutationFn: VideoService.addVideo,
@@ -69,13 +83,23 @@ export const Videos = ()=> {
     setEditingVideo(video);
     setIsEditModalOpen(true);
   };
+  const totalPages = videos 
+  ? Math.ceil(videos.totalCount / 10) 
+  : 0;
 
+// Handle page change
+const handlePageChange = (page: number) => {
+  setCurrentPage(page);
+};
   return (<div>
     <div>
       <div className="">
         <h1 className="text-3xl font-bold text-white mb-4 dark:text-gray-100">
-         Videos
+         Videos <p className="text-2xl font-bold text-teal-500 dark:text-teal-300">
+            {videos?.totalCount.toLocaleString()}
+          </p>
         </h1>
+        
         
         <div className="relative mb-3 max-w-md">
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -84,16 +108,14 @@ export const Videos = ()=> {
             type="text"
             placeholder="Search movies by title..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {setSearchQuery(e.target.value)       }}
           />
         </div>
         <Button className="mb-3" onClick={() => setIsModalOpen(true)}><FaPlus/> Add Video</Button>
       </div>
     </div>
       
-    {isLoading && (
-      <p className="mt-4">Loading videos...</p>
-    )}
+  
       
     {error && (
       <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 text-red-700 dark:text-red-400">
@@ -104,7 +126,7 @@ export const Videos = ()=> {
       </div>
     )}
       
-    {!isLoading && !error && (
+ 
       <div className="overflow-hidden">
         <div className="overflow-x-auto">
           <Table>
@@ -117,12 +139,24 @@ export const Videos = ()=> {
                 <TableHead className="w-[120px]">Type</TableHead>
                 <TableHead className="w-[100px]">Season</TableHead>
                 <TableHead className="w-[100px]">Episode</TableHead>
-                <TableHead className="min-w-[200px] max-w-[300px]">Source</TableHead>
+                <TableHead className="min-w-[100px] max-w-[200px]">Source</TableHead>
+                <TableHead 
+  className="w-[100px] cursor-pointer" 
+  onClick={() => setSortDescending(prev => !prev)}
+>
+  <div className="flex items-center justify-between">
+    Uploaded
+    {sortDescending ? <FaChevronDown /> : <FaChevronUp />}
+  </div>
+</TableHead>
+
                 <TableHead className="w-[120px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
+           
+            {!isLoading && !error && (
             <TableBody>
-              {videos?.length === 0 ? (
+              {videos?.videos?.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={9} className="h-32 text-center text-gray-500 dark:text-gray-400">
                     <div className="flex flex-col items-center justify-center space-y-2">
@@ -138,7 +172,7 @@ export const Videos = ()=> {
                   </TableCell>
                 </TableRow>
               ) : (
-                videos?.map((video) => (
+                videos?.videos?.map((video) => (
                   <TableRow 
                     key={video.id}
                     className="transition-colors duration-150"
@@ -150,11 +184,13 @@ export const Videos = ()=> {
                     <TableCell>{video.mediaType || 'Movie'}</TableCell>
                     <TableCell>{video.mediaType === 'TV' ? (video.seasons || '—') : '—'}</TableCell>
                     <TableCell>{video.mediaType === 'TV' ? (video.episode || '—') : '—'}</TableCell>
-                    <TableCell className="max-w-[300px]">
+                    <TableCell className="max-w-[100px]">
                       <div className="truncate" title={video.videoSource}>
                         {video.videoSource}
                       </div>
                     </TableCell>
+                    <TableCell>{formatDateTime(video?.uploaded as any)}</TableCell>
+
                     <TableCell>
                       <div className="flex justify-center space-x-3">
                         <Button
@@ -178,11 +214,16 @@ export const Videos = ()=> {
                   </TableRow>
                 ))
               )}
-            </TableBody>
+            </TableBody>)}
           </Table>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
-    )}
+  
   
     {/* Add Video Modal */}
     <Modal 
