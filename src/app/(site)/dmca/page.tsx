@@ -1,3 +1,4 @@
+'use client';
 import Container from "@/components/common/Container";
 import { siteConfig } from "@/config/siteConfig";
 import { motion } from "framer-motion";
