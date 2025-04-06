@@ -66,7 +66,6 @@ export const SimilarMovieCard = memo(({ movie, index, mediaType }: SimilarMovieC
               onError={() => setImageError(true)}
               loading="lazy"
               placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFdgJcK0XdgwAAAABJRU5ErkJggg=="
             />
           </div>
         </div>
