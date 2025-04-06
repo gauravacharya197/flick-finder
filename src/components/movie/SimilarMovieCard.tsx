@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, memo } from 'react';
 import { FaClock } from 'react-icons/fa';
@@ -57,15 +56,15 @@ export const SimilarMovieCard = memo(({ movie, index, mediaType }: SimilarMovieC
       >
         <div className="relative overflow-hidden rounded-md h-24 w-16 flex-shrink-0">
           <div className="relative h-full w-full">
-            <Image
+            <img
               src={imageSrc}
               alt={movie?.displayTitle || 'Movie poster'}
-              fill
+             
               sizes="64px"
               className="object-cover transform transition-transform duration-300 group-hover:scale-105"
               onError={() => setImageError(true)}
               loading="lazy"
-              placeholder="blur"
+            
             />
           </div>
         </div>

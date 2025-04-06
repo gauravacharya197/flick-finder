@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import { CustomTag } from "../common/CustomTag";
 import { formatRating } from "@/utils/formatRating";
@@ -38,16 +37,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         <div className="relative h-full w-full">
           {/* Image with Next.js Image optimization */}
           <div className="relative h-full w-full">
-            <Image
+            <img
               src={imageSrc}
               alt={movie.displayTitle}
-              fill
+          
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover transition-transform duration-300 group-hover:scale-105"
-              priority={false}
               onError={() => setImageError(true)}
-              placeholder="blur"
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFdgJcK0XdgwAAAABJRU5ErkJggg=="
             />
           </div>
           
