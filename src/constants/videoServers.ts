@@ -31,7 +31,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
    
   },
   {
-    id: 1,
+    id: 3,
     name: "Primary",
     baseUrl: "https://vidfast.pro",
     urlSeparator: "/"
@@ -55,7 +55,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   //   urlSeparator: "/",
   // },
   {
-    id:3,
+    id:1,
     name: "MovAPI",
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
