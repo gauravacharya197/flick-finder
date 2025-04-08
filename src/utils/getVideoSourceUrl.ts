@@ -13,7 +13,7 @@ export function getVideoSourceUrl(
   // For server 1, use direct video source if available
   if(selectedServer===0){
   if (mediaType.toLowerCase() === "movie" && movie.videoSource) {
-    return `${baseUrl}player?mediaType=movie&movieId=${movie.id}&&imdbId=${ movie.imdbID}`;
+    return `${baseUrl}player?mediaType=movie&movieId=${movie.id}&imdbId=${ movie.imdbID}`;
   }
 
   // For TV Shows: Check if videoSource is true, then construct API URL
