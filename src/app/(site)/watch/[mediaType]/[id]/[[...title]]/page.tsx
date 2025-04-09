@@ -43,7 +43,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const mediaData = await params;
 
   return (
-    <Container>
+    <Container className=''>
       <Watch params={mediaData} />
     </Container>
   );

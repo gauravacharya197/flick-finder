@@ -1,4 +1,4 @@
-// PlayerOptions.tsx
+// PlayerSection.tsx
 import { FaPlay, FaShare } from "react-icons/fa";
 import VideoPlayer from "@/components/player/VideoPlayer";
 import { useState, useEffect } from "react";
@@ -11,19 +11,19 @@ import { getVideoSourceUrl } from "@/utils/getVideoSourceUrl";
 import useDevToolsProtection from "@/hooks/useDevToolProtection";
 import { VIDEO_SERVERS } from "@/constants/videoServers";
 
-interface PlayerOptionsProps {
+interface PlayerSectionProps {
   movie: any;
   mediaType: string;
   selectedSeason: number | null;
   selectedEpisode: number | null;
 }
 
-const PlayerOptions = ({
+const PlayerSection = ({
   movie,
   mediaType,
   selectedSeason,
   selectedEpisode,
-}: PlayerOptionsProps) => {
+}: PlayerSectionProps) => {
 
   const { isLoggedIn, user } = useAuth();
   const isReleased = new Date(movie.released) <= new Date();
@@ -188,4 +188,4 @@ const PlayerOptions = ({
   );
 };
 
-export default PlayerOptions;
+export default PlayerSection;

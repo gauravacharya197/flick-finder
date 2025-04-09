@@ -17,6 +17,13 @@ export const VIDEO_SERVERS: VideoServer[] = [
     idType: 'id'
   },
   {
+    id: 11,
+    name: "FlickPlayer",
+   baseUrl :"https://localhost:7264/media/player",
+    urlSeparator:"/",
+    idType: 'id'
+  },
+  {
     id: 5,
     name: "Backup",
     baseUrl: "https://v2.vidsrc.me/embed",
