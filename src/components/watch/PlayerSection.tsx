@@ -27,24 +27,24 @@ const PlayerSection = ({
 
   const { isLoggedIn, user } = useAuth();
   const isReleased = new Date(movie.released) <= new Date();
-  
+
   // Set isPlaying to true by default ONLY if the content is released
   const [isPlaying, setIsPlaying] = useState(isReleased);
-  
+
   const [selectedServer, setSelectedServer] = useState(() => {
     // Try to get the stored value from localStorage on initial render
-    if (typeof window !== "undefined") {
-      if(movie?.videoSource) {
-        return 0;
-      }}
+    // if (typeof window !== "undefined") {
+    //   if(movie?.videoSource) {
+    //     return 0;
+    //   }}
     //   const storedValue = localStorage.getItem("selectedServer");
     //   return storedValue ? parseInt(storedValue) : 1;
     // }
     return 1;
   });
-  
+
   //useDevToolsProtection(isPlaying);
-  
+
   // Update localStorage when server changes
   useEffect(() => {
     if(selectedServer===0)return;
@@ -54,13 +54,13 @@ const PlayerSection = ({
   // Add to watch history after 10 minutes (600000 ms) if content is released and playing
   useEffect(() => {
     let watchHistoryTimeout: NodeJS.Timeout;
-    
+
     if (isReleased && isPlaying) {
       watchHistoryTimeout = setTimeout(() => {
         addToWatchHistory(movie);
       }, 1*1000*60*30); // 30 minutes
     }
-    
+
     return () => {
       if (watchHistoryTimeout) {
         clearTimeout(watchHistoryTimeout);
@@ -146,17 +146,17 @@ const PlayerSection = ({
           <div className="min-w-[140px]">
             <ServerSelector
               servers={
-                movie?.videoSource
-                  ? [
-                      {
-                        id: 0,
-                        name: "Default",
-                        baseUrl: movie.videoSource,
-                        urlSeparator: "/",
-                      },
-                      ...VIDEO_SERVERS,
-                    ]
-                  : VIDEO_SERVERS
+                // movie?.videoSource
+                //   ? [
+                //       {
+                //         id: 0,
+                //         name: "Default",
+                //         baseUrl: movie.videoSource,
+                //         urlSeparator: "/",
+                //       },
+                //       ...VIDEO_SERVERS,
+                //     ]
+                   VIDEO_SERVERS
               }
               selectedServer={selectedServer}
               onServerChange={handleServerChange}
