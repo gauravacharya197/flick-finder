@@ -30,24 +30,24 @@ export const VIDEO_SERVERS: VideoServer[] = [
      idType: 'id'
    
   },
-  // {
-  //   id: 1,
-  //   name: "Primary",
-  //   baseUrl: "https://vidfast.pro",
-  //   urlSeparator: "/"
-  // },
+  {
+    id: 1,
+    name: "Primary",
+    baseUrl: "https://vidfast.pro",
+    urlSeparator: "/"
+  },
   {
     id: 6,
     name: "Embed",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
-  {
-    id: 1,
-    name: "Primary",
-    baseUrl: "https://www.111movies.com",
-    urlSeparator: "/"
-  },
+  // {
+  //   id: 3,
+  //   name: "111Movies",
+  //   baseUrl: "https://www.111movies.com",
+  //   urlSeparator: "/"
+  // },
   // {
   //   id: 7,
   //   name: "Alt",
