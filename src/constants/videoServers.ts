@@ -7,6 +7,7 @@ export interface VideoServer {
   urlSeparator?: string;
   idType?: 'imdbID' | 'id';
 }
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
@@ -47,6 +48,14 @@ export const VIDEO_SERVERS: VideoServer[] = [
     name: "111Movies",
     baseUrl: "https://www.111movies.com",
     urlSeparator: "/"
+  },
+  {
+    id: 10,
+    name: "Flick",
+    baseUrl: `${baseUrl}media/player`,
+    urlSeparator: "/",
+    idType: 'id'
+
   },
   // {
   //   id: 7,
