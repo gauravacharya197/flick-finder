@@ -17,14 +17,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
     idType: 'id'
   },
   {
-    id: 11,
-    name: "FlickPlayer",
-   baseUrl :"https://localhost:7264/media/player",
-    urlSeparator:"/",
-    idType: 'id'
-  },
-  {
-    id: 5,
+    id: 6,
     name: "Backup",
     baseUrl: "https://v2.vidsrc.me/embed",
     urlSeparator: "/"
@@ -44,27 +37,27 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/"
   },
   {
-    id: 6,
+    id: 5,
     name: "Embed",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
-  // {
-  //   id: 3,
-  //   name: "111Movies",
-  //   baseUrl: "https://www.111movies.com",
-  //   urlSeparator: "/"
-  // },
+  {
+    id: 3,
+    name: "111Movies",
+    baseUrl: "https://www.111movies.com",
+    urlSeparator: "/"
+  },
   // {
   //   id: 7,
   //   name: "Alt",
   //   baseUrl: "https://player.autoembed.cc/embed",
   //   urlSeparator: "/",
   // },
-  {
-    id:3,
-    name: "MovAPI",
-     baseUrl: "https://moviesapi.club",
-    urlSeparator: "-"
-  }
+  // {
+  //   id:3,
+  //   name: "MovAPI",
+  //    baseUrl: "https://moviesapi.club",
+  //   urlSeparator: "-"
+  // }
 ];
