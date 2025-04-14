@@ -30,12 +30,12 @@ export const VIDEO_SERVERS: VideoServer[] = [
      idType: 'id'
    
   },
-  {
-    id: 1,
-    name: "Primary",
-    baseUrl: "https://www.111movies.com",
-    urlSeparator: "/"
-  },
+  // {
+  //   id: 1,
+  //   name: "Primary",
+  //   baseUrl: "https://www.111movies.com",
+  //   urlSeparator: "/"
+  // },
   {
     id: 5,
     name: "Embed",
@@ -54,10 +54,10 @@ export const VIDEO_SERVERS: VideoServer[] = [
   //   baseUrl: "https://player.autoembed.cc/embed",
   //   urlSeparator: "/",
   // },
-  // {
-  //   id:3,
-  //   name: "MovAPI",
-  //    baseUrl: "https://moviesapi.club",
-  //   urlSeparator: "-"
-  // }
+  {
+    id:1,
+    name: "Primary",
+     baseUrl: "https://moviesapi.club",
+    urlSeparator: "-"
+  }
 ];
