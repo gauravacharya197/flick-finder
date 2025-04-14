@@ -33,7 +33,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 1,
     name: "Primary",
-    baseUrl: "https://vidfast.pro",
+    baseUrl: "https://www.111movies.com",
     urlSeparator: "/"
   },
   {
@@ -44,8 +44,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
   },
   {
     id: 3,
-    name: "111Movies",
-    baseUrl: "https://www.111movies.com",
+    name: "VidFast",
+    baseUrl: "https://vidfast.pro",
     urlSeparator: "/"
   },
   // {
