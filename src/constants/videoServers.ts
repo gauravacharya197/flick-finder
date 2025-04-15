@@ -10,8 +10,8 @@ export interface VideoServer {
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 2,
-    name: "Secondary",
+    id: 3,
+    name: "VidEasy",
    baseUrl :"https://player.videasy.net",
     urlSeparator:"/",
     idType: 'id'
@@ -23,7 +23,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/"
   },
   {
-    id: 4,
+    id: 5,
     name: "VidLink",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
@@ -37,14 +37,14 @@ export const VIDEO_SERVERS: VideoServer[] = [
   //   urlSeparator: "/"
   // },
   {
-    id: 5,
-    name: "Embed",
+    id: 2,
+    name: "Secondary",
     baseUrl: "https://embed.su/embed",
     urlSeparator: "/"
   },
   {
-    id: 3,
-    name: "VidFast",
+    id: 1,
+    name: "Primary",
     baseUrl: "https://vidfast.pro",
     urlSeparator: "/"
   },
@@ -55,8 +55,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
   //   urlSeparator: "/",
   // },
   {
-    id:1,
-    name: "Primary",
+    id:4,
+    name: "MoviesAPI",
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   }
