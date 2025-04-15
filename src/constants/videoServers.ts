@@ -1,5 +1,7 @@
 // constants/videoServers.ts
 //re deploy
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export interface VideoServer {
   id: number;
   name: string;
@@ -7,12 +9,11 @@ export interface VideoServer {
   urlSeparator?: string;
   idType?: 'imdbID' | 'id';
 }
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 2,
-    name: "Secondary",
+    id: 3,
+    name: "VidEasy",
    baseUrl :"https://player.videasy.net",
     urlSeparator:"/",
     idType: 'id'
@@ -24,12 +25,24 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/"
   },
   {
-    id: 4,
+    id: 5,
     name: "VidLink",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
      idType: 'id'
    
+  },
+  // {
+  //   id: 1,
+  //   name: "Primary",
+  //   baseUrl: "https://www.111movies.com",
+  //   urlSeparator: "/"
+  // },
+  {
+    id: 2,
+    name: "Secondary",
+    baseUrl: "https://embed.su/embed",
+    urlSeparator: "/"
   },
   {
     id: 1,
@@ -37,17 +50,17 @@ export const VIDEO_SERVERS: VideoServer[] = [
     baseUrl: "https://vidfast.pro",
     urlSeparator: "/"
   },
+  // {
+  //   id: 7,
+  //   name: "Alt",
+  //   baseUrl: "https://player.autoembed.cc/embed",
+  //   urlSeparator: "/",
+  // },
   {
-    id: 5,
-    name: "Embed",
-    baseUrl: "https://embed.su/embed",
-    urlSeparator: "/"
-  },
-  {
-    id: 3,
-    name: "111Movies",
-    baseUrl: "https://www.111movies.com",
-    urlSeparator: "/"
+    id:4,
+    name: "MoviesAPI",
+     baseUrl: "https://moviesapi.club",
+    urlSeparator: "-"
   },
   {
     id: 10,
@@ -57,16 +70,4 @@ export const VIDEO_SERVERS: VideoServer[] = [
     idType: 'id'
 
   },
-  // {
-  //   id: 7,
-  //   name: "Alt",
-  //   baseUrl: "https://player.autoembed.cc/embed",
-  //   urlSeparator: "/",
-  // },
-  // {
-  //   id:3,
-  //   name: "MovAPI",
-  //    baseUrl: "https://moviesapi.club",
-  //   urlSeparator: "-"
-  // }
 ];
