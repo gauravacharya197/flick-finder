@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const LoginPage = async ({ searchParams }: { searchParams: Promise<{ code: string }> })=> {
   const { code } = await searchParams;  return (
-    <Container >
+    <Container className="xl:mt-25" >
       <Login code={code} />
     </Container>
   );

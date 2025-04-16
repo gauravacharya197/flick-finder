@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 
 export default function Register() {
   return (
-    <Container >
+    <Container className="xl:mt-25" >
+
       <Signup />
     </Container>
   );

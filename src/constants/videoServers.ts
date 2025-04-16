@@ -1,5 +1,7 @@
 // constants/videoServers.ts
 //re deploy
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export interface VideoServer {
   id: number;
   name: string;

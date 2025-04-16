@@ -11,7 +11,7 @@ import SectionHeader from "../common/SectionHeader";
 import ErrorMessage from "../common/ErrorMessage";
 import { WatchPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
-import PlayerSection from "./PlayerOptions";
+import PlayerSection from "./PlayerSection";
 const Watch = ({ params }: WatchPageProps) => {
   // Destructure params
   const { id, mediaType, title } = params;
@@ -41,7 +41,7 @@ const Watch = ({ params }: WatchPageProps) => {
             <>
               <div className="col-span-3 rounded-lg">
                 {/* Main content area skeleton */}
-                <div className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[72vh] 2xl:h-[65vh]">
+                <div className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[72vh] 2xl:h-[75vh]">
                   <div className="w-full h-full rounded-md animate-pulse bg-gray-700/30" />
                   {/* Center play button skeleton */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full animate-pulse bg-gray-700/30" />
