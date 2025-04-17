@@ -64,8 +64,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
   },
   {
     id: 10,
-    name: "Flick",
-    baseUrl: `${baseUrl}media/player`,
+    name: "Flick (Beta)",
+    baseUrl: `https://vid-api-production.up.railway.app/player`,
     urlSeparator: "/",
     idType: 'id'
 
