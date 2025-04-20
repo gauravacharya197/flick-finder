@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const VidPlayer = ({ sourceUrl, sandbox = '' }) => {
+const VideoEmbed = ({ sourceUrl, sandbox = '' }) => {
   const [isLoading, setIsLoading] = useState(true);
   
   // Function to handle iframe load event
@@ -35,4 +35,4 @@ const VidPlayer = ({ sourceUrl, sandbox = '' }) => {
   );
 };
 
-export default VidPlayer;
+export default VideoEmbed;

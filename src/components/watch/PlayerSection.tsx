@@ -1,6 +1,6 @@
 // PlayerSection.tsx
 import { FaPlay, FaShare } from "react-icons/fa";
-import VideoPlayer from "@/components/player/VideoPlayer";
+import VideoEmbed from "@/components/player/VideoEmbed";
 import { useState, useEffect } from "react";
 import WatchlistButton from "./WatchListButton";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
@@ -129,7 +129,7 @@ const PlayerSection = ({
       {!isPlaying ? (
         renderCoverImage()
       ) : (
-        <VideoPlayer
+        <VideoEmbed
           sourceUrl={getVideoSourceUrl(
             selectedServer,
             mediaType,
