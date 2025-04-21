@@ -4,6 +4,7 @@ import { fetchAndConvertSubtitles } from '@/utils/subtitleUtil';
 import VideoControls from './VideoControls';
 import ProgressBar from './ProgressBar';
 import { FaPause, FaPlay } from 'react-icons/fa';
+import useVideoKeyboardShortcuts from '@/hooks/useVideoKeyboardShortcut';
 interface HLSVideoPlayerProps {
   src: string;
   poster?: string;
@@ -41,6 +42,7 @@ const HLSVideoPlayer: React.FC<HLSVideoPlayerProps> = ({
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
   const speedOptions = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
 
   // Initialize HLS
   useEffect(() => {
@@ -184,40 +186,55 @@ const HLSVideoPlayer: React.FC<HLSVideoPlayerProps> = ({
     };
   }, [isDraggingProgress]);
 
-  // Auto-hide controls
-  useEffect(() => {
-    const handleMouseMove = () => {
-      setShowControls(true);
-      
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-      
-      controlsTimeoutRef.current = setTimeout(() => {
-        if (isPlaying && !isDraggingProgress && !isDraggingVolume) {
-          setShowControls(false);
-        }
-      }, 3000);
-    };
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('mousemove', handleMouseMove);
-      container.addEventListener('touchstart', handleMouseMove);
+  // Update the auto-hide controls useEffect
+useEffect(() => {
+  const handleMouseMove = () => {
+    setShowControls(true);
+    
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
     }
-
-    return () => {
-      if (container) {
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('touchstart', handleMouseMove);
+    
+    controlsTimeoutRef.current = setTimeout(() => {
+      if (isPlaying && !isDraggingProgress && !isDraggingVolume) {
+        setShowControls(false);
       }
-      
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-    };
-  }, [isPlaying, isDraggingProgress, isDraggingVolume]);
+    }, 3000);
+  };
 
+  // New touch handler specifically for mobile
+  const handleTouchEnd = () => {
+    setShowControls(true);
+    
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    
+    // Shorter timeout for mobile devices
+    controlsTimeoutRef.current = setTimeout(() => {
+      if (isPlaying && !isDraggingProgress && !isDraggingVolume) {
+        setShowControls(false);
+      }
+    }, 2000); // Reduced timeout for mobile
+  };
+
+  const container = containerRef.current;
+  if (container) {
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('touchend', handleTouchEnd); // Changed from touchstart to touchend
+  }
+
+  return () => {
+    if (container) {
+      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+    }
+    
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+  };
+}, [isPlaying, isDraggingProgress, isDraggingVolume]);
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -334,17 +351,7 @@ const HLSVideoPlayer: React.FC<HLSVideoPlayerProps> = ({
     setSelectedQuality(quality);
   };
 
-  const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-    
-    const hh = h > 0 ? `${h}:` : '';
-    const mm = `${h > 0 && m < 10 ? '0' : ''}${m}:`;
-    const ss = `${s < 10 ? '0' : ''}${s}`;
-    
-    return `${hh}${mm}${ss}`;
-  };
+  
 
   // In HLSVideoPlayer.tsx
 const handleProgressChange = (percent: number) => {
@@ -375,18 +382,30 @@ const handleProgressChange = (percent: number) => {
     if (!video) return;
     video.muted = !video.muted;
   };
-
+  useVideoKeyboardShortcuts({
+    videoRef,
+    togglePlay,
+    toggleFullscreen,
+    setVolume,
+    setIsMuted
+  });
   return (
     <>
     {/* This is the main video container wrapper */}
 <div
   ref={containerRef}
-  className="relative w-full h-full bg-[#000000] overflow-hidden group"
+  className="relative w-screen h-screen bg-[#000000] overflow-hidden group"
+  onKeyDown={(e) => e.stopPropagation()}
   onMouseEnter={() => setShowControls(true)}
   onMouseLeave={() => {
     if (isPlaying && !isDraggingProgress && !isDraggingVolume) {
       setShowControls(false);
     }
+  }}
+  onTouchStart={(e) => {
+    // Prevent default to avoid issues with touch scrolling
+    e.preventDefault();
+    setShowControls(true);
   }}
 >
   {/* Video element */}
@@ -400,28 +419,28 @@ const handleProgressChange = (percent: number) => {
   
   {/* Center play/pause button - properly centered with z-index to ensure it's above other elements */}
   <div 
-    className={`absolute inset-0 flex items-center justify-center z-20 pointer-events-none ${!isPlaying || showControls ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
+    className={`absolute inset-0 flex items-center justify-center z-14 pointer-events-none ${!isPlaying || showControls ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
   >
     <button
       onClick={togglePlay}
-      className="w-20 h-20 rounded-full bg-black/40 flex items-center justify-center text-white transition-all duration-200 group hover:bg-black/60 pointer-events-auto"
+      className="w-20 h-20  flex items-center justify-center text-white transition-all duration-200 group  pointer-events-auto"
       aria-label={isPlaying ? 'Pause' : 'Play'}
     >
       {isPlaying ? 
-        <FaPause size={32} className="group-hover:scale-110 transition-transform" /> :
-        <FaPlay size={32} className="ml-1 group-hover:scale-110 transition-transform" /> }
+        <FaPause size={35} className="group-hover:scale-110 transition-transform" /> :
+        <FaPlay size={35} className="ml-1 group-hover:scale-110 transition-transform" /> }
     </button>
   </div>
   
   {/* Title section */}
   {title && (
-    <div className={`absolute top-4 left-0 right-0 text-center transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-      <p className="text-white text-lg font-medium px-4">
-        You&apos;re {captions?.length}<br />
-        <span className="text-xl font-semibold">{title}</span>
-      </p>
-    </div>
-  )}
+  <div className={`absolute top-4 left-0 right-0 text-center transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
+    <p className="text-white text-sm sm:text-base md:text-lg font-medium px-4">
+      You&apos;re watching<br />
+      <span className="text-base sm:text-lg md:text-xl font-semibold">{title}</span>
+    </p>
+  </div>
+)}
 
   {/* Controls section at bottom */}
   <div className={`absolute bottom-0 left-0 right-0 to-transparent pt-16 pb-4 px-4 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -449,7 +468,6 @@ const handleProgressChange = (percent: number) => {
       captions={captions}
       qualities={qualities}
       speedOptions={speedOptions}
-      formatTime={formatTime}
       onPlayPause={togglePlay}
       onVolumeChange={handleVolumeChange}
       onToggleMute={toggleMute}

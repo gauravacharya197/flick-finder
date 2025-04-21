@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import { IoVolumeMedium } from "react-icons/io5";
 
 interface VolumeControlProps {
   volume: number;
@@ -72,7 +73,7 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
 
   return (
     <div 
-      className="relative flex items-center mr-6"
+      className="relative flex items-center sm:!ml-4"
       onMouseEnter={() => setShowVolumeSlider(true)}
       onMouseLeave={() => setShowVolumeSlider(false)}
     >
@@ -81,11 +82,11 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
         className="text-white focus:outline-none hover:text-gray-300 transition-colors flex items-center justify-center h-8 w-8"
         aria-label={isMuted ? 'Unmute' : 'Mute'}
       >
-        {isMuted || volume === 0 ? <FaVolumeMute size={20} /> : <FaVolumeUp size={20} />}
+        {isMuted || volume === 0 ? <FaVolumeMute size={25} /> : <IoVolumeMedium size={30} />}
       </button>
       
       <div 
-        className={`ml-2 w-20 h-1.5 bg-gray-700 rounded-full relative cursor-pointer ${showVolumeSlider ? 'opacity-100' : 'opacity-0 md:opacity-100'} transition-opacity duration-200`}
+        className={`ml-2 w-16 sm:w-22 h-1.5 bg-gray-700 rounded-full relative cursor-pointer ${showVolumeSlider ? 'opacity-100' : 'opacity-0 md:opacity-100'} transition-opacity duration-200`}
         ref={volumeBarRef}
         onClick={handleVolumeChange}
         onMouseDown={startVolumeChange}

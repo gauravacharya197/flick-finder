@@ -77,7 +77,7 @@ const handleProgressClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEv
    
       <div 
         ref={progressBarRef}
-        className="w-full h-1.5 bg-gray-700 hover:h-2.5 cursor-pointer mb-4 rounded-full relative transition-all duration-150"
+        className="w-full h-1.5  bg-gray-700 hover:h-2.5 cursor-pointer mb-4 rounded-full relative transition-all duration-150"
         onClick={handleProgressClick}
         onMouseDown={startProgressDrag}
         onTouchStart={startProgressDrag}

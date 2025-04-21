@@ -43,13 +43,14 @@ const TestPage = () => {
     }, [mediaId, mediaType, season, episode]);
 
     return (
-        <Container className='px-4'>
+       
             <HLSVideoPlayer
                 src={streamUrl}
                 captions={captionTracks}
                 title={title}
+                poster="https://image.tmdb.org/t/p/original/2Nti3gYAX513wvhp8IiLL6ZDyOm.jpg"
             />
-        </Container>
+       
     );
 }
 

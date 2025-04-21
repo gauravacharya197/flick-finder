@@ -107,7 +107,7 @@ export async function loadSubtitlesForVideo(videoElement, mediaId, mediaType, se
         }
         
         // Process each subtitle and add as a track
-        const tracks = [];
+        const tracks = [] as any;
         
         for (const subtitle of subtitleData) {
             if (subtitle.url) {
