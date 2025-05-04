@@ -63,8 +63,8 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "-"
   },
   {
-    id: 10,
-    name: "Flick (Beta)",
+    id: 0,
+    name: "Default",
     baseUrl: `https://vidplaydemo.netlify.app/player`,
     urlSeparator: "/",
     idType: 'id'
