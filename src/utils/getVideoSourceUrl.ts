@@ -8,13 +8,8 @@ export function getVideoSourceUrl(
   selectedSeason: number | null,
   selectedEpisode: number | null
 ): string {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  // For server 1, use direct video source if available
  
-
-
-  // Find the selected server config
   const server = VIDEO_SERVERS.find(s => s.id === selectedServer);
   if (!server) return "";
   const movieId = server.idType === "id" ? movie.id : movie.imdbID;

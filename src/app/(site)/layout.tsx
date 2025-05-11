@@ -5,6 +5,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import SiteProviders from "./SiteProvider";
 import Sidebar from "./Sidebar";
 import Header from "@/components/header";
+import MonetagAd from "./Ad";
 
 export default function SiteLayout({
   children,
@@ -27,6 +28,7 @@ export default function SiteLayout({
             <Header />
           </Suspense>
           <main className="min-h-screen">{children}</main>
+          <MonetagAd/>
 
           <Footer />
         </div>
