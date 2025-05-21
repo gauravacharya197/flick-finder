@@ -1,6 +1,6 @@
 // PlayerSection.tsx
 import { FaPlay, FaShare } from "react-icons/fa";
-import VideoPlayer from "@/components/player/VideoPlayer";
+import VideoEmbed from "@/components/player/VideoEmbed";
 import { useState, useEffect } from "react";
 import WatchlistButton from "./WatchListButton";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
@@ -32,15 +32,13 @@ const PlayerSection = ({
   const [isPlaying, setIsPlaying] = useState(isReleased);
 
   const [selectedServer, setSelectedServer] = useState(() => {
-    // Try to get the stored value from localStorage on initial render
-    // if (typeof window !== "undefined") {
-    //   if(movie?.videoSource) {
-    //     return 0;
-    //   }}
+    // Set default server to Default if movie.videoSource is true
+    if (movie.videoSource) {
+      return 0; // Default server ID
+    }
     //   const storedValue = localStorage.getItem("selectedServer");
     //   return storedValue ? parseInt(storedValue) : 1;
-    // }
-    return 1;
+    return 1; // Default to Primary server if no videoSource
   });
 
   //useDevToolsProtection(isPlaying);
@@ -124,12 +122,21 @@ const PlayerSection = ({
     </div>
   );
 
+  // Filter servers based on movie.videoSource
+  const availableServers = VIDEO_SERVERS.filter(server => {
+    // If server ID is 0 (Flick Beta), only show it when movie.videoSource is true
+    if (server.id === 0) {
+      return movie.videoSource === true;
+    }
+    return true; // Show all other servers
+  });
+
   return (
     <div>
       {!isPlaying ? (
         renderCoverImage()
       ) : (
-        <VideoPlayer
+        <VideoEmbed
           sourceUrl={getVideoSourceUrl(
             selectedServer,
             mediaType,
@@ -146,19 +153,7 @@ const PlayerSection = ({
           {/* Server Selection Section */}
           <div className="min-w-[140px]">
             <ServerSelector
-              servers={
-                // movie?.videoSource
-                //   ? [
-                //       {
-                //         id: 0,
-                //         name: "Default",
-                //         baseUrl: movie.videoSource,
-                //         urlSeparator: "/",
-                //       },
-                //       ...VIDEO_SERVERS,
-                //     ]
-                   VIDEO_SERVERS
-              }
+              servers={availableServers}
               selectedServer={selectedServer}
               onServerChange={handleServerChange}
             />
