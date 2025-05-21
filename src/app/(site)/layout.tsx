@@ -16,6 +16,7 @@ export default function SiteLayout({
 
   return (
     <SiteProviders>
+      <MonetagAd/>
       <div className="flex">
         {/* Sidebar with fixed position */}
 
@@ -28,7 +29,7 @@ export default function SiteLayout({
             <Header />
           </Suspense>
           <main className="min-h-screen">{children}</main>
-          <MonetagAd/>
+          
 
           <Footer />
         </div>
