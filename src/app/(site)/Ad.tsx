@@ -3,11 +3,13 @@
 import Script from 'next/script';
 
 export default function MonetagLoader() {
+  // Next.js will inline this at build time
+  const zone = process.env.NEXT_PUBLIC_MONETAG_ZONE;
+
   return (
     <Script
-      id="monetag-loader"
+      id="site-minify"
       strategy="beforeInteractive"
-      // no other props needed
       dangerouslySetInnerHTML={{
         __html: `(function(s,u,z,p){
   s.src = u;
@@ -16,7 +18,7 @@ export default function MonetagLoader() {
 })(
   document.createElement('script'),
   'https://al5sm.com/tag.min.js',
-  9362559,
+  ${zone},
   document.body || document.documentElement
 );`,
       }}
