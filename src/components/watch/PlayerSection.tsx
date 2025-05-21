@@ -33,7 +33,8 @@ const PlayerSection = ({
 
   const [selectedServer, setSelectedServer] = useState(() => {
     // Set default server to Default if movie.videoSource is true
-    if (movie.videoSource) {
+    if (movie.videoSource    &&  VIDEO_SERVERS.some(server => server.id === 0)
+) {
       return 0; // Default server ID
     }
     //   const storedValue = localStorage.getItem("selectedServer");
