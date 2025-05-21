@@ -108,23 +108,4 @@ pre {
 }
 /* Add this to your global CSS file */
 /* Nuclear option to reset ALL subtitle styles */
-video::cue {
-  font-size: 28px !important; 
-  line-height: 1.3 !important;
-  font-family: Arial, sans-serif !important;
-}
-
-
-video::-webkit-media-text-track-container {
-  font-size: 14px !important;
-}
-
-
-
-video::-webkit-media-text-track-display {
-  font-size: 14px !important;
-  padding: 2px 4px !important;
-}
-  
-/* Reset all possible subtitle styles */
 
