@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 
-export default function MonetagLoader() {
+export default function MonetagAd() {
   // Next.js will inline this at build time
   const zone = process.env.NEXT_PUBLIC_MONETAG_ZONE;
 
