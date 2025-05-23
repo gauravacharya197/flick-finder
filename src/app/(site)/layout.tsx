@@ -19,7 +19,7 @@ export default function SiteLayout({
   return (
     <SiteProviders>
       <head>  
-        {/* <MonetagAd/> */}
+        <MonetagAd/>
         </head>
     
       <div className="flex">
