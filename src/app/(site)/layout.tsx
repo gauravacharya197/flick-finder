@@ -18,9 +18,9 @@ export default function SiteLayout({
 
   return (
     <SiteProviders>
-      {/* <head>  
+      <head>  
         <MonetagAd/>
-        </head> */}
+        </head>
     
       <div className="flex">
         <Script defer src="https://cloud.umami.is/script.js" data-website-id="d8ddab61-aa5d-4cc3-a1e8-77bd5eff208d"></Script>
