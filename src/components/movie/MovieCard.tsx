@@ -25,72 +25,80 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     ? "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-1.jpg"
     : movie.posterPath?.startsWith("http") 
       ? movie.posterPath 
-      : `http://image.tmdb.org/t/p/w400/${movie.posterPath}`;
+      : `http://image.tmdb.org/t/p/w500/${movie.posterPath}`;
 
   return (
-    <div className="group relative overflow-hidden rounded-lg bg-gray-900 transition-transform duration-300 hover:shadow-lg">
-      <Link 
-        href={watchUrl}
-        className="block aspect-[2.2/2.8] w-full overflow-hidden"
-        aria-label={`View details for ${movie.displayTitle}`}
-      >
-        <div className="relative h-full w-full">
-          {/* Image with Next.js Image optimization */}
-          <div className="relative h-full w-full">
-            <img
-              src={imageSrc}
-              alt={movie.displayTitle}
+    <div className="group relative w-full max-w-sm mx-auto">
+      {/* Card Container with consistent aspect ratio */}
+      <div className="relative overflow-hidden rounded-xl bg-gray-900 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+        
+        {/* Image Container with fixed aspect ratio */}
+        <div className="aspect-[2.2/2.8] w-full overflow-hidden relative">
+          <Link 
+            href={watchUrl}
+            className="block absolute inset-0 z-10"
+            aria-label={`View details for ${movie.displayTitle}`}
+          >
+            <span className="sr-only">View details for {movie.displayTitle}</span>
+          </Link>
           
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              onError={() => setImageError(true)}
-            />
-          </div>
+          <img
+            src={imageSrc}
+            alt={movie.displayTitle}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            onError={() => setImageError(true)}
+          />
           
-          {/* Gradient overlays - optimized with tailwind classes */}
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-90" />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          {/* Gradient overlays for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
-      </Link>
-      
-      {/* Content - optimized layout */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <div className="space-y-2">
-          {/* Title */}
-          <MyTooltip content={movie.displayTitle}>
-            <h3 className="text-lg font-bold text-white drop-shadow-lg line-clamp-2">
-              {truncateString(movie.displayTitle, 24)}
-            </h3>
-          </MyTooltip>
-         
-          {/* Meta Information - Improved layout structure */}
-          <div className="flex items-center justify-between text-sm text-gray-200">
-            {releaseYear && (
+        
+        {/* Content overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="space-y-3">
+            {/* Title */}
+            <MyTooltip content={movie.displayTitle}>
+              <h3 className="text-lg font-bold text-white leading-tight line-clamp-2 drop-shadow-lg">
+                {truncateString(movie.displayTitle, 28)}
+              </h3>
+            </MyTooltip>
+           
+            {/* Meta Information Container */}
+            <div className="flex items-center justify-between gap-2 text-sm">
+              {/* Left side - Release Year */}
+              <div className="flex items-center">
+                {releaseYear && (
+                  <span className="text-gray-300 font-medium drop-shadow-md bg-black/20 px-2 py-1 rounded-md backdrop-blur-sm">
+                    {releaseYear}
+                  </span>
+                )}
+              </div>
+
+              {/* Center - Rating */}
               <div className="flex items-center justify-center">
-                <span className="drop-shadow-md">{releaseYear}</span>
+                {rating !== 0 && (
+                  <div className="flex items-center space-x-1 bg-black/30 px-2 py-1 rounded-md backdrop-blur-sm">
+                    <FaStar className="text-yellow-400 text-xs drop-shadow-md" aria-hidden="true" />
+                    <span className="text-white font-medium drop-shadow-md">{rating}</span>
+                  </div>
+                )}
               </div>
-            )}
 
-            {/* Flexible space between items */}
-            <div className="flex-grow" />
-
-            {/* Rating shown only when available */}
-            {rating !== 0 && (
-              <div className="flex items-center space-x-1">
-                <FaStar className="text-yellow-500 drop-shadow-md" aria-hidden="true" />
-                <span className="drop-shadow-md">{rating}</span>
+              {/* Right side - Media Type */}
+              <div className="flex items-center">
+                {movie?.mediaType && (
+                  <div className="transform scale-90">
+                    <CustomTag text={movie.mediaType} />
+                  </div>
+                )}
               </div>
-            )}
-
-            {/* Flexible space between items */}
-            <div className="flex-grow" />
-
-            {/* Media Type Tag */}
-            {movie?.mediaType && (
-              <CustomTag text={movie.mediaType} />
-            )}
+            </div>
           </div>
         </div>
+
+        {/* Hover effect border */}
+        <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-white/20 transition-colors duration-300" />
       </div>
     </div>
   );

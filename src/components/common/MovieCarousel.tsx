@@ -47,7 +47,7 @@ const MovieCarousel = ({
     if (variant === 'trending') {
       return "!w-[225px] sm:!w-[250px] md:!w-[320px] lg:!w-[280px] 2xl:!w-[390px]";
     }
-    return "!w-[170px] sm:!w-[220px] md:!w-[240px] lg:!w-[260px]";
+    return "!w-[170px] sm:!w-[220px] md:!w-[240px] lg:!w-[310px]";
   };
 
   // Adjust container padding for trending variant
