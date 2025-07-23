@@ -76,9 +76,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
                 ))}
             </div>
 
-            <p className="mb-2 max-w-2xl text-sm text-gray-300 md:text-base">
-              {movie?.overview}
-            </p>
+            
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-4">
