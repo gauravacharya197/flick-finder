@@ -40,9 +40,9 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
 
       {/* Content */}
-      <div className="relative z-20 h-full md:flex md:items-center md:min-h-screen">
-        <div className="px-4 w-full">
-          <div className="max-w-4xl pt-32 pb-8 md:py-16"> {/* Original mobile height, increased desktop height */}
+      <div className="relative z-20 h-full">
+        <div className="px-4">
+          <div className="max-w-4xl pt-36 sm:pt-64"> {/* Changed pt-32 to pt-40 and added pb-24 */}
             <h1 className="mb-4 text-4xl font-bold md:text-6xl">
               {movie?.displayTitle}
             </h1>
@@ -76,7 +76,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
                 ))}
             </div>
 
-            <p className="mb-8 max-w-2xl text-sm text-gray-300 md:text-base">
+            <p className="mb-2 max-w-2xl text-sm text-gray-300 md:text-base">
               {movie?.overview}
             </p>
 
