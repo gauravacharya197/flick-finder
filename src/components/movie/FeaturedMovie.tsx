@@ -57,7 +57,7 @@ const FeaturedMovie: React.FC<FeaturedMovieProps> = ({ movie }) => {
               </div>
               <span>{formatDate(movie?.displayReleaseDate)}</span>
               
-              {/* Genres - with responsive class to force new line on mobile */}
+              {/* Genres - with responsive class to force new line on mobilee */}
               <div className="w-full md:w-auto md:inline-block"></div>
               
               {movie?.genreIds
