@@ -86,7 +86,6 @@ export const getUserFingerprint = async (): Promise<string> => {
   try {
     if (!fpPromise) {
       fpPromise = FingerprintJS.load({
-        monitoring: false,
         delayFallback: 500,
       });
     }
