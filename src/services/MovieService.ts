@@ -60,3 +60,24 @@ export const getCastWithCredits = async(castId:string)=>{
   return await apiClient.get(`${baseUrl}api/Cast?castId=${castId}`)
 
 }
+export const getMovieReactions = async (movieId, userFingerprint) => {
+  const response = await apiClient.get(`${baseUrl}api/movies/${movieId}/reactions`, {
+    params: { userFingerprint }
+  });
+  return response.data.data;
+};
+
+export const addMovieReaction = async (movieId, reactionType, userFingerprint) => {
+  const response = await apiClient.post(`${baseUrl}api/movies/${movieId}/reactions`, {
+    reactionType,
+    userFingerprint
+  });
+  return response.data.data;
+};
+
+export const removeMovieReaction = async (movieId, userFingerprint) => {
+  const response = await apiClient.delete(`${baseUrl}api/movies/${movieId}/reactions`, {
+    params: { userFingerprint }
+  });
+  return response.data.data;
+};
