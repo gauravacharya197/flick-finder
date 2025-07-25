@@ -180,6 +180,7 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
             </div>
           ) : (
             <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
+              {/* Keep original order - no sorting */}
               {reactionData?.reactions?.map((reaction: Reaction) => {
                 const isSelected: boolean = reactionData.userCurrentReaction === reaction.reactionType;
                 const isAnimatingThis: boolean = isAnimating[reaction.reactionType];
@@ -220,7 +221,6 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
                         {reaction.count.toLocaleString()}
                       </div>
                     </div>
-
                     {/* Ripple effect */}
                     <div className="absolute inset-0 rounded-xl opacity-0 group-active:opacity-20 bg-gradient-to-r from-white to-teal-200 transition-opacity duration-150"></div>
                   </button>
@@ -257,7 +257,7 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
                 Popular Reactions
               </h4>
               <div className="space-y-2">
-                {reactionData.reactions
+                {[...reactionData.reactions]
                   ?.sort((a: Reaction, b: Reaction) => b.count - a.count)
                   ?.slice(0, 3)
                   ?.map((reaction: Reaction, index: number) => (
