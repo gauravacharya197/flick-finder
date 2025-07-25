@@ -136,7 +136,7 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
 
   if (error) {
     return (
-      <div className="bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-slate-900/60 backdrop-blur-xl rounded-xl text-white p-4 border border-red-500/20">
+      <div className="bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-slate-900/60 backdrop-blur-xl rounded-xl text-white p-4 border border-red-500/20 mt-4">
         <div className="text-center">
           <div className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent text-lg font-semibold mb-2">
             Failed to load reactions
