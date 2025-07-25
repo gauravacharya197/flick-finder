@@ -16,7 +16,7 @@ export default function SiteLayout({
 
   return (
     <SiteProviders>
-      <head>  <MonetagAd/></head>
+      <MonetagAd/>
     
       <div className="flex">
         {/* Sidebar with fixed position */}

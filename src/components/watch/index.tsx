@@ -12,6 +12,7 @@ import ErrorMessage from "../common/ErrorMessage";
 import { WatchPageProps } from "@/types/WatchPageProps";
 import Skeleton from "../common/Skeleton";
 import PlayerSection from "./PlayerSection";
+import MovieReaction from "./MovieReaction";
 const Watch = ({ params }: WatchPageProps) => {
   // Destructure params
   const { id, mediaType, title } = params;
@@ -58,8 +59,7 @@ const Watch = ({ params }: WatchPageProps) => {
                     rowHeight="h-4"
                     spacing="space-y-2"
                   />
-                                    <Skeleton showTitle={true} titleHeight="h-8" rows={0} />
-
+                  <Skeleton showTitle={true} titleHeight="h-8" rows={0} />
                 </div>
                 {/* Right sidebar skeleton */}
               </div>
@@ -81,7 +81,8 @@ const Watch = ({ params }: WatchPageProps) => {
                 selectedEpisode={selectedEpisode}
               />
               <p className="mt-2 text-sm text-gray-500">
-              If the current server doesn't work, try switching to a different one.
+                If the current server doesn't work, try switching to a different
+                one.
               </p>
               {/* Mobile-only SeasonChooser for TV shows */}
               {mediaType?.toLowerCase() === "tv" && (
@@ -96,24 +97,25 @@ const Watch = ({ params }: WatchPageProps) => {
               )}
               <br />
               <MovieDetails movie={movie} mediaType={mediaType} />
+              <MovieReaction movie={movie} mediaType={mediaType} />
               <SectionHeader className="mb-5 mt-10" text="Casts" />
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-              {movie?.casts && movie.casts.length > 0 ? (
-  movie?.casts?.map((character, index) => (
-    
-    <CastCard
-      key={index}
-      index={index}
-      imgSrc={character.profilePath}
-      name={character.name}
-      role={character.character}
-      castId={character.id}
-    />
-  ))
-) : (
-  <p>No cast available</p>
-)}
-              </div>
+              <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-5 sm:gap-2 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-10">
+  {movie?.casts && movie.casts.length > 0 ? (
+    movie.casts.map((character, index) => (
+      <CastCard
+        key={`cast-${character.id}-${index}`}
+        imgSrc={character.profilePath}
+        name={character.name}
+        role={character.character}
+        castId={character.id}
+      />
+    ))
+  ) : (
+    <div className="col-span-full flex items-center justify-center py-8">
+      <p className="text-sm text-gray-400">No cast information available</p>
+    </div>
+  )}
+</div>
               {/* Mobile-only SimilarMovie for movies */}
               {mediaType?.toLowerCase() === "movie" && (
                 <div className="mt-10 grid grid-cols-1 lg:hidden">
