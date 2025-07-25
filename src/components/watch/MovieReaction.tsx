@@ -222,7 +222,6 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
                       </div>
                     </div>
                     {/* Ripple effect */}
-                    <div className="absolute inset-0 rounded-xl opacity-0 group-active:opacity-20 bg-gradient-to-r from-white to-teal-200 transition-opacity duration-150"></div>
                   </button>
                 );
               })}
@@ -231,7 +230,7 @@ const MovieReaction: React.FC<any> = ({ movie, mediaType }) => {
 
           {/* Total Reactions Summary */}
           {!isLoading && reactionData && (
-            <div className="mt-6 pt-4 border-t border-gradient-to-r from-transparent via-gray-600/50 to-transparent">
+            <div className="mt-6 pt-4  border-gradient-to-r from-transparent via-gray-600/50 to-transparent">
               <div className="bg-gradient-to-r from-gray-800/40 via-slate-700/30 to-gray-800/40 rounded-lg p-3 border border-gray-600/20">
                 <div className="flex items-center justify-between text-sm">
                   <span className="bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent font-medium">
