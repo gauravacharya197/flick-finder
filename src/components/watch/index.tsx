@@ -99,7 +99,7 @@ const Watch = ({ params }: WatchPageProps) => {
               <MovieDetails movie={movie} mediaType={mediaType} />
               <MovieReaction movie={movie} mediaType={mediaType} />
               <SectionHeader className="mb-5 mt-10" text="Casts" />
-              <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-5 sm:gap-2 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 2xl:grid-cols-10">
+              <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 sm:gap-2 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-7 2xl:grid-cols-8">
   {movie?.casts && movie.casts.length > 0 ? (
     movie.casts.map((character, index) => (
       <CastCard
