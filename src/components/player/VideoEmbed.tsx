@@ -27,9 +27,9 @@ const VideoEmbed = ({ sourceUrl, sandbox = '' }) => {
         src={sourceUrl}
         referrerPolicy="origin"
         allowFullScreen={true}
+        sandbox={sandbox}
         style={{ width: "100%", height: "100%", border: "none" }}
-        
-        {...(sandbox ? { sandbox } : {})}
+        onLoad={handleIframeLoad}
       />
     </div>
   );
