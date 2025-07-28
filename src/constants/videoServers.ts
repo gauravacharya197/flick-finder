@@ -62,12 +62,12 @@ export const VIDEO_SERVERS: VideoServer[] = [
      baseUrl: "https://moviesapi.club",
     urlSeparator: "-"
   },
-  {
-    id: 0,
-    name: "Default",
-    baseUrl: `https://vidplaydemo.netlify.app/player`,
-    urlSeparator: "/",
-    idType: 'id'
+  // {
+  //   id: 0,
+  //   name: "Default",
+  //   baseUrl: `https://vidplaydemo.netlify.app/player`,
+  //   urlSeparator: "/",
+  //   idType: 'id'
 
-  },
+  // },
 ];
