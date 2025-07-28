@@ -1,35 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const VideoEmbed = ({ sourceUrl, sandbox = '' }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  
-  // Function to handle iframe load event
-  const handleIframeLoad = () => {
-    setIsLoading(false);
-  };
-  
-  // Reset loading state when source URL changes
-  // useEffect(() => {
-  //   setIsLoading(true);
-  // }, [sourceUrl]);
-  
+  const [loaded, setLoaded] = useState(false);
+
   return (
-    <div className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[72vh] 2xl:h-[75vh] bg-black">
-       {/* {isLoading && (
-         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur">
-          <div className="flex items-center space-x-2">
-            <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
-          </div>
-        </div>
-      )} */}
+    <div
+      className="relative w-full h-[40vh] sm:h-[70vh] xl:h-[72vh] 2xl:h-[75vh]"
+      style={{ backgroundColor: "#000" }}
+    >
       
+
       <iframe
         src={sourceUrl}
         referrerPolicy="origin"
-        allowFullScreen={true}
-        sandbox={sandbox}
-        style={{ width: "100%", height: "100%", border: "none" }}
-        onLoad={handleIframeLoad}
+        allowFullScreen
+        onLoad={() => setLoaded(true)}
+        style={{
+          width: "100%",
+          height: "100%",
+          border: "none",
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 0.2s ease-in-out"
+        }}
       />
     </div>
   );
