@@ -60,7 +60,7 @@ const Navigation = () => {
           value={query}
           onChange={(e) => dispatch(setQuery(e.target.value))}
           placeholder="Search Movies/TV"
-          className={`w-full rounded-md px-4 py-1.5 text-black dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
+          className={`w-full rounded-md px-4 py-1.5 text-black bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
         />
         {(query || searchQuery) && (
           <button
@@ -96,7 +96,7 @@ const Navigation = () => {
   );
 
   return (
-    <nav className="fixed top-0 right-0 md:w-[calc(100%-3.5rem)] md:ml-14 px-4 z-50 bg-gray-300 bg-opacity-90 text-white dark:bg-background w-full">
+    <nav className="fixed top-0 right-0 md:w-[calc(100%-3.5rem)] md:ml-14 px-4 z-50 0 text-white bg-background w-full">
       {/* //remove max-w constrain for full width */}
       <div className="max-w-screen-3xl mx-auto">
         <div className="flex h-12 items-center justify-between">
