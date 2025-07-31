@@ -79,6 +79,7 @@ const Footer = () => {
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                 This site does not host or store any files on our server; we only provide links to media hosted by non-affiliated third-party services. 
               </p>
+              
             </div>
           </div>
 
@@ -93,6 +94,7 @@ const Footer = () => {
                 <FaEnvelope size={16} />
                 <span className="ml-2">feedback@flickday.to</span>
               </a>
+             
               
               {/* DMCA Link - Now next to email to avoid overlap with scroll button */}
               <Link 
@@ -104,6 +106,10 @@ const Footer = () => {
               </Link>
             </div>
           </div>
+           <p className="mt-4 text-sm text-gray-400">
+                © { new Date().getFullYear()} FlickDay. Home of your favorite Movies/TV Series. 
+            
+              </p>
         </motion.div>
       </div>
     </footer>
