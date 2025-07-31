@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaPlay, FaSearch, FaHeart, FaBolt, FaMagic, FaRocket, FaStar } from 'react-icons/fa';
 
 const FlickdayHomepageContent = () => {
-  const [openFAQ, setOpenFAQ] = useState(null);
+  const [openFAQ, setOpenFAQ] = useState<any>(null);
 
   const faqs = [
     {
