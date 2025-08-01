@@ -1,27 +1,53 @@
+import { siteConfig } from '@/config/siteConfig';
 import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaPlay, FaSearch, FaHeart, FaBolt, FaMagic, FaRocket, FaStar } from 'react-icons/fa';
 
 const FlickdayHomepageContent = () => {
-  const [openFAQ, setOpenFAQ] = useState(null);
+  const [openFAQ, setOpenFAQ] = useState<any>(null);
 
-  const faqs = [
-    {
-      question: "How does Flickday's AI-powered movie recommendation work?",
-      answer: "Flickday uses advanced AI algorithms to analyze your mood, emotions, and viewing preferences to suggest the perfect movies and TV series."
-    },
-    {
-      question: "Is Flickday free to use?",
-      answer: "Yes, Flickday offers free access to browse our curated collection of movies and TV series. You can search by mood and get basic recommendations without any cost."
-    },
-    {
-      question: "How many movies and TV shows are available on Flickday?",
-      answer: "Flickday features thousands of carefully curated movies and TV series from various genres, decades, and countries."
-    },
-    {
-      question: "Can I search for movies based on specific emotions or moods?",
-      answer: "Absolutely! Flickday specializes in emotion-based movie discovery. You can search for content based on how you're feeling."
-    }
-  ];
+const faqs = [
+  {
+    question: "How does Flickday's AI-powered movie recommendation work?",
+    answer: "Flickday uses advanced AI algorithms to analyze your mood, emotions, and viewing preferences to suggest the perfect movies and TV series."
+  },
+  {
+    question: "Is Flickday free to use?",
+    answer: "Yes, Flickday offers free access to browse our huge collection of movies and TV series. You can search by AI or Movie/Tv and get basic recommendations without any cost."
+  },
+  {
+    question: "How many movies and TV shows are available on Flickday?",
+    answer: "Flickday features thousands of carefully  movies and TV series from various genres, decades, and countries."
+  },
+  {
+    question: "Can I search for movies based on specific emotions or moods?",
+    answer: "Absolutely! Flickday specializes in emotion-based movie search using AI. You can search for content based on how you're feeling."
+  },
+  {
+    question: "Is Flickday safe to use?",
+    answer: "Yes, Flickday is completely safe to use. We do not require personal information for browsing, and all content is sourced from reliable sources. Your privacy and security are important to us."
+  },
+  {
+    question: "Do I need to create an account to use Flickday?",
+    answer: "No, you can use Flickday without signing up. Account creation is optional and only required if you want to save your preferences or create a personalized watchlist."
+  },
+  {
+    question: "Is Flickday available on mobile devices?",
+    answer: "Yes, Flickday is fully responsive and works seamlessly on smartphones, tablets, and desktops."
+  },
+  {
+    question: "Can I share movie recommendations from Flickday with friends?",
+    answer: "Yes! You can easily share any movie or TV show recommendation via social media, messaging apps, or by copying the link directly."
+  },
+  {
+    question: "Does Flickday support different genres and languages?",
+    answer: "Yes, Flickday covers a wide range of genres and includes international content across multiple languages for a global audience."
+  },
+  {
+    question: "How often is Flickday's content updated?",
+    answer: "Flickday daily updates its contents with fresh recommendations, new releases, and trending titles to keep your watchlist exciting."
+  }
+];
+
 
   const features = [
     { icon: <FaMagic className="w-8 h-8 text-primary-400" />, title: "AI-Powered Search", description: "Advanced algorithms that understand your mood and preferences." },
@@ -38,8 +64,7 @@ const FlickdayHomepageContent = () => {
           Discover Movies That <span className="text-primary-400">Match Your Mood</span>
         </h1>
         <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-3xl mx-auto">
-          Find your next perfect movie with Flickday's AI-powered search. Browse thousands of curated movies and TV series with personalized recommendations.
-        </p>
+{siteConfig.description}        </p>
       </section>
 
       {/* Features Section */}
@@ -77,43 +102,36 @@ const FlickdayHomepageContent = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-        <div className="max-w-3xl mx-auto space-y-4">
-          {faqs.map((faq, index) => (
-            <div key={index} className="bg-gray-800 rounded-lg border border-gray-700">
-              <button
-                onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
-                className="w-full text-left p-6 flex justify-between items-center hover:bg-gray-700 transition-colors"
-              >
-                <h3 className="font-semibold pr-4">{faq.question}</h3>
-                {openFAQ === index ? <FaChevronUp /> : <FaChevronDown />}
-              </button>
-              {openFAQ === index && (
-                <div className="px-6 pb-6 border-t border-gray-700">
-                  <p className="text-gray-300 pt-4">{faq.answer}</p>
-                </div>
-              )}
-            </div>
-          ))}
+     <section className="container mx-auto px-4 py-16">
+  <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+  <div className="max-w-3xl mx-auto space-y-4">
+    {faqs.map((faq, index) => (
+      <div key={index} className="bg-gray-800 rounded-lg border border-gray-700">
+        <button
+          onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+          className="w-full text-left p-4 flex justify-between items-center hover:bg-gray-700 transition-colors"
+          aria-expanded={openFAQ === index}
+          aria-controls={`faq-answer-${index}`}
+        >
+          <h3 className="font-semibold pr-4 text-sm sm:text-base">{faq.question}</h3>
+          {openFAQ === index ? <FaChevronUp /> : <FaChevronDown />}
+        </button>
+        <div
+          id={`faq-answer-${index}`}
+          className={`px-8 overflow-hidden transition-all duration-300 ease-in-out border-t border-gray-700 text-gray-300 text-lg ${
+            openFAQ === index ? 'max-h-96 pt-3 opacity-100' : 'max-h-0 pt-0 opacity-0'
+          }`}
+        >
+          <p>{faq.answer}</p>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* About Section */}
-      <section className="container mx-auto px-4 py-16 bg-gray-800/30">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">About Flickday</h2>
-          <p className="text-gray-300 text-lg mb-6">
-            Flickday revolutionizes how you Watch movies and TV shows by focusing on your emotions and mood. 
-            We understand that choosing what to watch is about finding content that resonates with how you're feeling.
-          </p>
-          <p className="text-gray-300 text-lg">
-            Our AI-powered platform analyzes thousands of curated movies, considering emotional tone, pacing, 
-            and themes to provide recommendations that truly match your current state of mind.
-          </p>
-        </div>
-      </section>
-
+     
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="bg-gray-800 rounded-xl p-12 border border-gray-700">
