@@ -41,9 +41,9 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <Container>
+    <>
    <MovieHome/>
-    </Container>
+    </>
   );
 }
 
