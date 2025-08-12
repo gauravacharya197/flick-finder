@@ -19,7 +19,7 @@ export function getVideoSourceUrl(
 
   // Build URL based on content type
   if (mediaType === "tv" && selectedSeason !== null && selectedEpisode !== null) {
-    return `${server.baseUrl}/${mediaType}/${movieId}${separator}${selectedSeason}${separator}${selectedEpisode}?poster=${movie?.coverImage}&theme=${'14b8a6'}&title=${movie?.displayTitle}`;
+    return `${server.baseUrl}/${mediaType}/${movieId}${separator}${selectedSeason}${separator}${selectedEpisode}?poster=${movie?.coverImage}&theme=${'14b8a6'}&title=${movie?.displayTitle} S${selectedSeason} E${selectedEpisode}`;
   }
   return `${server.baseUrl}/${mediaType}/${movieId}?poster=${movie?.coverImage}&theme=${'14b8a6'}&title=${movie?.displayTitle}`;
 }
