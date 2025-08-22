@@ -44,7 +44,7 @@ export const Genre = ({ value }: GenreProps) => {
 
   const sortOptions: SortOption[] = [
     { value: 'popularity.desc', label: 'Most Popular' },
-    { value: 'vote_average.desc', label: 'Highest Rated' },
+    { value: 'vote_count.desc', label: 'Highest Rated' },
     { value: 'release_date.desc', label: 'Newest First' },
     { value: 'release_date.asc', label: 'Oldest First' },
     { value: 'revenue.desc', label: 'Highest Grossing' },
@@ -89,7 +89,8 @@ export const Genre = ({ value }: GenreProps) => {
         pageNumber: 1,
         genre: genreId,
         mediaType: mediaType,
-        sortBy: 'vote_average.desc',
+        sortBy: 'vote_count.desc',
+      
       })
       return response
     },
@@ -165,7 +166,15 @@ export const Genre = ({ value }: GenreProps) => {
   if (!genreId) {
     return (
       <div className="text-center py-8">
-        <ErrorMessage message={`Genre "${value}" not found.`} />
+       <Skeleton 
+            showTitle={false}
+            rows={8}
+            rowWidths={['100%', '100%', '100%', '100%', '50%', '50%', '50%', '50%'] as any}
+            className="rounded-lg"
+            titleHeight="h-8"
+            rowHeight="h-5"
+            spacing="space-y-6"
+          />
       </div>
     )
   }
