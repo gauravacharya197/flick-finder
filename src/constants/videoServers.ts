@@ -25,7 +25,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/"
   },
   {
-    id: 1,
+    id: 5,
     name: "VidLink",
     baseUrl: "https://vidlink.pro",
     urlSeparator: "/",
@@ -45,7 +45,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
     urlSeparator: "/"
   },
   {
-    id: 5,
+    id: 1,
     name: "Primary",
     baseUrl: "https://vidfast.pro",
     urlSeparator: "/"
