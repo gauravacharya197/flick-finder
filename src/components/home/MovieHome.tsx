@@ -94,41 +94,7 @@ const MovieHome = () => {
 
   return (
     <>
-      <Head>
-        <title>FlickDay - Discover Trending Movies, TV Shows & Entertainment</title>
-        <meta 
-          name="description" 
-          content={`Discover the latest trending movies, top-rated films, popular TV shows, and best entertainment content of ${currentYear}. Watch trailers, read reviews, and find your next favorite movie or series on FlickDay.`}
-        />
-        <meta 
-          name="keywords" 
-          content="movies, TV shows, trending films, top rated movies, entertainment, streaming, movie reviews, film discovery, popular shows, cinema, Hollywood, Netflix, best movies 2025"
-        />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="canonical" href="https://flickday.com" />
-        
-        {/* Open Graph Tags */}
-        <meta property="og:title" content="FlickDay - Discover Trending Movies & TV Shows" />
-        <meta property="og:description" content="Your ultimate destination for discovering trending movies, top-rated films, and popular TV shows. Find your next favorite entertainment content." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://flickday.com" />
-        <meta property="og:site_name" content="FlickDay" />
-        <meta property="og:image" content="https://flickday.com/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        
-        {/* Twitter Card Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="FlickDay - Discover Trending Movies & TV Shows" />
-        <meta name="twitter:description" content="Discover trending movies, top-rated films, and popular TV shows. Your ultimate entertainment discovery platform." />
-        <meta name="twitter:image" content="https://flickday.com/twitter-image.jpg" />
-        
-        {/* Additional SEO Tags */}
-        <meta name="author" content="FlickDay" />
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="1 days" />
-      </Head>
+      
 
       <div className="min-h-screen text-white">
         {/* SEO Header Section */}

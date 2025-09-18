@@ -6,6 +6,10 @@ const FlickdayHomepageContent = () => {
   const [openFAQ, setOpenFAQ] = useState<any>(null);
 
 const faqs = [
+   {
+    question: "What is Flickday?",
+    answer: "Find your next perfect movie with Flickday's AI-powered search. Browse thousands of Movies and TV Series."
+  },
   {
     question: "How does Flickday's AI-powered movie recommendation work?",
     answer: "Flickday uses advanced AI algorithms to analyze your mood, emotions, and viewing preferences to suggest the perfect movies and TV series."
