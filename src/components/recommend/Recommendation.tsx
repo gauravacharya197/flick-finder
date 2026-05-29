@@ -276,7 +276,7 @@ function RecommendationCard({
           {item.title}
         </Link>
 
-        <p className="text-[12px] text-white/65 line-clamp-2 leading-relaxed flex-1">
+        <p className="text-[14px] text-white/65 line-clamp-2 leading-relaxed flex-1">
           {item.overview || 'No description available.'}
         </p>
 
@@ -299,7 +299,7 @@ function RecommendationCard({
             />
           </div>
 
-          <div className={`flex items-center gap-1 text-[12px] font-bold tabular-nums px-2.5 py-1 rounded-full border
+          <div className={`flex items-center gap-1 text-[14px] font-bold tabular-nums px-2.5 py-1 rounded-full border
             ${netVotes > 0
               ? 'text-teal-300 bg-teal-500/10 border-teal-500/20'
               : netVotes < 0
@@ -357,7 +357,7 @@ function SearchRow({
       <button
         onClick={() => onRecommend(n)}
         disabled={loading || done}
-        className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold
+        className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[14px] font-semibold
           transition-all duration-150 disabled:opacity-50
           ${done
             ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20'
@@ -472,7 +472,7 @@ function AddModal({
         <div className="flex items-center justify-between px-5 pt-5 pb-4">
           <div>
             <h2 className="text-[17px] font-bold text-white">Recommend a Title</h2>
-            <p className="text-[12px] text-white/80 mt-0.5">Search movies or TV series to add</p>
+            <p className="text-[14px] text-white/80 mt-0.5">Search movies or TV series to add</p>
           </div>
           <button
             onClick={onClose}
@@ -506,7 +506,7 @@ function AddModal({
             </div>
           </div>
           {errorMsg && (
-            <p className="text-[12px] text-red-400 mt-2 flex items-center gap-1">
+            <p className="text-[14px] text-red-400 mt-2 flex items-center gap-1">
               <svg className="w-3 h-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -543,7 +543,7 @@ function AddModal({
         <div className="px-5 py-3 flex items-center justify-between">
           <p className="text-[11px] text-white/70">Powered by TMDB</p>
           {doneIds.size > 0 && (
-            <span className="text-[12px] text-teal-400 font-medium">{doneIds.size} added</span>
+            <span className="text-[14px] text-teal-400 font-medium">{doneIds.size} added</span>
           )}
         </div>
       </div>
@@ -775,7 +775,7 @@ export const Recommendation = () => {
       </div>
 
       {/* ── Vote info ─────────────────────────────────────────────────────── */}
-      <p className="text-[12px] text-white/80 mb-4 leading-relaxed">
+      <p className="text-[14px] text-white/80 mb-4 leading-relaxed">
         Votes are tied to your device. Click an active vote to remove it, or the opposite to switch.
       </p>
 
@@ -883,7 +883,7 @@ export const Recommendation = () => {
 
           {!hasNextPage && items.length > 0 && (
             <div className="text-center py-8">
-              <span className="text-[12px] text-white/70">
+              <span className="text-[14px] text-white/70">
                 All {totalResults} recommendations loaded
               </span>
             </div>
