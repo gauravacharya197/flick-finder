@@ -555,7 +555,7 @@ function AddModal({
 function SkeletonCard() {
   return (
     <div className="flex flex-col rounded-2xl overflow-hidden border border-white/[0.05]"
-      style={{ background: 'linear-gradient(160deg, #15203a 0%, #0f1628 100%)' }}>
+      >
       {/* Poster skeleton */}
       <div className="w-full animate-pulse bg-white/[0.04]" style={{ paddingBottom: '56%', position: 'relative' }}>
         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-white/[0.02]" />
