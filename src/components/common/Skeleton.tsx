@@ -3,7 +3,7 @@ import React from 'react';
 const Skeleton = ({ 
   className = '',
   rows = 3,
-  rowWidths = [], // Custom widths for each row
+  rowWidths = [] as string[],
   showTitle = true,
   animate = true,
   titleHeight = 'h-6',

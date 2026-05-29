@@ -2,7 +2,7 @@ import axios from 'axios';
 import apiClient from '../axiosConfig';
 const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 export const getRecommendation = async (text: string) => {
-  return await apiClient.post(`${baseUrl}api/Recommendation`, { text: text, delay: 0 }, {
+  return await apiClient.post(`${baseUrl}api/Recommendation/suggest`, { text: text, delay: 0 }, {
     headers: {
       'Content-Type': 'application/json'
     }

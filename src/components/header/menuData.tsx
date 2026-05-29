@@ -9,10 +9,13 @@ import {
   FaHome,
   FaBookmark,
   FaHistory,
-  FaAddressBook
+  FaAddressBook,
+  
 } from 'react-icons/fa';
 import { FaBookOpen, FaFilter } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
+import { BiSolidUpvote } from "react-icons/bi";
+
 const menuData: Menu[] = [
  
   {
@@ -107,6 +110,15 @@ const menuData: Menu[] = [
     path: "/settings",
     requireLogin: true,
     icon:  IoSettings,
+    showOnMobile : true,
+  },
+  {
+    id: 10,
+    title: "Recommended",
+    newTab: false,
+    path: "/recommendations",
+    requireLogin: false,
+    icon:  BiSolidUpvote,
     showOnMobile : true,
   },
 
