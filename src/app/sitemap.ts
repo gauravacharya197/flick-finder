@@ -69,7 +69,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: 'https://flickday.to/genre/tv-movie', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: 'https://flickday.to/genre/thriller', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: 'https://flickday.to/genre/war', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: 'https://flickday.to/genre/western', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 }
+    { url: 'https://flickday.to/genre/western', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+     { url: 'https://flickday.to/recommendations', lastModified: new Date(), changeFrequency: 'yearly', priority: 0.7 }
   ];
 
   // Fetch dynamic server data
