@@ -15,6 +15,7 @@ import {
 import { FaBookOpen, FaFilter } from "react-icons/fa6";
 import { IoSettings } from "react-icons/io5";
 import { BiSolidUpvote } from "react-icons/bi";
+import { IoFootball } from "react-icons/io5";
 
 const menuData: Menu[] = [
  
@@ -119,6 +120,15 @@ const menuData: Menu[] = [
     path: "/recommendations",
     requireLogin: false,
     icon:  BiSolidUpvote,
+    showOnMobile : true,
+  },
+    {
+    id: 10,
+    title: "Sports",
+    newTab: false,
+    path: "/sports",
+    requireLogin: false,
+    icon:  IoFootball,
     showOnMobile : true,
   },
 

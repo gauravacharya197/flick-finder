@@ -14,14 +14,14 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 3,
     name: "Secondary",
-   baseUrl :"https://player.videasy.net",
+   baseUrl :"https://player.videasy.to",
     urlSeparator:"/",
     idType: 'id'
   },
   {
     id: 6,
     name: "Backup",
-    baseUrl: "https://v2.vidsrc.me/embed",
+    baseUrl: "https://vidsrc.win/watch/",
     urlSeparator: "/"
   },
   
@@ -55,7 +55,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id:4,
     name: "MoviesAPI",
-     baseUrl: "https://moviesapi.club",
+     baseUrl: "https://moviesapi.to",
     urlSeparator: "-"
   },
   {
