@@ -12,14 +12,14 @@ export interface VideoServer {
 
 export const VIDEO_SERVERS: VideoServer[] = [
   {
-    id: 3,
+    id: 6,
     name: "Secondary",
    baseUrl :"https://player.videasy.to",
     urlSeparator:"/",
     idType: 'id'
   },
   {
-    id: 6,
+    id: 36,
     name: "Backup",
     baseUrl: "https://play.xpass.top/e",
     urlSeparator: "/"
