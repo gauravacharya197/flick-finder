@@ -21,7 +21,7 @@ export const VIDEO_SERVERS: VideoServer[] = [
   {
     id: 6,
     name: "Backup",
-    baseUrl: "https://vidsrc.win/watch/",
+    baseUrl: "https://play.xpass.top/e",
     urlSeparator: "/"
   },
   
