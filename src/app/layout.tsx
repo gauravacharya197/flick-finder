@@ -4,6 +4,7 @@ import "./globals.css";
 import { Poppins } from "next/font/google";
 import { AuthProvider } from "./context/AuthContext";
 import RootProviders from "./RootProvider";
+import WorldCupPopup from "@/components/sports/WorldCupPopup";
 //Redeploy gaurav.ga6
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"] });
 
@@ -23,7 +24,7 @@ export default function RootLayout({
         <body
           className={`min-h-screen bg-background text-white ${poppins.className}`}
         >
-          <RootProviders> <>{children}</></RootProviders>
+          <RootProviders> <>{children}  <WorldCupPopup />      </></RootProviders>
          
         </body>
        
